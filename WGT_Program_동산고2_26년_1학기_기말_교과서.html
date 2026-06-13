@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WGT 어순배열 · 동산고2 기말 교과서</title>
+<meta property="og:title" content="WGT 동산고2 교과서 - 어순배열훈련 (핵심문장 8개)">
+<meta property="og:description" content="영한매칭·한영매칭·어순배열 3단계 훈련">
+<meta property="og:type" content="website">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+:root{
+ --bg:#f4f6fb;--surface:#fff;--card:#f0f2f8;
+ --accent:#3b5bdb;--accent2:#7048e8;--success:#2f9e44;--error:#e03131;
+ --text:#1a1a2e;--muted:#6c757d;--border:#dee2f0;
+ --kor-bg:#fff9db;--kor-border:#ffd43b;
+ --eng-bg:#e7f5ff;--eng-border:#74c0fc;
+ --hint:#fd7e14;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.site-header{background:linear-gradient(135deg,#2d4fcf,#6a3ccc);padding:18px 16px 14px;text-align:center;color:white;}
+.site-header .tag{font-size:0.67rem;letter-spacing:0.16em;opacity:0.75;margin-bottom:4px;}
+.site-header h1{font-size:1.05rem;font-weight:700;margin-bottom:3px;}
+.site-header .sub{font-size:0.73rem;opacity:0.85;}
+.tab-bar{display:flex;max-width:700px;margin:14px auto 0;gap:6px;padding:0 12px;}
+.tab-btn{flex:1;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;background:white;color:var(--muted);transition:all 0.18s;line-height:1.4;text-align:center;}
+.tab-btn .tn{display:block;font-size:0.58rem;opacity:0.8;margin-bottom:1px;}
+.tab-btn.a1{background:#3b5bdb;color:white;border-color:#3b5bdb;}
+.tab-btn.a2{background:#7048e8;color:white;border-color:#7048e8;}
+.tab-btn.a3{background:#0ca678;color:white;border-color:#0ca678;}
+.section{display:none;padding:13px 12px 40px;max-width:700px;margin:0 auto;}
+.section.show{display:block;}
+.how-to{background:white;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;font-size:0.75rem;color:var(--text);line-height:1.85;margin-bottom:12px;}
+.how-to .lbl{font-size:0.64rem;font-weight:700;color:var(--accent);letter-spacing:0.08em;margin-bottom:4px;}
+.how-to ol{padding-left:16px;}
+.prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.prog-lbl{font-size:0.73rem;font-weight:700;color:var(--muted);}
+.prog-sc{font-size:0.7rem;color:var(--muted);}
+.prog-sc strong{color:var(--text);}
+.order-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px;}
+.match-grid{display:flex;gap:8px;}
+.match-col{flex:1;display:flex;flex-direction:column;gap:6px;}
+.match-item{padding:10px 11px;border-radius:10px;border:2px solid var(--border);background:white;font-size:0.74rem;line-height:1.55;cursor:pointer;transition:all 0.15s;}
+.match-item.eng{border-color:var(--eng-border);background:var(--eng-bg);font-family:'JetBrains Mono',monospace;font-size:0.7rem;}
+.match-item.kor{border-color:var(--kor-border);background:var(--kor-bg);}
+.match-item:hover:not(.matched):not(.locked){transform:translateY(-2px);}
+.match-item.selected{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent2) inset;}
+.match-item.matched{opacity:0.3;pointer-events:none;}
+.match-item.wf{animation:wfA 0.42s;}
+@keyframes wfA{0%,100%{}50%{background:#ffe3e3!important;border-color:var(--error)!important;}}
+.speak-icon{font-size:0.7rem;margin-right:4px;}
+.answer-slots{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;min-height:40px;}
+.slot{border:2px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.74rem;line-height:1.6;color:var(--muted);background:var(--card);display:flex;align-items:flex-start;gap:8px;min-height:48px;font-family:'JetBrains Mono',monospace;flex-wrap:wrap;}
+.slot.filled{background:white;border-color:var(--accent);color:var(--text);}
+.slot.correct{background:#d3f9d8;border-color:var(--success);}
+.slot-num{width:22px;height:22px;border-radius:50%;background:var(--border);color:var(--muted);font-size:0.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Noto Sans KR',sans-serif;}
+.slot.filled .slot-num{background:var(--accent);color:white;}
+.slot.correct .slot-num{background:var(--success);color:white;}
+.word-pool{display:flex;flex-wrap:wrap;gap:6px;}
+.word-btn{padding:8px 12px;border-radius:8px;border:2px solid var(--eng-border);background:var(--eng-bg);font-size:0.74rem;cursor:pointer;transition:all 0.15s;font-family:'JetBrains Mono',monospace;color:var(--text);}
+.word-btn:hover:not(.used){transform:translateY(-2px);border-color:var(--accent);}
+.word-btn.used{opacity:0.25;pointer-events:none;}
+.word-btn.hint-show{border-color:var(--hint);background:#fff4e6;animation:hintPulse 0.6s;}
+@keyframes hintPulse{0%,100%{transform:none;}50%{transform:translateY(-3px);}}
+.hint-box{background:#fff4e6;border:2px solid var(--hint);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:0.74rem;line-height:1.7;display:none;font-family:'JetBrains Mono',monospace;}
+.hint-box.show{display:block;}
+.hint-box .hlbl{font-size:0.63rem;font-weight:700;color:var(--hint);letter-spacing:0.08em;margin-bottom:4px;font-family:'Noto Sans KR',sans-serif;}
+.sent-block{background:white;border:1.5px solid var(--border);border-radius:11px;padding:12px;margin-bottom:14px;}
+.sent-block .ck-kor{font-size:0.76rem;color:var(--muted);background:var(--kor-bg);border:1px solid var(--kor-border);border-radius:8px;padding:8px 10px;margin-bottom:10px;line-height:1.6;}
+.result-panel{background:white;border:2px solid var(--success);border-radius:14px;padding:16px;text-align:center;display:none;margin-top:12px;}
+.result-panel.show{display:block;}
+.r-em{font-size:2rem;margin-bottom:6px;}
+.r-msg{font-size:0.88rem;font-weight:700;color:var(--success);margin-bottom:6px;}
+.r-sc{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:12px;}
+.result-panel button{padding:9px 20px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:0.83rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin:0 4px;}
+.footer{text-align:center;font-size:0.66rem;color:var(--muted);padding:16px 0 26px;}
+</style>
+</head>
+<body>
+<div class="site-header">
+ <div class="tag">WGT 어순배열 · 동산고 2학년 1학기 기말</div>
+ <h1>교과서 핵심문장 · 영한 매칭 &amp; 어순배열 훈련</h1>
+ <div class="sub">핵심문장 8개</div>
+</div>
+<div class="tab-bar">
+ <button class="tab-btn a1" onclick="switchTab(1)"><span class="tn">STEP 1</span>영→한 매칭</button>
+ <button class="tab-btn" onclick="switchTab(2)"><span class="tn">STEP 2</span>한→영 매칭</button>
+ <button class="tab-btn" onclick="switchTab(3)"><span class="tn">STEP 3</span>어순배열</button>
+</div>
+<div class="section show" id="sec1">
+ <div class="how-to"><div class="lbl">📖 STEP 1 사용법</div><ol><li>왼쪽 영어 문장을 클릭하면 음성이 재생돼요</li><li>오른쪽에서 알맞은 한글 해석을 클릭해 짝지으세요</li><li>맞으면 두 항목이 흐려지며 완료 표시돼요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl">영어 문장 → 한글 해석 매칭</span><span class="prog-sc">✅<strong id="o1">0</strong> ❌<strong id="n1">0</strong></span></div>
+ <div class="match-grid"><div class="match-col" id="eng1"></div><div class="match-col" id="kor1"></div></div>
+ <div class="result-panel" id="rp1"><div class="r-em">🏆</div><div class="r-msg">STEP 1 완료!</div><div class="r-sc" id="rs1"></div><button onclick="switchTab(2)">STEP 2로 →</button><button onclick="resetStep(1)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="section" id="sec2">
+ <div class="how-to"><div class="lbl">📖 STEP 2 사용법</div><ol><li>왼쪽 한글 해석을 클릭하세요</li><li>오른쪽에서 알맞은 영어 문장을 클릭하면 음성이 재생돼요</li><li>맞으면 두 항목이 흐려지며 완료 표시돼요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl">한글 해석 → 영어 문장 매칭</span><span class="prog-sc">✅<strong id="o2">0</strong> ❌<strong id="n2">0</strong></span></div>
+ <div class="match-grid"><div class="match-col" id="kor2"></div><div class="match-col" id="eng2"></div></div>
+ <div class="result-panel" id="rp2"><div class="r-em">🏆</div><div class="r-msg">STEP 2 완료!</div><div class="r-sc" id="rs2"></div><button onclick="switchTab(3)">STEP 3으로 →</button><button onclick="resetStep(2)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="section" id="sec3">
+ <div class="how-to"><div class="lbl">📖 STEP 3 사용법</div><ol><li>각 문장의 한글 의미를 보고 영어 단어를 순서대로 클릭하세요</li><li>완성되면 음성으로 들려드려요</li><li>2번 틀리면 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl">문장별 어순배열</span><span class="prog-sc">✅<strong id="o3">0</strong> ❌<strong id="n3">0</strong></span></div>
+ <div id="step3-area"></div>
+ <div class="result-panel" id="rp3"><div class="r-em">🎉</div><div class="r-msg">모든 STEP 완료!</div><div class="r-sc" id="rs3"></div><button onclick="resetStep(3)" style="background:var(--accent)">다시 풀기</button></div>
+</div>
+<div class="footer">WGT 어순배열 · 동산고 2학년 기말 교과서 핵심문장 8개</div>
+<script>
+const PASSAGES = [
+{"num":"교과서","topic":"오클랜드 애슬레틱스의 세이버메트릭스와 AI 코치 / 야구공 실밥의 역할",
+ "sentences":["The Oakland Athletics were a small team with limited funds, which made it difficult for them to attract elite players.","The key to their success was adopting sabermetrics, a statistical model used for making decisions in baseball.","Sabermetrics had not been widely used until the Athletics adopted it in 2002.","So he demanded that the club form a new data team.","The team analyzed large amounts of data to recruit players who fit the team's style of play.","The team managers requested that the AI coach edit training videos of the players to assist with practical analysis.","The seams help pitchers grip the ball better and transfer more power and spin when throwing it.","Pitchers can use this effect to control the ball's direction and speed, creating pitches that are difficult for batters to hit."],
+ "korean":["오클랜드 애슬레틱스는 자금이 한정된 소규모 팀이었고, 이는 그들이 우수한 선수들을 영입하기 어렵게 만들었다.","그들의 성공의 핵심은 야구에서 의사결정을 위해 사용되는 통계 모델인 세이버메트릭스를 도입한 것이었다.","세이버메트릭스는 애슬레틱스가 2002년에 그것을 도입하기 전까지는 널리 사용되지 않았다.","그래서 그는 구단이 새로운 데이터 팀을 구성할 것을 요구했다.","그 팀은 팀의 경기 스타일에 맞는 선수를 영입하기 위해 대량의 데이터를 분석했다.","팀 감독들은 실질적인 분석을 돕기 위해 AI 코치가 선수들의 훈련 영상을 편집해줄 것을 요청했다.","실밥은 투수가 공을 더 잘 잡고 던질 때 더 많은 힘과 회전을 전달하는 것을 도와준다.","투수는 이 효과를 이용해 공의 방향과 속도를 제어할 수 있으며, 이는 타자가 치기 어려운 투구를 만들어낸다."]
+}
+];
+
+let curP = 0;
+const state1 = {};
+const state2 = {};
+const state3 = {};
+let preferredVoice = null;
+
+function loadVoices(){
+  const voices = speechSynthesis.getVoices();
+  preferredVoice = voices.find(v=>v.name==='Google US English') || voices.find(v=>v.lang==='en-US') || voices[0];
+}
+loadVoices();
+if('onvoiceschanged' in speechSynthesis){ speechSynthesis.onvoiceschanged = loadVoices; }
+
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = 0.85;
+  u.lang = 'en-US';
+  if(preferredVoice) u.voice = preferredVoice;
+  speechSynthesis.speak(u);
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function getP(){ return PASSAGES[curP]; }
+
+function switchTab(n){
+  for(let i=1;i<=3;i++){
+    document.getElementById('sec'+i).classList.toggle('show', i===n);
+    document.querySelectorAll('.tab-btn')[i-1].classList.toggle(['a1','a2','a3'][i-1], i===n);
+    if(i!==n) document.querySelectorAll('.tab-btn')[i-1].classList.remove('a1','a2','a3');
+  }
+}
+
+function initAll(){
+  initStep1();
+  initStep2();
+  initStep3();
+}
+
+// ---------- STEP 1: 영(클릭->음성)->한 매칭 ----------
+function initStep1(){
+  const p = getP();
+  const n = p.sentences.length;
+  state1.matched = new Set();
+  state1.wrong = 0;
+  state1.selectedEng = null;
+  const engOrder = shuffle([...Array(n).keys()]);
+  const korOrder = shuffle([...Array(n).keys()]);
+  state1.engOrder = engOrder;
+  state1.korOrder = korOrder;
+
+  const engCol = document.getElementById('eng1');
+  const korCol = document.getElementById('kor1');
+  engCol.innerHTML = '';
+  korCol.innerHTML = '';
+
+  engOrder.forEach(idx=>{
+    const div = document.createElement('div');
+    div.className = 'match-item eng';
+    div.innerHTML = '<span class="speak-icon">🔊</span>' + p.sentences[idx];
+    div.dataset.idx = idx;
+    div.onclick = ()=>selectEng1(idx, div);
+    engCol.appendChild(div);
+  });
+  korOrder.forEach(idx=>{
+    const div = document.createElement('div');
+    div.className = 'match-item kor';
+    div.textContent = p.korean[idx];
+    div.dataset.idx = idx;
+    div.onclick = ()=>selectKor1(idx, div);
+    korCol.appendChild(div);
+  });
+
+  document.getElementById('o1').textContent = '0';
+  document.getElementById('n1').textContent = '0';
+  document.getElementById('rp1').classList.remove('show');
+}
+
+function selectEng1(idx, el){
+  if(el.classList.contains('matched')) return;
+  speak(getP().sentences[idx]);
+  document.querySelectorAll('#eng1 .match-item').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  state1.selectedEng = idx;
+}
+
+function selectKor1(idx, el){
+  if(el.classList.contains('matched')) return;
+  if(state1.selectedEng === null) return;
+  const p = getP();
+  if(state1.selectedEng === idx){
+    document.querySelectorAll('#eng1 .match-item').forEach(e=>{
+      if(+e.dataset.idx === idx){ e.classList.add('matched'); e.classList.remove('selected'); }
+    });
+    el.classList.add('matched');
+    state1.matched.add(idx);
+    state1.selectedEng = null;
+    document.getElementById('o1').textContent = state1.matched.size;
+    if(state1.matched.size === p.sentences.length){
+      document.getElementById('rp1').classList.add('show');
+      document.getElementById('rs1').textContent = `정답 ${p.sentences.length} / 오답 ${state1.wrong}`;
+    }
+  } else {
+    state1.wrong++;
+    document.getElementById('n1').textContent = state1.wrong;
+    el.classList.add('wf');
+    setTimeout(()=>el.classList.remove('wf'), 450);
+  }
+}
+
+// ---------- STEP 2: 한(클릭)->영(클릭->음성) 매칭 ----------
+function initStep2(){
+  const p = getP();
+  const n = p.sentences.length;
+  state2.matched = new Set();
+  state2.wrong = 0;
+  state2.selectedKor = null;
+  const korOrder = shuffle([...Array(n).keys()]);
+  const engOrder = shuffle([...Array(n).keys()]);
+  state2.korOrder = korOrder;
+  state2.engOrder = engOrder;
+
+  const korCol = document.getElementById('kor2');
+  const engCol = document.getElementById('eng2');
+  korCol.innerHTML = '';
+  engCol.innerHTML = '';
+
+  korOrder.forEach(idx=>{
+    const div = document.createElement('div');
+    div.className = 'match-item kor';
+    div.textContent = p.korean[idx];
+    div.dataset.idx = idx;
+    div.onclick = ()=>selectKor2(idx, div);
+    korCol.appendChild(div);
+  });
+  engOrder.forEach(idx=>{
+    const div = document.createElement('div');
+    div.className = 'match-item eng';
+    div.innerHTML = '<span class="speak-icon">🔊</span>' + p.sentences[idx];
+    div.dataset.idx = idx;
+    div.onclick = ()=>selectEng2(idx, div);
+    engCol.appendChild(div);
+  });
+
+  document.getElementById('o2').textContent = '0';
+  document.getElementById('n2').textContent = '0';
+  document.getElementById('rp2').classList.remove('show');
+}
+
+function selectKor2(idx, el){
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll('#kor2 .match-item').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  state2.selectedKor = idx;
+}
+
+function selectEng2(idx, el){
+  if(el.classList.contains('matched')) return;
+  if(state2.selectedKor === null) return;
+  const p = getP();
+  speak(p.sentences[idx]);
+  if(state2.selectedKor === idx){
+    document.querySelectorAll('#kor2 .match-item').forEach(e=>{
+      if(+e.dataset.idx === idx){ e.classList.add('matched'); e.classList.remove('selected'); }
+    });
+    el.classList.add('matched');
+    state2.matched.add(idx);
+    state2.selectedKor = null;
+    document.getElementById('o2').textContent = state2.matched.size;
+    if(state2.matched.size === p.sentences.length){
+      document.getElementById('rp2').classList.add('show');
+      document.getElementById('rs2').textContent = `정답 ${p.sentences.length} / 오답 ${state2.wrong}`;
+    }
+  } else {
+    state2.wrong++;
+    document.getElementById('n2').textContent = state2.wrong;
+    el.classList.add('wf');
+    setTimeout(()=>el.classList.remove('wf'), 450);
+  }
+}
+
+// ---------- STEP 3: 문장별 어순배열 ----------
+function initStep3(){
+  const p = getP();
+  const area = document.getElementById('step3-area');
+  area.innerHTML = '';
+  document.getElementById('rp3').classList.remove('show');
+
+  state3.blocks = p.sentences.map((s,i)=>{
+    const words = s.split(' ');
+    return {
+      sentIdx: i,
+      words,
+      kor: p.korean[i],
+      filled: [],
+      order: shuffle(words.map((_,wi)=>wi)),
+      wrong: 0,
+      attemptsForSlot: 0,
+      done: false
+    };
+  });
+
+  document.getElementById('o3').textContent = '0';
+  document.getElementById('n3').textContent = '0';
+
+  state3.blocks.forEach((b, bi)=>{
+    const block = document.createElement('div');
+    block.className = 'sent-block';
+    block.innerHTML = `
+      <div class="order-lbl">문장 ${bi+1}</div>
+      <div class="ck-kor">${b.kor}</div>
+      <div class="hint-box" id="s3hb${bi}"><div class="hlbl">💡 힌트</div><div id="s3ht${bi}"></div></div>
+      <div class="answer-slots" id="s3as${bi}"></div>
+      <div class="word-pool" id="s3wp${bi}"></div>
+    `;
+    area.appendChild(block);
+  });
+
+  state3.blocks.forEach((b, bi)=> renderStep3(bi));
+}
+
+function renderStep3(bi){
+  const b = state3.blocks[bi];
+  const slotsEl = document.getElementById('s3as'+bi);
+  const poolEl = document.getElementById('s3wp'+bi);
+
+  slotsEl.innerHTML = '';
+  const row = document.createElement('div');
+  row.className = 'slot' + (b.done ? ' correct':'') + (b.filled.length>0?' filled':'');
+  row.innerHTML = `<div class="slot-num">${bi+1}</div><div>${b.filled.map(idx=>b.words[idx]).join(' ') || '여기에 단어를 순서대로 배열하세요'}</div>`;
+  slotsEl.appendChild(row);
+
+  poolEl.innerHTML = '';
+  b.order.forEach(idx=>{
+    const btn = document.createElement('button');
+    btn.className = 'word-btn' + (b.filled.includes(idx) ? ' used':'');
+    btn.textContent = b.words[idx];
+    btn.onclick = ()=>handleStep3Choice(bi, idx);
+    poolEl.appendChild(btn);
+  });
+
+  document.getElementById('s3hb'+bi).classList.remove('show');
+  updateStep3Totals();
+}
+
+function updateStep3Totals(){
+  let correct = 0, wrong = 0;
+  state3.blocks.forEach(b=>{
+    correct += b.filled.length;
+    wrong += b.wrong;
+  });
+  document.getElementById('o3').textContent = correct;
+  document.getElementById('n3').textContent = wrong;
+}
+
+function handleStep3Choice(bi, idx){
+  const b = state3.blocks[bi];
+  const nextSlot = b.filled.length;
+  if(nextSlot >= b.words.length) return;
+
+  if(idx === nextSlot){
+    b.filled.push(idx);
+    b.attemptsForSlot = 0;
+    renderStep3(bi);
+    if(b.filled.length === b.words.length){
+      b.done = true;
+      renderStep3(bi);
+      speak(b.words.join(' '));
+      checkAllStep3Done();
+    }
+  } else {
+    b.wrong++;
+    b.attemptsForSlot++;
+    updateStep3Totals();
+    const poolEl = document.getElementById('s3wp'+bi);
+    const btns = poolEl.querySelectorAll('.word-btn');
+    const orderIdx = b.order.indexOf(idx);
+    btns[orderIdx].classList.add('wf');
+    setTimeout(()=>btns[orderIdx].classList.remove('wf'), 450);
+
+    if(b.attemptsForSlot >= 2){
+      const hb = document.getElementById('s3hb'+bi);
+      const ht = document.getElementById('s3ht'+bi);
+      ht.textContent = '다음 단어: ' + b.words[nextSlot];
+      hb.classList.add('show');
+      const correctOrderIdx = b.order.indexOf(nextSlot);
+      btns[correctOrderIdx].classList.add('hint-show');
+    }
+  }
+}
+
+function checkAllStep3Done(){
+  if(state3.blocks.every(b=>b.done)){
+    const totalWrong = state3.blocks.reduce((s,b)=>s+b.wrong,0);
+    document.getElementById('rp3').classList.add('show');
+    document.getElementById('rs3').textContent = `완료! 오답 ${totalWrong}`;
+  }
+}
+
+function resetStep(step){
+  if(step===1) initStep1();
+  if(step===2) initStep2();
+  if(step===3) initStep3();
+}
+
+initAll();
+</script>
+</body>
+</html>

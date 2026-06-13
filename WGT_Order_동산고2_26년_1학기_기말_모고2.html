@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WGT 순서배열 · 동산고2 기말 모고2</title>
+<meta property="og:title" content="WGT 동산고2 모고2 - 순서배열훈련 (21,22,24,30번)">
+<meta property="og:description" content="글의 구조를 4단계로 분석하는 순서배열 훈련">
+<meta property="og:type" content="website">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+:root{
+ --bg:#f4f6fb;--surface:#fff;--card:#f0f2f8;
+ --accent:#3b5bdb;--accent2:#7048e8;--success:#2f9e44;--error:#e03131;
+ --text:#1a1a2e;--muted:#6c757d;--border:#dee2f0;
+ --kor-bg:#fff9db;--kor-border:#ffd43b;
+ --eng-bg:#e7f5ff;--eng-border:#74c0fc;
+ --hint:#fd7e14;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.site-header{background:linear-gradient(135deg,#2d4fcf,#6a3ccc);padding:18px 16px 14px;text-align:center;color:white;}
+.site-header .tag{font-size:0.67rem;letter-spacing:0.16em;opacity:0.75;margin-bottom:4px;}
+.site-header h1{font-size:1.05rem;font-weight:700;margin-bottom:3px;}
+.site-header .sub{font-size:0.73rem;opacity:0.85;}
+.passage-nav{display:flex;max-width:700px;margin:14px auto 0;gap:6px;padding:0 12px;flex-wrap:wrap;}
+.pnav-btn{flex:1;min-width:60px;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;background:white;color:var(--muted);transition:all 0.18s;text-align:center;}
+.pnav-btn.active{background:var(--accent);color:white;border-color:var(--accent);}
+.tab-bar{display:flex;max-width:700px;margin:10px auto 0;gap:6px;padding:0 12px;}
+.tab-btn{flex:1;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;background:white;color:var(--muted);transition:all 0.18s;line-height:1.4;text-align:center;}
+.tab-btn .tn{display:block;font-size:0.58rem;opacity:0.8;margin-bottom:1px;}
+.tab-btn.a1{background:#3b5bdb;color:white;border-color:#3b5bdb;}
+.tab-btn.a2{background:#7048e8;color:white;border-color:#7048e8;}
+.tab-btn.a3{background:#0ca678;color:white;border-color:#0ca678;}
+.tab-btn.a4{background:#e67700;color:white;border-color:#e67700;}
+.section{display:none;padding:13px 12px 40px;max-width:700px;margin:0 auto;}
+.section.show{display:block;}
+.how-to{background:white;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;font-size:0.75rem;color:var(--text);line-height:1.85;margin-bottom:12px;}
+.how-to .lbl{font-size:0.64rem;font-weight:700;color:var(--accent);letter-spacing:0.08em;margin-bottom:4px;}
+.how-to ol{padding-left:16px;}
+.prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.prog-lbl{font-size:0.73rem;font-weight:700;color:var(--muted);}
+.prog-sc{font-size:0.7rem;color:var(--muted);}
+.prog-sc strong{color:var(--text);}
+.order-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px;}
+.answer-slots{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;min-height:40px;}
+.slot{border:2px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.8rem;line-height:1.6;color:var(--muted);background:var(--card);display:flex;align-items:center;gap:8px;min-height:52px;}
+.slot.filled{background:white;border-color:var(--accent);color:var(--text);cursor:pointer;}
+.slot.filled:hover{border-color:var(--error);background:#fff5f5;}
+.slot.correct{background:#d3f9d8;border-color:var(--success);cursor:default;}
+.slot-num{width:22px;height:22px;border-radius:50%;background:var(--border);color:var(--muted);font-size:0.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.slot.filled .slot-num{background:var(--accent);color:white;}
+.slot.correct .slot-num{background:var(--success);color:white;}
+.choices{display:flex;flex-direction:column;gap:6px;}
+.choice-btn{padding:10px 12px;border-radius:10px;border:2px solid var(--border);background:white;font-size:0.8rem;line-height:1.6;cursor:pointer;transition:all 0.15s;text-align:left;font-family:'Noto Sans KR',sans-serif;color:var(--text);}
+.choice-btn.kor{border-color:var(--kor-border);background:var(--kor-bg);}
+.choice-btn.eng{border-color:var(--eng-border);background:var(--eng-bg);font-family:'JetBrains Mono',monospace;font-size:0.72rem;}
+.choice-btn:hover:not(.used){transform:translateX(3px);border-color:var(--accent);}
+.choice-btn.used{opacity:0.25;pointer-events:none;}
+.choice-btn.hint-show{border-color:var(--hint);background:#fff4e6;animation:hintPulse 0.6s;}
+@keyframes hintPulse{0%,100%{transform:none;}50%{transform:translateX(5px);}}
+.wf{animation:wfA 0.42s;}
+@keyframes wfA{0%,100%{}50%{background:#ffe3e3!important;border-color:var(--error)!important;}}
+.hint-box{background:#fff4e6;border:2px solid var(--hint);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:0.77rem;line-height:1.7;display:none;}
+.hint-box.show{display:block;}
+.hint-box .hlbl{font-size:0.63rem;font-weight:700;color:var(--hint);letter-spacing:0.08em;margin-bottom:4px;}
+.result-panel{background:white;border:2px solid var(--success);border-radius:14px;padding:16px;text-align:center;display:none;margin-top:12px;}
+.result-panel.show{display:block;}
+.r-em{font-size:2rem;margin-bottom:6px;}
+.r-msg{font-size:0.88rem;font-weight:700;color:var(--success);margin-bottom:6px;}
+.r-sc{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:12px;}
+.result-panel button{padding:9px 20px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:0.83rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin:0 4px;}
+.struct-panel{background:white;border:1.5px solid var(--border);border-radius:11px;padding:12px;margin-top:12px;display:none;}
+.struct-panel.show{display:block;}
+.struct-item{display:flex;gap:8px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.struct-item:last-child{border:none;margin:0;padding:0;}
+.struct-label{width:28px;height:28px;border-radius:8px;background:var(--accent);color:white;font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.struct-role{font-size:0.7rem;color:var(--muted);margin-bottom:3px;}
+.struct-text{font-size:0.75rem;line-height:1.6;color:var(--text);}
+.btn-next{display:none;width:100%;margin-top:10px;padding:11px;background:linear-gradient(135deg,#3b5bdb,#7048e8);color:white;border:none;border-radius:11px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.footer{text-align:center;font-size:0.66rem;color:var(--muted);padding:16px 0 26px;}
+</style>
+</head>
+<body>
+<div class="site-header">
+ <div class="tag">WGT 순서배열 · 동산고 2학년 1학기 기말</div>
+ <h1>모의고사 2 · 4단계 순서배열 훈련</h1>
+ <div class="sub">21번 · 22번 · 24번 · 30번</div>
+</div>
+<div class="passage-nav" id="pnav"></div>
+<div class="tab-bar">
+ <button class="tab-btn a1" onclick="switchTab(1)"><span class="tn">STEP 1</span>한글 덩어리</button>
+ <button class="tab-btn" onclick="switchTab(2)"><span class="tn">STEP 2</span>영어 덩어리</button>
+ <button class="tab-btn" onclick="switchTab(3)"><span class="tn">STEP 3</span>한글 문장</button>
+ <button class="tab-btn" onclick="switchTab(4)"><span class="tn">STEP 4</span>영어 문장</button>
+</div>
+<div class="section show" id="sec1">
+ <div class="how-to"><div class="lbl">📖 STEP 1 사용법</div><ol><li>한국어 해석을 4개 덩어리로 나눴어요</li><li>올바른 순서대로 클릭해 위쪽 칸을 채우세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl1"></span><span class="prog-sc">✅<strong id="o1">0</strong> ❌<strong id="n1">0</strong></span></div>
+ <div class="hint-box" id="hb1"><div class="hlbl">💡 힌트</div><div id="ht1"></div></div>
+ <div class="answer-slots" id="as1"></div>
+ <div class="order-lbl">🇰🇷 덩어리 선택</div>
+ <div class="choices" id="ch1"></div>
+ <button class="btn-next" id="nx1" onclick="nextStep(1)"></button>
+ <div class="struct-panel" id="sp1"></div>
+ <div class="result-panel" id="rp1"><div class="r-em">🏆</div><div class="r-msg">STEP 1 완료!</div><div class="r-sc" id="rs1"></div><button onclick="switchTab(2)">STEP 2로 →</button><button onclick="resetStep(1)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="section" id="sec2">
+ <div class="how-to"><div class="lbl">📖 STEP 2 사용법</div><ol><li>영어 지문을 4개 덩어리로 나눴어요</li><li>올바른 순서대로 클릭해 위쪽 칸을 채우세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl2"></span><span class="prog-sc">✅<strong id="o2">0</strong> ❌<strong id="n2">0</strong></span></div>
+ <div class="hint-box" id="hb2"><div class="hlbl">💡 힌트</div><div id="ht2"></div></div>
+ <div class="answer-slots" id="as2"></div>
+ <div class="order-lbl">🔤 덩어리 선택</div>
+ <div class="choices" id="ch2"></div>
+ <button class="btn-next" id="nx2" onclick="nextStep(2)"></button>
+ <div class="struct-panel" id="sp2"></div>
+ <div class="result-panel" id="rp2"><div class="r-em">🏆</div><div class="r-msg">STEP 2 완료!</div><div class="r-sc" id="rs2"></div><button onclick="switchTab(3)">STEP 3으로 →</button><button onclick="resetStep(2)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="section" id="sec3">
+ <div class="how-to"><div class="lbl">📖 STEP 3 사용법</div><ol><li>지문의 모든 한국어 문장을 섞었어요</li><li>올바른 순서대로 클릭하세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl3"></span><span class="prog-sc">✅<strong id="o3">0</strong> ❌<strong id="n3">0</strong></span></div>
+ <div class="hint-box" id="hb3"><div class="hlbl">💡 힌트</div><div id="ht3"></div></div>
+ <div class="answer-slots" id="as3"></div>
+ <div class="order-lbl">🇰🇷 문장 선택</div>
+ <div class="choices" id="ch3"></div>
+ <button class="btn-next" id="nx3" onclick="nextStep(3)"></button>
+ <div class="result-panel" id="rp3"><div class="r-em">🏆</div><div class="r-msg">STEP 3 완료!</div><div class="r-sc" id="rs3"></div><button onclick="switchTab(4)">STEP 4로 →</button><button onclick="resetStep(3)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="section" id="sec4">
+ <div class="how-to"><div class="lbl">📖 STEP 4 사용법</div><ol><li>지문의 모든 영어 문장을 섞었어요</li><li>올바른 순서대로 클릭하세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl4"></span><span class="prog-sc">✅<strong id="o4">0</strong> ❌<strong id="n4">0</strong></span></div>
+ <div class="hint-box" id="hb4"><div class="hlbl">💡 힌트</div><div id="ht4"></div></div>
+ <div class="answer-slots" id="as4"></div>
+ <div class="order-lbl">🔤 문장 선택</div>
+ <div class="choices" id="ch4"></div>
+ <button class="btn-next" id="nx4" onclick="nextStep(4)"></button>
+ <div class="result-panel" id="rp4"><div class="r-em">🏆</div><div class="r-msg">STEP 4 완료!</div><div class="r-sc" id="rs4"></div><button onclick="goNextPassage()">다음 지문 →</button><button onclick="resetStep(4)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="footer">WGT 순서배열 · 동산고 2학년 기말 모고2 · 21,22,24,30번</div>
+<script>
+const PASSAGES = [
+{"num":"21번","topic":"미각이 행동 경향에 대해 알려주는 것",
+ "blocks_kor":[
+  {"label":"A","text":"신선하고 젖은 면봉에 소금을 묻혀, 혀의 여러 부위를 부드럽게 건드려보면서 맛이 가장 강하게 느껴지는 곳을 기록하세요. 그런 다음, 물로 입을 헹궈 혀를 완전히 깨끗이 한 후, 같은 부위에 설탕을 묻힌 면봉을 사용하고 그 결과를 기록하세요. 다시 입을 헹군 다음, 레몬즙으로 면봉을 사용해 보세요. 마지막으로 입을 헹군 후, 커피를 시도해 보세요.","role":"도입: 소금·설탕·레몬·커피로 미각 실험 절차 안내"},
+  {"label":"B","text":"당신의 반응을 친구들의 반응과 비교해 보세요. 당신의 미각 패턴은 단순한 맛 선호도 이상의 것을 드러낼 수도 있다.","role":"전환: 친구와 비교 → 미각 패턴이 더 많은 것을 드러냄"},
+  {"label":"C","text":"최근 연구들은 미각 유형과 행동 장애 사이의 연관성을 시사한다. 예를 들어, '비-맛쟁이(non-tasters)'는 알코올 중독의 발생률이 더 높은 경향이 있는데, 이는 아마도 그들에게 술이 덜 쓰게 느껴지기 때문일 것이다. 반대로, '슈퍼-맛쟁이(super-tasters)'는 브로콜리와 같이 영양가 있지만 약간 쓴 음식을 피할 수 있어, 결과적으로 균형 잡힌 식단을 스스로 박탈하게 된다.","role":"전개: 연구 결과 — 비-맛쟁이 vs 슈퍼-맛쟁이의 행동 차이 (Conversely 대조)"},
+  {"label":"D","text":"따라서 미각이 시각, 청각, 또는 촉각만큼 화려하지는 않지만, 적어도 입 안에서의 화학 작용이 운명이 될 수 있기 때문에 미각에 좀 더 주의를 기울이는 것이 타당하다.","role":"결론: 미각에 더 주의를 기울일 필요 (So)"}
+ ],
+ "blocks_eng":[
+  {"label":"A","text":"Coat a fresh, wet swab in salt, and gently touch various spots on your tongue, recording where your taste seems strongest. Then, gargle with water to thoroughly clean your tongue, use a swab coated with sugar on the same spots, and record those results. Gargle again, and then swab with lemon juice. After a final gargle, try coffee.","role":"도입: 소금·설탕·레몬·커피로 미각 실험 절차 안내"},
+  {"label":"B","text":"Compare your reactions with your friends'. Your taste pattern may reveal more than just taste preferences.","role":"전환: 친구와 비교 → 미각 패턴이 더 많은 것을 드러냄"},
+  {"label":"C","text":"Recent studies suggest links between taster status and behavioral disorders. For example, \"non-tasters\" tend to have a higher incidence of alcoholism, perhaps because liquor seems less bitter to them. Conversely, \"super-tasters\" may avoid nutritious but mildly bitter foods such as broccoli, thus depriving themselves of a balanced diet.","role":"전개: 연구 결과 — 비-맛쟁이 vs 슈퍼-맛쟁이의 행동 차이 (Conversely 대조)"},
+  {"label":"D","text":"So, although taste is not nearly as glamorous as vision, hearing, or even touch, it makes sense for you to pay closer attention to it because chemistry, at least in your mouth, could be destiny.","role":"결론: 미각에 더 주의를 기울일 필요 (So)"}
+ ],
+ "korean":["신선하고 젖은 면봉에 소금을 묻혀, 혀의 여러 부위를 부드럽게 건드려보면서 맛이 가장 강하게 느껴지는 곳을 기록하세요.","그런 다음, 물로 입을 헹궈 혀를 완전히 깨끗이 한 후, 같은 부위에 설탕을 묻힌 면봉을 사용하고 그 결과를 기록하세요.","다시 입을 헹군 다음, 레몬즙으로 면봉을 사용해 보세요.","마지막으로 입을 헹군 후, 커피를 시도해 보세요.","당신의 반응을 친구들의 반응과 비교해 보세요.","당신의 미각 패턴은 단순한 맛 선호도 이상의 것을 드러낼 수도 있다.","최근 연구들은 미각 유형과 행동 장애 사이의 연관성을 시사한다.","예를 들어, '비-맛쟁이(non-tasters)'는 알코올 중독의 발생률이 더 높은 경향이 있는데, 이는 아마도 그들에게 술이 덜 쓰게 느껴지기 때문일 것이다.","반대로, '슈퍼-맛쟁이(super-tasters)'는 브로콜리와 같이 영양가 있지만 약간 쓴 음식을 피할 수 있어, 결과적으로 균형 잡힌 식단을 스스로 박탈하게 된다.","따라서 미각이 시각, 청각, 또는 촉각만큼 화려하지는 않지만, 적어도 입 안에서의 화학 작용이 운명이 될 수 있기 때문에 미각에 좀 더 주의를 기울이는 것이 타당하다."],
+ "sentences":["Coat a fresh, wet swab in salt, and gently touch various spots on your tongue, recording where your taste seems strongest.","Then, gargle with water to thoroughly clean your tongue, use a swab coated with sugar on the same spots, and record those results.","Gargle again, and then swab with lemon juice.","After a final gargle, try coffee.","Compare your reactions with your friends'.","Your taste pattern may reveal more than just taste preferences.","Recent studies suggest links between taster status and behavioral disorders.","For example, \"non-tasters\" tend to have a higher incidence of alcoholism, perhaps because liquor seems less bitter to them.","Conversely, \"super-tasters\" may avoid nutritious but mildly bitter foods such as broccoli, thus depriving themselves of a balanced diet.","So, although taste is not nearly as glamorous as vision, hearing, or even touch, it makes sense for you to pay closer attention to it because chemistry, at least in your mouth, could be destiny."]
+},
+{"num":"22번","topic":"무지와 호기심을 받아들이는 과학의 태도",
+ "blocks_kor":[
+  {"label":"A","text":"실험은 과학이 무지를 받아들인다는 것을 증명한다. 과학자가 할 수 있는 최악의 행동은 어떤 상황에서 무슨 일이 일어날지 확인해보려 하지 않은 채 그것을 안다고 가정하는 것일 것이다.","role":"도입: 실험 = 과학의 무지 수용; 확인 없이 안다고 가정하는 것이 최악"},
+  {"label":"B","text":"실험 철학의 부상은 호기심이 의심스러운 속성이 아니라 가치 있는 속성으로 해방된 것과 동시에 일어났다.","role":"전개: 실험철학의 부상 = 호기심의 가치화"},
+  {"label":"C","text":"오늘날 실험 과학은 흔히 철학적 틀과 공인된 방법론('가설을 세우고 그것을 검증하라')에 의해 지지된다고 여겨지지만, 과학철학자 이언 해킹이 말하듯, 사실은 '단지 무슨 일이 일어날지 보려는 호기심만으로도 실험을 수행할 수 있다'는 것이다.","role":"인용1: 이언 해킹 — 호기심만으로도 실험 가능"},
+  {"label":"D","text":"실제로, 찰스 다윈의 아들이자 천문학자인 조지 다윈의 견해에 따르면, 비록 그것이 결실을 맺지 못할 가능성이 높더라도, 때때로 완전히 무모한 실험을 해봐야 한다. 직접 해보기 전까지는 결코 알 수 없다.","role":"인용2+결론: 조지 다윈 — 무모한 실험도 필요, 해보기 전엔 모름"}
+ ],
+ "blocks_eng":[
+  {"label":"A","text":"Experiments testify to science's embrace of ignorance. Arguably the worst thing a scientist can do is to suppose they know what will happen in a given scenario without bothering to check.","role":"도입: 실험 = 과학의 무지 수용; 확인 없이 안다고 가정하는 것이 최악"},
+  {"label":"B","text":"The rise of the experimental philosophy coincided with the liberation of curiosity as a valuable rather than a questionable attribute.","role":"전개: 실험철학의 부상 = 호기심의 가치화"},
+  {"label":"C","text":"For all that experimental science today is often assumed to be supported by a philosophical framework and an approved methodology (\"state your hypothesis and then test it\"), the fact is that, as philosopher of science Ian Hacking says, \"One can conduct an experiment simply out of curiosity to see what will happen.\"","role":"인용1: 이언 해킹 — 호기심만으로도 실험 가능"},
+  {"label":"D","text":"Indeed, in the view of Charles Darwin's son, the astronomer George Darwin, once in a while one should do a completely crazy experiment, even if it is most likely to prove fruitless. You never know until you try.","role":"인용2+결론: 조지 다윈 — 무모한 실험도 필요, 해보기 전엔 모름"}
+ ],
+ "korean":["실험은 과학이 무지를 받아들인다는 것을 증명한다.","과학자가 할 수 있는 최악의 행동은 어떤 상황에서 무슨 일이 일어날지 확인해보려 하지 않은 채 그것을 안다고 가정하는 것일 것이다.","실험 철학의 부상은 호기심이 의심스러운 속성이 아니라 가치 있는 속성으로 해방된 것과 동시에 일어났다.","오늘날 실험 과학은 흔히 철학적 틀과 공인된 방법론('가설을 세우고 그것을 검증하라')에 의해 지지된다고 여겨지지만, 과학철학자 이언 해킹이 말하듯, 사실은 '단지 무슨 일이 일어날지 보려는 호기심만으로도 실험을 수행할 수 있다'는 것이다.","실제로, 찰스 다윈의 아들이자 천문학자인 조지 다윈의 견해에 따르면, 비록 그것이 결실을 맺지 못할 가능성이 높더라도, 때때로 완전히 무모한 실험을 해봐야 한다.","직접 해보기 전까지는 결코 알 수 없다."],
+ "sentences":["Experiments testify to science's embrace of ignorance.","Arguably the worst thing a scientist can do is to suppose they know what will happen in a given scenario without bothering to check.","The rise of the experimental philosophy coincided with the liberation of curiosity as a valuable rather than a questionable attribute.","For all that experimental science today is often assumed to be supported by a philosophical framework and an approved methodology (\"state your hypothesis and then test it\"), the fact is that, as philosopher of science Ian Hacking says, \"One can conduct an experiment simply out of curiosity to see what will happen.\"","Indeed, in the view of Charles Darwin's son, the astronomer George Darwin, once in a while one should do a completely crazy experiment, even if it is most likely to prove fruitless.","You never know until you try."]
+},
+{"num":"24번","topic":"한낮의 휴식과 뉴로빅 운동의 효과",
+ "blocks_kor":[
+  {"label":"A","text":"바쁜 하루 중간에 잠시 멈춰서 마음을 새롭게 하고 에너지를 재충전하는 순간을 상상해 보세요. 이러한 한낮의 휴식의 힘은 흔히 과소평가된다.","role":"도입: 한낮의 휴식의 힘은 과소평가됨"},
+  {"label":"B","text":"일상에서 벗어나, 특히 뇌를 자극하도록 설계된 활동을 할 때, 당신은 인지적 피로를 예방하고 남은 하루의 생산성을 향상시킨다. 뉴로빅 운동―단순하지만 효과적인―은 이러한 휴식에 적합하다.","role":"전개: 뇌 자극 활동으로 인지피로 예방 → 뉴로빅 운동 소개"},
+  {"label":"C","text":"그것들은 뇌의 다양한 영역을 표적으로 하여, 뇌를 민첩하고 깨어있게 유지시킨다. 이러한 운동은 정신적 오아시스를 만들어 당신을 새롭게 하고 오후의 과제에 대비하게 한다. 이 전략적인 휴식은 단순한 쉼이 아니라, 당신의 인지 능력을 향상시켜 정신을 날카롭고 집중된 상태로 유지시켜 준다.","role":"심화: 뉴로빅 운동의 효과 — 뇌 활성화, 정신적 오아시스, 인지능력 향상"},
+  {"label":"D","text":"뉴로빅 운동을 잠깐이라도 시도해보는 것만으로도 점심시간 동안의 인지 상태에 놀라운 효과를 가져올 수 있다. 글쓰기나 식사 같은 일상적인 작업에 비주력 손을 사용하는 것부터 시작하라. 이 간단한 전환은 당신의 뇌에 도전을 주어, 평소에 사용되지 않는 경로를 활성화하고 더 큰 사고의 유연성을 촉진한다.","role":"예시: 비주력 손 사용 등 실천법과 효과"}
+ ],
+ "blocks_eng":[
+  {"label":"A","text":"Imagine pausing in the middle of a busy day, taking a moment to refresh your mind and recharge your energy. This power of a midday break is often underestimated.","role":"도입: 한낮의 휴식의 힘은 과소평가됨"},
+  {"label":"B","text":"When you break away from routine, especially with activities designed to stimulate your brain, you prevent cognitive tiredness and enhance productivity for the rest of the day. Neurobic exercises ― simple yet effective ― are perfect for such breaks.","role":"전개: 뇌 자극 활동으로 인지피로 예방 → 뉴로빅 운동 소개"},
+  {"label":"C","text":"They target different areas of your brain, keeping it agile and alert. These exercises create a mental oasis that refreshes and prepares you for the afternoon's challenges. This strategic pause is not just a break; it boosts your cognitive capabilities, ensuring your mind remains sharp and focused.","role":"심화: 뉴로빅 운동의 효과 — 뇌 활성화, 정신적 오아시스, 인지능력 향상"},
+  {"label":"D","text":"Even briefly experimenting with neurobic exercises can work wonders for your cognitive state during lunch. Start with using your non-dominant hand for routine tasks like writing or eating. This simple switch challenges your brain, activating pathways that aren't typically engaged and promoting greater flexibility in thinking.","role":"예시: 비주력 손 사용 등 실천법과 효과"}
+ ],
+ "korean":["바쁜 하루 중간에 잠시 멈춰서 마음을 새롭게 하고 에너지를 재충전하는 순간을 상상해 보세요.","이러한 한낮의 휴식의 힘은 흔히 과소평가된다.","일상에서 벗어나, 특히 뇌를 자극하도록 설계된 활동을 할 때, 당신은 인지적 피로를 예방하고 남은 하루의 생산성을 향상시킨다.","뉴로빅 운동―단순하지만 효과적인―은 이러한 휴식에 적합하다.","그것들은 뇌의 다양한 영역을 표적으로 하여, 뇌를 민첩하고 깨어있게 유지시킨다.","이러한 운동은 정신적 오아시스를 만들어 당신을 새롭게 하고 오후의 과제에 대비하게 한다.","이 전략적인 휴식은 단순한 쉼이 아니라, 당신의 인지 능력을 향상시켜 정신을 날카롭고 집중된 상태로 유지시켜 준다.","뉴로빅 운동을 잠깐이라도 시도해보는 것만으로도 점심시간 동안의 인지 상태에 놀라운 효과를 가져올 수 있다.","글쓰기나 식사 같은 일상적인 작업에 비주력 손을 사용하는 것부터 시작하라.","이 간단한 전환은 당신의 뇌에 도전을 주어, 평소에 사용되지 않는 경로를 활성화하고 더 큰 사고의 유연성을 촉진한다."],
+ "sentences":["Imagine pausing in the middle of a busy day, taking a moment to refresh your mind and recharge your energy.","This power of a midday break is often underestimated.","When you break away from routine, especially with activities designed to stimulate your brain, you prevent cognitive tiredness and enhance productivity for the rest of the day.","Neurobic exercises ― simple yet effective ― are perfect for such breaks.","They target different areas of your brain, keeping it agile and alert.","These exercises create a mental oasis that refreshes and prepares you for the afternoon's challenges.","This strategic pause is not just a break; it boosts your cognitive capabilities, ensuring your mind remains sharp and focused.","Even briefly experimenting with neurobic exercises can work wonders for your cognitive state during lunch.","Start with using your non-dominant hand for routine tasks like writing or eating.","This simple switch challenges your brain, activating pathways that aren't typically engaged and promoting greater flexibility in thinking."]
+},
+{"num":"30번","topic":"가족의 역할에 대한 자유주의와 유교 문화의 대조적 관점",
+ "blocks_kor":[
+  {"label":"A","text":"자유주의 문화 내에서는 개인의 공정한 기회균등의 가치가 가족의 통합성 보존보다 우선한다. 이와 대조적으로, 유교 문화에서는 개인의 공정한 기회균등을 추구하는 것이 중요하지만, 가족은 인간 번영에 있어 근본적인 역할을 하며, 가족 제도 안에서 사는 것이 본질적인 삶의 방식으로 여겨진다.","role":"도입+대조: 자유주의(기회균등 우선) vs 유교(가족이 본질적 역할) (In contrast)"},
+  {"label":"B","text":"개인은 국가의 시민으로 여겨지기 전에 우선적으로 가족 구성원으로 이해된다. 따라서 유교적 관점에서, 가족은 비록 그것이 어느 정도의 사회적 불평등을 초래하더라도 절대 버려져서는 안 되는 본질적 가치를 지닌다.","role":"전개: 개인=가족 구성원으로 먼저 이해 → 가족의 본질적 가치 (Therefore)"},
+  {"label":"C","text":"자유주의 문화와 같은 일부 문화는 공정한 기회균등을 추구하는 과정에서 가족의 역할에 점점 더 많은 제약을 부과하고, 교육, 의료 및 기타 적극적 권리를 위한 더 평등주의적인 정부 프로그램을 시행하는 것을 선택할 수도 있다.","role":"전개: 자유주의 문화의 선택 — 가족 역할 제한 + 평등주의 정부 프로그램"},
+  {"label":"D","text":"반면에, 유교 문화와 같은 다른 문화들은 모두의 기본적 자유와 권리가 국가에서 보장되는 한, 가족의 존재로부터 발생하는 불평등을 받아들이면서, 복지에 대한 책임을 주로 가족에 부여하는 것을 선호할 수도 있다.","role":"대조 결론: 유교 문화의 선택 — 복지를 가족에 위임, 불평등 수용 (On the other hand)"}
+ ],
+ "blocks_eng":[
+  {"label":"A","text":"Within liberal culture, the value of fair equality of opportunity for individuals outweighs the preservation of the family's integrity. In contrast, for Confucian culture, while seeking fair equality of opportunity for individuals is important, the family assumes a fundamental role in human flourishing, and living within a family institution is considered the essential way of life.","role":"도입+대조: 자유주의(기회균등 우선) vs 유교(가족이 본질적 역할) (In contrast)"},
+  {"label":"B","text":"Individuals are primarily understood as family members before they are regarded as state citizens. Therefore, for Confucians, the family possesses inherent value that should never be abandoned, even if it results in certain societal inequalities.","role":"전개: 개인=가족 구성원으로 먼저 이해 → 가족의 본질적 가치 (Therefore)"},
+  {"label":"C","text":"Some cultures, like the liberal one, may choose to impose increasing restrictions on the role of families and implement more egalitarian government programs for education, healthcare, and other positive rights in society in the pursuit of fair equality of opportunity.","role":"전개: 자유주의 문화의 선택 — 가족 역할 제한 + 평등주의 정부 프로그램"},
+  {"label":"D","text":"On the other hand, other cultures, like the Confucian one, may prefer to primarily assign welfare responsibilities to the family, accepting inequalities stemming from the existence of the family as long as everyone's basic freedoms and rights are safeguarded in the state.","role":"대조 결론: 유교 문화의 선택 — 복지를 가족에 위임, 불평등 수용 (On the other hand)"}
+ ],
+ "korean":["자유주의 문화 내에서는 개인의 공정한 기회균등의 가치가 가족의 통합성 보존보다 우선한다.","이와 대조적으로, 유교 문화에서는 개인의 공정한 기회균등을 추구하는 것이 중요하지만, 가족은 인간 번영에 있어 근본적인 역할을 하며, 가족 제도 안에서 사는 것이 본질적인 삶의 방식으로 여겨진다.","개인은 국가의 시민으로 여겨지기 전에 우선적으로 가족 구성원으로 이해된다.","따라서 유교적 관점에서, 가족은 비록 그것이 어느 정도의 사회적 불평등을 초래하더라도 절대 버려져서는 안 되는 본질적 가치를 지닌다.","자유주의 문화와 같은 일부 문화는 공정한 기회균등을 추구하는 과정에서 가족의 역할에 점점 더 많은 제약을 부과하고, 교육, 의료 및 기타 적극적 권리를 위한 더 평등주의적인 정부 프로그램을 시행하는 것을 선택할 수도 있다.","반면에, 유교 문화와 같은 다른 문화들은 모두의 기본적 자유와 권리가 국가에서 보장되는 한, 가족의 존재로부터 발생하는 불평등을 받아들이면서, 복지에 대한 책임을 주로 가족에 부여하는 것을 선호할 수도 있다."],
+ "sentences":["Within liberal culture, the value of fair equality of opportunity for individuals outweighs the preservation of the family's integrity.","In contrast, for Confucian culture, while seeking fair equality of opportunity for individuals is important, the family assumes a fundamental role in human flourishing, and living within a family institution is considered the essential way of life.","Individuals are primarily understood as family members before they are regarded as state citizens.","Therefore, for Confucians, the family possesses inherent value that should never be abandoned, even if it results in certain societal inequalities.","Some cultures, like the liberal one, may choose to impose increasing restrictions on the role of families and implement more egalitarian government programs for education, healthcare, and other positive rights in society in the pursuit of fair equality of opportunity.","On the other hand, other cultures, like the Confucian one, may prefer to primarily assign welfare responsibilities to the family, accepting inequalities stemming from the existence of the family as long as everyone's basic freedoms and rights are safeguarded in the state."]
+}
+];
+
+let curP = 0;
+const state = {};
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function getP(){ return PASSAGES[curP]; }
+
+function buildPnav(){
+  const nav = document.getElementById('pnav');
+  nav.innerHTML = '';
+  PASSAGES.forEach((p,i)=>{
+    const b = document.createElement('button');
+    b.className = 'pnav-btn'+(i===curP?' active':'');
+    b.textContent = p.num;
+    b.onclick = ()=>{ curP=i; initAllSteps(); buildPnav(); switchTab(1); };
+    nav.appendChild(b);
+  });
+}
+
+function switchTab(n){
+  for(let i=1;i<=4;i++){
+    document.getElementById('sec'+i).classList.toggle('show', i===n);
+    document.querySelectorAll('.tab-btn')[i-1].classList.toggle(['a1','a2','a3','a4'][i-1], i===n);
+    if(i!==n) document.querySelectorAll('.tab-btn')[i-1].classList.remove('a1','a2','a3','a4');
+  }
+}
+
+function getItems(step){
+  const p = getP();
+  if(step===1) return p.blocks_kor.map(b=>({text:b.text, cls:'kor', label:b.label}));
+  if(step===2) return p.blocks_eng.map(b=>({text:b.text, cls:'eng', label:b.label}));
+  if(step===3) return p.korean.map(t=>({text:t, cls:'kor'}));
+  if(step===4) return p.sentences.map(t=>({text:t, cls:'eng'}));
+}
+
+function initStep(step){
+  const items = getItems(step);
+  const order = shuffle(items.map((_,i)=>i));
+  state[step] = {
+    items, order, filled: [], wrong: 0
+  };
+  render(step);
+}
+
+function initAllSteps(){
+  for(let s=1;s<=4;s++) initStep(s);
+  document.getElementById('pl1').textContent = '한국어 4덩어리 순서 맞추기';
+  document.getElementById('pl2').textContent = '영어 4덩어리 순서 맞추기';
+  document.getElementById('pl3').textContent = '한국어 전체문장 순서 맞추기';
+  document.getElementById('pl4').textContent = '영어 전체문장 순서 맞추기';
+}
+
+function render(step){
+  const st = state[step];
+  const slotsEl = document.getElementById('as'+step);
+  const choicesEl = document.getElementById('ch'+step);
+  const total = st.items.length;
+
+  slotsEl.innerHTML = '';
+  for(let i=0;i<total;i++){
+    const slot = document.createElement('div');
+    const filledIdx = st.filled[i];
+    if(filledIdx !== undefined){
+      const correct = filledIdx === i;
+      slot.className = 'slot filled' + (correct && st.done ? ' correct':'');
+      slot.innerHTML = `<div class="slot-num">${i+1}</div><div>${st.items[filledIdx].text}</div>`;
+    } else {
+      slot.className = 'slot';
+      slot.innerHTML = `<div class="slot-num">${i+1}</div><div>이곳에 ${i+1}번째 내용이 채워집니다</div>`;
+    }
+    slotsEl.appendChild(slot);
+  }
+
+  choicesEl.innerHTML = '';
+  st.order.forEach(idx=>{
+    const item = st.items[idx];
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn ' + item.cls + (st.filled.includes(idx) ? ' used':'');
+    btn.textContent = (item.label ? '['+item.label+'] ' : '') + item.text;
+    btn.onclick = ()=>handleChoice(step, idx);
+    choicesEl.appendChild(btn);
+  });
+
+  document.getElementById('o'+step).textContent = st.filled.filter((v,i)=>v===i).length;
+  document.getElementById('n'+step).textContent = st.wrong;
+
+  const hb = document.getElementById('hb'+step);
+  hb.classList.remove('show');
+
+  const nx = document.getElementById('nx'+step);
+  nx.style.display = 'none';
+
+  const rp = document.getElementById('rp'+step);
+  rp.classList.remove('show');
+
+  if(step<=2){
+    document.getElementById('sp'+step).classList.remove('show');
+  }
+}
+
+function handleChoice(step, idx){
+  const st = state[step];
+  const nextSlot = st.filled.length;
+  if(nextSlot >= st.items.length) return;
+
+  if(idx === nextSlot){
+    st.filled.push(idx);
+    st.attemptsForSlot = 0;
+    render(step);
+    if(st.filled.length === st.items.length){
+      finishStep(step);
+    }
+  } else {
+    st.wrong++;
+    st.attemptsForSlot = (st.attemptsForSlot||0) + 1;
+    document.getElementById('o'+step).textContent = st.filled.filter((v,i)=>v===i).length;
+    document.getElementById('n'+step).textContent = st.wrong;
+    const choicesEl = document.getElementById('ch'+step);
+    const btns = choicesEl.querySelectorAll('.choice-btn');
+    const orderIdx = st.order.indexOf(idx);
+    btns[orderIdx].classList.add('wf');
+    setTimeout(()=>btns[orderIdx].classList.remove('wf'), 450);
+
+    if(st.attemptsForSlot >= 2){
+      const correctItem = st.items[nextSlot];
+      const hb = document.getElementById('hb'+step);
+      const ht = document.getElementById('ht'+step);
+      const preview = correctItem.text.split(' ').slice(0,6).join(' ') + ' ...';
+      ht.textContent = (correctItem.label ? '['+correctItem.label+'] ' : '') + preview;
+      hb.classList.add('show');
+      const correctOrderIdx = st.order.indexOf(nextSlot);
+      btns[correctOrderIdx].classList.add('hint-show');
+    }
+  }
+}
+
+function finishStep(step){
+  const st = state[step];
+  st.done = true;
+  render(step);
+  document.getElementById('rp'+step).classList.add('show');
+  document.getElementById('rs'+step).textContent = `정답 ${st.items.length} / 오답 ${st.wrong}`;
+
+  if(step===1 || step===2){
+    if(state[1] && state[1].done && state[2] && state[2].done){
+      showStructPanels();
+    }
+  }
+}
+
+function showStructPanels(){
+  const p = getP();
+  [1,2].forEach(step=>{
+    const blocks = step===1 ? p.blocks_kor : p.blocks_eng;
+    const sp = document.getElementById('sp'+step);
+    sp.innerHTML = '<div class="order-lbl" style="margin-bottom:8px;">📝 글의 구조 해설</div>' +
+      blocks.map(b=>`<div class="struct-item"><div class="struct-label">${b.label}</div><div><div class="struct-role">${b.role}</div><div class="struct-text">${b.text}</div></div></div>`).join('');
+    sp.classList.add('show');
+  });
+}
+
+function nextStep(step){
+  switchTab(step+1);
+}
+
+function resetStep(step){
+  initStep(step);
+  if(step<=2) document.getElementById('sp'+step).classList.remove('show');
+}
+
+function goNextPassage(){
+  if(curP < PASSAGES.length-1){
+    curP++;
+    initAllSteps();
+    buildPnav();
+    switchTab(1);
+  } else {
+    alert('모든 지문을 완료했습니다! 🎉');
+  }
+}
+
+buildPnav();
+initAllSteps();
+</script>
+</body>
+</html>
