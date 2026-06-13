@@ -40,55 +40,63 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .prog-lbl{font-size:0.73rem;font-weight:700;color:var(--muted);}
 .prog-sc{font-size:0.7rem;color:var(--muted);}
 .prog-sc strong{color:var(--text);}
+.sent-list{display:flex;flex-direction:column;gap:7px;}
+.sent-btn{padding:11px 13px;border-radius:10px;border:2px solid var(--eng-border);background:var(--eng-bg);font-size:0.78rem;line-height:1.65;cursor:pointer;text-align:left;font-family:'JetBrains Mono',monospace;color:var(--text);transition:all 0.15s;}
+.sent-btn:hover:not(.locked){transform:translateX(3px);}
+.sent-btn.correct{background:#d3f9d8;border-color:var(--success);color:var(--success);font-weight:700;}
+.sent-btn.wrong{background:#ffe3e3;border-color:var(--error);color:var(--error);text-decoration:line-through;opacity:0.6;cursor:default;}
 .order-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px;}
-.sent-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
-.sent-item{padding:11px 13px;border-radius:10px;border:2px solid var(--border);background:white;font-size:0.8rem;line-height:1.65;cursor:pointer;transition:all 0.15s;font-family:'JetBrains Mono',monospace;font-size:0.74rem;}
-.sent-item:hover:not(.locked){border-color:var(--accent);transform:translateX(3px);}
-.sent-item.correct{background:#d3f9d8;border-color:var(--success);color:var(--text);}
-.sent-item.wrong{background:#ffe3e3;border-color:var(--error);text-decoration:line-through;color:var(--muted);}
-.sent-item.locked{pointer-events:none;}
-.answer-slots{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;min-height:40px;}
-.slot{border:2px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.74rem;line-height:1.6;color:var(--muted);background:var(--card);display:flex;align-items:center;gap:8px;min-height:48px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;}
+.core-block{background:white;border:1.5px solid var(--border);border-radius:11px;padding:12px;margin-bottom:14px;}
+.core-block .ck-title{font-size:0.7rem;font-weight:700;color:var(--accent);margin-bottom:8px;}
+.answer-slots{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:40px;}
+.slot{border:2px dashed var(--border);border-radius:8px;padding:6px 9px;font-size:0.74rem;line-height:1.4;color:var(--muted);background:var(--card);min-height:30px;display:flex;align-items:center;font-family:'JetBrains Mono',monospace;}
 .slot.filled{background:white;border-color:var(--accent);color:var(--text);}
 .slot.correct{background:#d3f9d8;border-color:var(--success);}
-.slot-num{width:22px;height:22px;border-radius:50%;background:var(--border);color:var(--muted);font-size:0.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Noto Sans KR',sans-serif;}
-.slot.filled .slot-num{background:var(--accent);color:white;}
-.slot.correct .slot-num{background:var(--success);color:white;}
-.word-pool{display:flex;flex-wrap:wrap;gap:6px;}
-.word-btn{padding:8px 12px;border-radius:8px;border:2px solid var(--eng-border);background:var(--eng-bg);font-size:0.74rem;cursor:pointer;transition:all 0.15s;font-family:'JetBrains Mono',monospace;color:var(--text);}
-.word-btn:hover:not(.used){transform:translateY(-2px);border-color:var(--accent);}
-.word-btn.used{opacity:0.25;pointer-events:none;}
-.word-btn.hint-show{border-color:var(--hint);background:#fff4e6;animation:hintPulse 0.6s;}
-@keyframes hintPulse{0%,100%{transform:none;}50%{transform:translateY(-3px);}}
 .wf{animation:wfA 0.42s;}
 @keyframes wfA{0%,100%{}50%{background:#ffe3e3!important;border-color:var(--error)!important;}}
-.hint-box{background:#fff4e6;border:2px solid var(--hint);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:0.74rem;line-height:1.7;display:none;font-family:'JetBrains Mono',monospace;}
-.hint-box.show{display:block;}
-.hint-box .hlbl{font-size:0.63rem;font-weight:700;color:var(--hint);letter-spacing:0.08em;margin-bottom:4px;font-family:'Noto Sans KR',sans-serif;}
-.core-block{background:white;border:1.5px solid var(--border);border-radius:11px;padding:12px;margin-bottom:14px;}
-.core-block .ck-kor{font-size:0.76rem;color:var(--muted);background:var(--kor-bg);border:1px solid var(--kor-border);border-radius:8px;padding:8px 10px;margin-bottom:10px;line-height:1.6;}
+.wc{display:inline-block;padding:7px 11px;border-radius:8px;border:2px solid var(--eng-border);background:var(--eng-bg);font-size:0.74rem;cursor:pointer;transition:all 0.15s;font-family:'JetBrains Mono',monospace;color:var(--text);margin:3px;}
+.wc:hover{transform:translateY(-2px);border-color:var(--accent);}
+.wc.wpl{opacity:0.25;pointer-events:none;}
+.wc.win{background:white;border-color:var(--accent);cursor:pointer;}
+.az{display:flex;flex-wrap:wrap;gap:4px;min-height:40px;border:2px dashed var(--border);border-radius:8px;padding:6px 9px;margin-bottom:8px;background:var(--card);align-items:center;}
+.az.aok{border-color:var(--success);background:#d3f9d8;}
+.azph{font-size:0.74rem;color:var(--muted);}
+.wp{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;}
+.wc.hint-blink{animation:hintB 0.6s infinite;border:2px solid var(--error)!important;background:#ff8787!important;color:#fff!important;font-weight:700;}
+@keyframes hintB{0%,50%{opacity:1;transform:scale(1.08);}51%,100%{opacity:0.35;transform:scale(1);}}
+.cfb{display:none;font-size:0.74rem;font-weight:700;padding:6px 10px;border-radius:8px;margin-top:4px;}
+.cfb.show{display:block;}
+.cfb.ok{background:#d3f9d8;color:var(--success);}
+.cfb.ng{background:#ffe3e3;color:var(--error);}
+.cc{background:white;border:1.5px solid var(--border);border-radius:12px;padding:12px 11px;margin-bottom:9px;}
+.cc.cok{border-color:var(--success);background:#f0fdf4;}
+.cc.clk{opacity:0.38;}
+.ccn{font-family:'JetBrains Mono',monospace;font-size:0.63rem;font-weight:700;color:var(--accent);letter-spacing:0.1em;margin-bottom:5px;}
+.cck{font-size:0.84rem;font-weight:600;line-height:1.6;margin-bottom:8px;padding:7px 10px;background:#eef1ff;border-left:3px solid var(--accent);border-radius:7px;}
 .result-panel{background:white;border:2px solid var(--success);border-radius:14px;padding:16px;text-align:center;display:none;margin-top:12px;}
 .result-panel.show{display:block;}
 .r-em{font-size:2rem;margin-bottom:6px;}
 .r-msg{font-size:0.88rem;font-weight:700;color:var(--success);margin-bottom:6px;}
-.r-sc{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:12px;}
-.result-panel button{padding:9px 20px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:0.83rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin:0 4px;}
-.summary-panel{background:white;border:1.5px solid var(--border);border-radius:11px;padding:14px;margin-top:12px;display:none;}
+.result-panel button{padding:9px 20px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:0.83rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin:4px 4px 0;}
+.summary-panel{background:white;border:1.5px solid var(--border);border-radius:11px;padding:13px;margin-top:12px;display:none;text-align:left;}
 .summary-panel.show{display:block;}
-.sum-sec{margin-bottom:12px;}
-.sum-sec:last-child{margin-bottom:0;}
-.sum-lbl{font-size:0.64rem;font-weight:700;color:var(--accent);letter-spacing:0.08em;margin-bottom:5px;}
-.sum-core{font-family:'JetBrains Mono',monospace;font-size:0.74rem;line-height:1.7;color:var(--text);background:var(--eng-bg);border:1px solid var(--eng-border);border-radius:8px;padding:8px 10px;margin-bottom:5px;}
-.sum-kor{font-size:0.76rem;line-height:1.7;color:var(--muted);background:var(--kor-bg);border:1px solid var(--kor-border);border-radius:8px;padding:8px 10px;}
-.sum-text-en{font-family:'JetBrains Mono',monospace;font-size:0.74rem;line-height:1.7;color:var(--text);background:var(--eng-bg);border:1px solid var(--eng-border);border-radius:8px;padding:8px 10px;margin-bottom:5px;}
-.sum-text-kr{font-size:0.76rem;line-height:1.7;color:var(--muted);background:var(--kor-bg);border:1px solid var(--kor-border);border-radius:8px;padding:8px 10px;}
+.sum-row{margin-bottom:11px;padding-bottom:11px;border-bottom:1px solid var(--border);}
+.sum-row:last-child{border:none;margin:0;padding:0;}
+.sum-tag{display:inline-block;font-size:0.62rem;font-weight:700;color:white;background:var(--accent);border-radius:6px;padding:2px 8px;margin-bottom:6px;}
+.sum-tag.kr{background:var(--accent2);}
+.sum-en{font-size:0.78rem;line-height:1.65;font-family:'JetBrains Mono',monospace;margin-bottom:4px;}
+.sum-kr{font-size:0.78rem;line-height:1.7;color:var(--muted);}
+.chunk-card{background:#e6faf4;border-left:3px solid #0ca678;border-radius:7px;padding:7px 10px;margin-bottom:6px;}
+.chunk-card:last-child{margin-bottom:0;}
+.chunk-en{font-size:0.76rem;line-height:1.55;font-family:'JetBrains Mono',monospace;color:var(--text);margin-bottom:3px;}
+.chunk-kr{font-size:0.76rem;line-height:1.6;color:#0ca678;font-weight:600;}
 .footer{text-align:center;font-size:0.66rem;color:var(--muted);padding:16px 0 26px;}
 </style>
 </head>
 <body>
 <div class="site-header">
  <div class="tag">WGT 핵심파악 · 동산고 2학년 1학기 기말</div>
- <h1>모의고사 3 · 핵심 문장 파악 훈련</h1>
+ <h1>모의고사 3 · 핵심파악 훈련</h1>
  <div class="sub">31번 · 32번 · 33번 · 34번</div>
 </div>
 <div class="passage-nav" id="pnav"></div>
@@ -97,49 +105,23 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
  <button class="tab-btn" onclick="switchTab(2)"><span class="tn">STEP 2</span>어순배열</button>
 </div>
 <div class="section show" id="sec1">
- <div class="how-to"><div class="lbl">📖 STEP 1 사용법</div><ol><li>지문의 모든 문장이 나열되어 있어요</li><li>글의 핵심을 담은 문장 <strong>2개</strong>를 찾아 클릭하세요</li><li>맞으면 초록색, 틀리면 빨간색으로 표시돼요</li></ol></div>
+ <div class="how-to"><div class="lbl">📖 STEP 1 사용법</div><ol><li>이 지문에서 가장 핵심적인 문장 2개를 찾아보세요</li><li>클릭하면 즉시 정답 여부를 알려드려요</li><li>오답은 취소선으로 표시되고 다시 클릭할 수 없어요</li></ol></div>
  <div class="prog-row"><span class="prog-lbl">핵심문장 2개를 찾아보세요</span><span class="prog-sc">✅<strong id="o1">0</strong>/2 ❌<strong id="n1">0</strong></span></div>
  <div class="sent-list" id="sl1"></div>
- <div class="result-panel" id="rp1"><div class="r-em">🎯</div><div class="r-msg">핵심문장을 모두 찾았습니다!</div><div class="r-sc" id="rs1"></div><button onclick="switchTab(2)">STEP 2로 →</button></div>
+ <div class="result-panel" id="rp1"><div class="r-em">🎯</div><div class="r-msg">핵심문장을 모두 찾았습니다!</div><button onclick="switchTab(2)">STEP 2로 →</button></div>
 </div>
 <div class="section" id="sec2">
- <div class="how-to"><div class="lbl">📖 STEP 2 사용법</div><ol><li>찾은 핵심문장 2개를 어순대로 배열해요</li><li>한글 해석을 보고 영어 단어를 순서대로 클릭하세요</li><li>2번 틀리면 힌트를 드려요</li></ol></div>
- <div id="core-area"></div>
- <div class="result-panel" id="rp2"><div class="r-em">🏆</div><div class="r-msg">STEP 2 완료!</div><div class="r-sc" id="rs2"></div><button onclick="goNextPassage()">다음 지문 →</button><button onclick="resetAll()" style="background:var(--muted)">다시 풀기</button></div>
- <div class="summary-panel" id="summary"></div>
+ <div class="how-to"><div class="lbl">📖 STEP 2 사용법</div><ol><li>각 청크의 한글 뜻을 보고, 단어를 순서대로 클릭하세요</li><li>맞으면 바로 배열되고, 틀리면 즉시 정답 단어가 빨갛게 깜박여요</li><li>한 청크를 완성해야 다음 청크가 열려요</li></ol></div>
+ <div id="coreBlocks"></div>
+ <div class="result-panel" id="rp2"><div class="r-em">🏆</div><div class="r-msg">STEP 2 완료!</div><button onclick="showSummary()">정리 보기</button><button onclick="goNextPassage()" style="background:var(--muted)">다음 지문 →</button></div>
+ <div class="summary-panel" id="sump"></div>
 </div>
 <div class="footer">WGT 핵심파악 · 동산고 2학년 기말 모고3 · 31,32,33,34번</div>
 <script>
-const PASSAGES = [
-{"num":"31번","topic":"국가 권위의 사회적 기술로서의 통계",
- "sentences":["Statistics in the twentieth century became the systematic collection of quantitative information needed by the state.","This process occurred in all the industrialised countries as a key part of their becoming modern states.","Desrosières writes: \"It is difficult to think simultaneously that the objects being measured really do exist and that this is only a convention\".","Yet this is the case.","Phenomena such as prices being charged and products being sold exist, but the categories and classification frameworks supporting the collection, aggregation, and organisation of official statistics are devised to serve the purposes of the state, for macroeconomic or for social policies.","Theodore Porter described the use of statistics to create state authority: \"Quantification is a way of making decisions without seeming to decide\", characterising it as a \"social technology\" intended to build trust in authority."],
- "korean":["20세기의 통계는 국가가 필요로 하는 양적 정보를 체계적으로 수집하는 것이 되었다.","이 과정은 근대 국가가 되기 위한 핵심적인 부분으로서 모든 산업화된 국가에서 발생했다.","데로지에르(Desrosières)는 다음과 같이 썼다: '측정되고 있는 대상이 실제로 존재한다는 것과 이것이 단지 하나의 관습일 뿐이라는 것을 동시에 생각하기는 어렵다.'","그러나 이것이 바로 그 경우이다.","부과되는 가격과 판매되는 상품과 같은 현상은 존재하지만, 공식 통계의 수집, 집계, 조직화를 지원하는 범주와 분류 체계는 거시경제적 또는 사회적 정책을 위해 국가의 목적에 부합하도록 고안된다.","테오도르 포터(Theodore Porter)는 국가 권위를 만들어내기 위한 통계의 사용을 다음과 같이 설명했다: '정량화는 결정하지 않는 것처럼 보이면서 결정을 내리는 하나의 방법이다', 그는 이를 권위에 대한 신뢰를 구축하기 위해 의도된 '사회적 기술'이라고 특징지었다."],
- "core":[0,5],
- "summary":{"gist_en":"Statistics is a systematic collection of information devised to serve state purposes, functioning as a \"social technology\" that builds trust in authority by making decisions seem unmade.","gist_kr":"통계는 국가의 목적에 맞게 고안된 정보의 체계적 수집으로, 결정을 내리지 않은 것처럼 보이게 함으로써 권위에 대한 신뢰를 구축하는 '사회적 기술' 역할을 한다.","topic_en":"The role of statistics as a social technology of state authority","topic_kr":"국가 권위의 사회적 기술로서의 통계의 역할"}
-},
-{"num":"32번","topic":"인체 연구에서 전문성의 분화",
- "sentences":["Just as an expert in the taste and colour of wine will gain much by being aware of the chemistry that underlies those qualities, so each perspective on the body can potentially enhance the others.","And yet every scientific tool, from microscopes to mathematics, and every aspect of the body, from the brain to the microorganism, requires such depth of expertise that this tends not to happen: we tend to study the human body in silos, each community sectioned from the others by its own specialized vocabulary.","Research communities may be dedicated to one type of scientific tool or a specific component of the body, such as one type of cell.","How different types of cell communicate with one another becomes its own specialist topic.","Even simple forms of life on Earth are now rarely studied as a whole, and the human body is evidently much more complex.","As long ago as 1890, The Times newspaper commented that knowledge 'had already become too vast to be manageable'.","Today, nobody is an expert in the whole of anything."],
- "korean":["와인의 맛과 색에 대한 전문가가 그 특성의 근간이 되는 화학을 인식함으로써 많은 것을 얻을 수 있는 것처럼, 신체에 대한 각각의 관점은 잠재적으로 서로를 강화할 수 있다.","그러나 현미경에서 수학에 이르는 모든 과학적 도구, 그리고 뇌에서 미생물에 이르는 신체의 모든 측면이 그러한 깊이의 전문성을 요구하기 때문에 이런 일은 잘 일어나지 않는다: 우리는 인체를 각각의 전문화된 용어에 의해 서로 구분된 사일로(silo) 안에서 연구하는 경향이 있다.","연구 공동체는 한 종류의 세포와 같이 한 가지 유형의 과학적 도구나 신체의 특정 구성 요소에 전념할 수 있다.","서로 다른 유형의 세포들이 어떻게 서로 소통하는지는 그 자체로 전문 분야가 된다.","지구상의 단순한 생명체 형태조차도 이제는 전체로서 연구되는 경우가 드물며, 인체는 분명히 훨씬 더 복잡하다.","이미 1890년에 타임즈(The Times) 신문은 지식이 '이미 관리할 수 없을 정도로 방대해졌다'고 언급했다.","오늘날, 누구도 그 무엇의 전체에 대한 전문가는 아니다."],
- "core":[1,6],
- "summary":{"gist_en":"Although different perspectives on the body could enhance each other, the depth of expertise required leads us to study the body in isolated silos, so today no one is an expert in the whole of anything.","gist_kr":"신체에 대한 다양한 관점이 서로를 강화할 수 있지만, 요구되는 전문성의 깊이로 인해 우리는 신체를 분리된 사일로 안에서 연구하게 되었고, 그 결과 오늘날 누구도 전체에 대한 전문가는 아니다.","topic_en":"The fragmentation of expertise in studying the human body","topic_kr":"인체 연구에서 전문성의 분화(파편화)"}
-},
-{"num":"33번","topic":"권력과 통제를 강화한 궁전 건축(특히 유리)의 역할",
- "sentences":["Historically, palaces weren't just homes; they were carefully constructed stages designed to impress and intimidate.","While stone symbolized permanence and strength, glass offered something equally powerful: visibility.","The introduction of large windows in palaces allowed rulers to literally look down upon their subjects, emphasizing their elevated position.","Conversely, it also allowed subjects to gaze up at their leaders, creating a sense of awe and distance.","Consider the Palace of Versailles: its Hall of Mirrors, lined with reflective surfaces, not only magnified the grandeur of the space but also placed the king at the center of a dazzling display, reinforcing his absolute authority.","The use of glass in palaces wasn't merely aesthetic; it was strategic.","Open sightlines allowed for better surveillance and control, ensuring the safety and security of the ruling family.","Courtiers and visitors were constantly aware of being observed, contributing to an atmosphere of careful obedience and respect.","The very architecture dictated social behavior, with glass acting as a silent enforcer of the power dynamic."],
- "korean":["역사적으로 궁전은 단지 거주지만이 아니라, 인상을 주고 위협을 가하기 위해 정교하게 만들어진 무대였다.","돌이 영속성과 힘을 상징했던 반면, 유리는 그것과 동등하게 강력한 무언가, 즉 가시성을 제공했다.","궁전에 큰 창문을 도입한 것은 통치자가 문자 그대로 신민들을 내려다볼 수 있게 하여 그들의 높은 지위를 강조했다.","반대로, 그것은 또한 신민들이 그들의 지도자를 올려다볼 수 있게 하여 경외감과 거리감을 만들어냈다.","베르사유 궁전을 생각해 보라: 반사면으로 늘어선 거울의 방은 공간의 웅장함을 확대했을 뿐만 아니라, 왕을 화려한 전시의 중심에 두어 그의 절대적 권위를 강화했다.","궁전에서의 유리 사용은 단순히 미적인 것이 아니라 전략적인 것이었다.","개방된 시야는 더 나은 감시와 통제를 가능하게 하여 통치 가문의 안전과 보안을 보장했다.","신하들과 방문객들은 자신들이 항상 관찰되고 있다는 것을 의식했으며, 이는 조심스러운 순종과 존경의 분위기를 조성하는 데 기여했다.","건축 그 자체가 사회적 행동을 좌우했으며, 유리는 권력 역학의 침묵하는 집행자 역할을 했다."],
- "core":[0,8],
- "summary":{"gist_en":"Palaces were stages designed to impress and intimidate, and architecture itself—especially the strategic use of glass—dictated social behavior as a silent enforcer of power dynamics.","gist_kr":"궁전은 인상을 주고 위협하기 위해 설계된 무대였으며, 건축물 자체—특히 유리의 전략적 사용—가 권력 역학의 침묵하는 집행자로서 사회적 행동을 좌우했다.","topic_en":"How palace architecture, especially glass, reinforced power and control","topic_kr":"권력과 통제를 강화한 궁전 건축(특히 유리)의 역할"}
-},
-{"num":"34번","topic":"노엘레-노이만의 침묵의 나선 이론",
- "sentences":["As a political researcher in Germany, Noelle-Neumann observed that during election campaigns, certain views seemed to get more play than others, and sometimes people muted their opinions rather than talking about them, especially if those opinions were perceived to be unpopular.","Noelle-Neumann calls this the spiral of silence.","The spiral of silence occurs when individuals who perceive that their opinions are popular express them, whereas those who do not think their opinions are popular remain quiet.","This process occurs in a spiral, so that one side of an issue ends up with considerable publicity and the other side with very little.","In everyday life, people express their opinions in a variety of ways: they talk about them, they wear buttons, they put bumper stickers on their cars, and they post their views on social media.","According to this theory, people are more apt to do these kinds of things when they perceive that others share their opinions."],
- "korean":["독일의 정치 연구자였던 노엘레-노이만(Noelle-Neumann)은 선거 운동 기간 동안 특정 견해가 다른 견해보다 더 많이 다루어지는 것처럼 보였고, 때때로 사람들이 그 의견에 대해 이야기하기보다는 — 특히 그 의견이 인기가 없다고 인식될 경우 — 자신의 의견을 억누른다는 것을 관찰했다.","노엘레-노이만은 이를 '침묵의 나선(spiral of silence)'이라고 부른다.","침묵의 나선은 자신의 의견이 인기가 있다고 인식하는 사람들은 그것을 표현하는 반면, 자신의 의견이 인기가 없다고 생각하는 사람들은 침묵을 지킬 때 발생한다.","이 과정은 나선형으로 일어나서, 한 쪽 문제는 상당한 홍보를 얻게 되고 다른 쪽은 매우 적은 홍보를 얻게 된다.","일상생활에서 사람들은 다양한 방식으로 자신의 의견을 표현한다: 그들은 그것에 대해 이야기하고, 배지를 달고, 차에 범퍼 스티커를 붙이고, 소셜 미디어에 자신의 견해를 게시한다.","이 이론에 따르면, 사람들은 다른 사람들이 자신의 의견을 공유한다고 인식할 때 이러한 종류의 행동을 더 하는 경향이 있다."],
- "core":[1,2],
- "summary":{"gist_en":"The spiral of silence describes how people with views they perceive as popular express them while those who perceive their views as unpopular stay quiet, causing one side of an issue to dominate publicity.","gist_kr":"침묵의 나선은 자신의 의견이 인기 있다고 인식하는 사람은 표현하고 그렇지 않은 사람은 침묵하여, 한쪽의 의견이 홍보를 지배하게 되는 현상을 설명한다.","topic_en":"Noelle-Neumann's spiral of silence theory","topic_kr":"노엘레-노이만의 침묵의 나선 이론"}
-}
-];
+const PASSAGES = [{"num": "31번", "topic": "공식 통계 범주가 국가의 목적에 봉사하는 방식", "sentences": ["Statistics in the twentieth century became the systematic collection of quantitative information needed by the state.", "This process occurred in all the industrialised countries as a key part of their becoming modern states.", "Desrosières writes: \"It is difficult to think simultaneously that the objects being measured really do exist and that this is only a convention\".", "Yet this is the case.", "Phenomena such as prices being charged and products being sold exist, but the categories and classification frameworks supporting the collection, aggregation, and organisation of official statistics are devised to serve the purposes of the state, for macroeconomic or for social policies.", "Theodore Porter described the use of statistics to create state authority : \"Quantification is a way of making decisions without seeming to decide\", characterising it as a \"social technology\" intended to build trust in authority."], "korean": ["20세기의 통계학은 국가가 필요로 하는 양적 정보의 체계적인 수집이 되었다.", "이 과정은 모든 산업화된 국가들에서 그들이 근대 국가가 되는 과정의 핵심적인 부분으로 일어났다.", "데조지에르는 다음과 같이 썼다: \"측정되고 있는 대상이 실제로 존재한다는 것과 이것이 단지 하나의 관습일 뿐이라는 것을 동시에 생각하기는 어렵다\".", "그러나 이것은 사실이다.", "부과되는 가격이나 판매되는 제품과 같은 현상들은 존재하지만, 공식 통계의 수집, 집계, 구성을 지원하는 범주와 분류 체계는 국가의 목적, 즉 거시경제적 또는 사회적 정책을 위해 고안된다.", "시어도어 포터는 국가 권위를 만들어내기 위한 통계의 사용을 다음과 같이 설명했다: \"양화는 결정을 내리는 것처럼 보이지 않으면서 결정을 내리는 방법이다\"라고 하면서, 이를 권위에 대한 신뢰를 구축하기 위한 \"사회적 기술\"이라고 특징지었다."], "core": [4, 5], "summary": {"gist_en": "Although the statistical categories of the state appear to describe objectively existing phenomena, they are in fact devised to serve the state's purposes and to build trust in its authority.", "gist_kr": "국가의 통계 범주는 객관적으로 존재하는 현상을 기술하는 것처럼 보이지만, 실제로는 국가의 목적에 기여하고 권위에 대한 신뢰를 구축하기 위해 고안된 것이다.", "topic_en": "The state-serving nature of official statistical categories", "topic_kr": "국가의 목적에 봉사하는 공식 통계 범주의 본질"}, "coreChunks": [[["Phenomena such as prices being charged", "부과되는 가격과 같은 현상들은"], ["and products being sold exist,", "그리고 판매되는 제품들은 존재한다,"], ["but the categories and classification frameworks", "그러나 범주와 분류 체계는"], ["supporting the collection, aggregation, and organisation", "수집, 집계, 구성을 지원하는"], ["of official statistics", "공식 통계의"], ["are devised to serve the purposes of the state,", "국가의 목적에 기여하도록 고안된다,"], ["for macroeconomic or for social policies.", "거시경제적 또는 사회적 정책을 위해"]], [["Theodore Porter described the use of statistics", "시어도어 포터는 통계의 사용을 설명했다"], ["to create state authority :", "국가 권위를 만들어내기 위한:"], ["\"Quantification is a way of making decisions", "\"양화는 결정을 내리는 방법이다"], ["without seeming to decide\",", "결정을 내리는 것처럼 보이지 않으면서\","], ["characterising it as a \"social technology\"", "그것을 '사회적 기술'로 특징지으면서"], ["intended to build trust in authority.", "권위에 대한 신뢰를 구축하기 위해 의도된"]]], "sumChunks": {"gist": [["Although the statistical categories of the state appear to describe objectively existing phenomena,", "국가의 통계 범주는 객관적으로 존재하는 현상을 기술하는 것처럼 보이지만,"], ["they are in fact devised", "실제로는 고안된 것이다"], ["to serve the state's purposes", "국가의 목적에 기여하기 위해"], ["and to build trust in its authority.", "그리고 그것의 권위에 대한 신뢰를 구축하기 위해"]], "topic": [["The state-serving nature", "국가에 봉사하는 본질"], ["of official statistical categories", "공식 통계 범주의"]]}}, {"num": "32번", "topic": "인체 연구에서 전문성의 분절화(silos)", "sentences": ["Just as an expert in the taste and colour of wine will gain much by being aware of the chemistry that underlies those qualities, so each perspective on the body can potentially enhance the others.", "And yet every scientific tool, from microscopes to mathematics, and every aspect of the body, from the brain to the microorganism, requires such depth of expertise that this tends not to happen: we tend to study the human body in silos, each community sectioned from the others by its own specialized vocabulary.", "Research communities may be dedicated to one type of scientific tool or a specific component of the body, such as one type of cell.", "How different types of cell communicate with one another becomes its own specialist topic.", "Even simple forms of life on Earth are now rarely studied as a whole, and the human body is evidently much more complex.", "As long ago as 1890, The Times newspaper commented that knowledge 'had already become too vast to be manageable'.", "Today, nobody is an expert in the whole of anything."], "korean": ["와인의 맛과 색의 전문가가 그러한 특성의 기저를 이루는 화학을 인식함으로써 많은 것을 얻을 수 있는 것처럼, 신체에 대한 각각의 관점도 다른 관점들을 강화할 수 있다.", "그러나 현미경에서 수학에 이르는 모든 과학적 도구와, 뇌에서 미생물에 이르는 신체의 모든 측면은 그러한 깊은 전문성을 요구하기 때문에 이는 잘 일어나지 않는 경향이 있다: 우리는 인체를 분리된 영역으로 연구하는 경향이 있으며, 각 공동체는 자신만의 전문 용어에 의해 다른 공동체와 단절되어 있다.", "연구 공동체는 한 종류의 과학적 도구나 신체의 특정 구성 요소, 예를 들어 한 종류의 세포에 전념할 수 있다.", "서로 다른 종류의 세포가 어떻게 서로 소통하는가는 그 자체로 전문 주제가 된다.", "지구상의 단순한 생명체조차 이제 전체로서 연구되는 경우는 드물며, 인체는 분명히 훨씬 더 복잡하다.", "1890년이라는 먼 옛날에도, 타임스 신문은 지식이 '이미 다루기 너무 방대해졌다'고 언급했다.", "오늘날, 어느 누구도 무언가의 전체에 대한 전문가는 아니다."], "core": [1, 6], "summary": {"gist_en": "Because every area of the body requires deep expertise, research communities study it in isolated silos, with the result that today nobody is an expert in the whole of anything.", "gist_kr": "신체의 모든 영역이 깊은 전문성을 요구하기 때문에, 연구 공동체들은 분리된 영역에서 신체를 연구하며, 그 결과 오늘날 누구도 어떤 것의 전체에 대한 전문가가 아니다.", "topic_en": "The fragmentation of expertise in studying the human body", "topic_kr": "인체 연구에서 전문성의 분절화"}, "coreChunks": [[["And yet every scientific tool,", "그러나 모든 과학적 도구는,"], ["from microscopes to mathematics,", "현미경에서 수학에 이르기까지,"], ["and every aspect of the body,", "그리고 신체의 모든 측면은,"], ["from the brain to the microorganism,", "뇌에서 미생물에 이르기까지,"], ["requires such depth of expertise", "그러한 깊은 전문성을 요구한다"], ["that this tends not to happen:", "그래서 이것은 잘 일어나지 않는 경향이 있다:"], ["we tend to study the human body in silos,", "우리는 인체를 분리된 영역에서 연구하는 경향이 있다,"], ["each community sectioned from the others", "각 공동체는 다른 공동체와 단절되어 있다"], ["by its own specialized vocabulary.", "자신만의 전문 용어에 의해"]], [["Today,", "오늘날,"], ["nobody is an expert", "어느 누구도 전문가가 아니다"], ["in the whole of anything.", "무언가의 전체에 있어서"]]], "sumChunks": {"gist": [["Because every area of the body requires deep expertise,", "신체의 모든 영역이 깊은 전문성을 요구하기 때문에,"], ["research communities study it in isolated silos,", "연구 공동체들은 분리된 영역에서 그것을 연구한다,"], ["with the result that today", "그 결과 오늘날"], ["nobody is an expert in the whole of anything.", "누구도 어떤 것의 전체에 대한 전문가가 아니다"]], "topic": [["The fragmentation of expertise", "전문성의 분절화"], ["in studying the human body", "인체 연구에 있어서"]]}}, {"num": "33번", "topic": "베르사유에서 권력의 도구로서의 건축과 가시성", "sentences": ["Historically, palaces weren't just homes for royal families – they were political spaces too, in which buildings were used to assert power over subjects, official visitors and foreign rivals.", "Versailles in the late seventeenth century is the prime example of architecture's use as a political language.", "Louis XIV moved the seat of French government there in 1682, building a palace of remarkable size, with the famous Hall of Mirrors, a room of 357 mirrors that runs along almost the entire width of the palace.", "The mirrors not only served to bounce light from the seventeen great windows back into the room, but they also created an impression of even greater scale and wealth, with the multiple reflections of fine furniture, mirrors and people creating an effect of near-infinite luxury.", "Versailles was effectively a very large theatre in which a constant performance of wealth, power and elegance took place, with the king as its star.", "Versailles was also a kind of self-operating panopticon.", "Courtiers could constantly observe each other through the multitude of mirrors and the open, light-filled spaces, while never being entirely sure whether they themselves were being observed.", "The effect was to encourage exemplary behaviour, as one never knew who might be watching."], "korean": ["역사적으로 궁전은 왕실의 거처일 뿐만 아니라 정치적 공간이기도 했는데, 건물이 신민, 공식 방문객, 외국 경쟁자들에게 권력을 주장하는 데 사용되었다.", "17세기 후반의 베르사유는 건축이 정치적 언어로 사용된 대표적인 예이다.", "루이 14세는 1682년에 그곳으로 프랑스 정부의 소재지를 옮겨, 유명한 거울의 방을 갖춘 놀라운 규모의 궁전을 지었는데, 그것은 궁전의 거의 전체 너비를 따라 이어지는 357개의 거울로 이루어진 방이었다.", "그 거울들은 17개의 큰 창문에서 들어오는 빛을 방 안으로 반사하는 역할을 했을 뿐만 아니라, 고급 가구, 거울, 사람들의 다중 반사를 통해 거의 무한한 사치의 효과를 만들어내며 훨씬 더 큰 규모와 부의 인상을 만들어냈다.", "베르사유는 사실상 매우 큰 극장이었으며, 그 안에서는 부, 권력, 우아함의 끊임없는 공연이 왕을 그 주인공으로 하여 펼쳐졌다.", "베르사유는 또한 일종의 자가 작동하는 파놉티콘이었다.", "궁정 신하들은 수많은 거울과 개방되고 빛이 가득한 공간을 통해 서로를 끊임없이 관찰할 수 있었지만, 자신이 관찰당하고 있는지는 결코 확실히 알 수 없었다.", "그 효과는 누군가 지켜보고 있을지 모른다는 점에서 모범적인 행동을 장려하는 것이었다."], "core": [5, 7], "summary": {"gist_en": "Versailles functioned as a self-operating panopticon where courtiers, never sure if they were being watched, were encouraged to behave exemplarily.", "gist_kr": "베르사유는 자가 작동하는 파놉티콘으로 기능했으며, 궁정 신하들은 자신이 감시당하고 있는지 확신할 수 없었기 때문에 모범적으로 행동하도록 장려되었다.", "topic_en": "Architecture and visibility as instruments of power at Versailles", "topic_kr": "베르사유에서 권력의 도구로서의 건축과 가시성"}, "coreChunks": [[["Versailles was also", "베르사유는 또한"], ["a kind of self-operating panopticon.", "일종의 자가 작동하는 파놉티콘이었다"]], [["The effect was", "그 효과는"], ["to encourage exemplary behaviour,", "모범적인 행동을 장려하는 것이었다,"], ["as one never knew", "결코 알 수 없었기 때문에"], ["who might be watching.", "누가 지켜보고 있을지"]]], "sumChunks": {"gist": [["Versailles functioned as a self-operating panopticon", "베르사유는 자가 작동하는 파놉티콘으로 기능했다"], ["where courtiers, never sure if they were being watched,", "그곳에서 궁정 신하들은 자신이 감시당하고 있는지 확신할 수 없었기 때문에,"], ["were encouraged to behave exemplarily.", "모범적으로 행동하도록 장려되었다"]], "topic": [["Architecture and visibility", "건축과 가시성"], ["as instruments of power at Versailles", "베르사유에서 권력의 도구로서"]]}}, {"num": "34번", "topic": "여론 형성에 관한 침묵의 나선 이론", "sentences": ["As a political researcher in Germany, Noelle-Neumann observed that public opinion polls before the 1965 election predicted no clear winner, but in the days right before the election, people seemed to shift their expectations and predictions towards the winning party, even though their own voting intention did not change.", "Noelle-Neumann developed the spiral of silence theory to explain this phenomenon.", "The theory states that people have an innate fear of isolation, and when they perceive their opinion to be in the minority, they tend to remain silent, fearing social rejection or isolation.", "As more people perceive their views as unpopular, they too fall silent, creating a 'spiral' in which the perceived minority opinion progressively disappears from public discourse, while the perceived majority opinion becomes increasingly dominant — even if it is not necessarily held by an actual majority.", "The mass media play a crucial role in this process, as people tend to assess the climate of opinion based on what they see and hear from media, which can amplify the perceived dominance of certain viewpoints.", "This can result in a distorted perception of public opinion, where the 'silent' minority's views are underrepresented, and the vocal majority's views appear more widespread than they may actually be."], "korean": ["독일의 정치 연구자로서, 노엘레-노이만은 1965년 선거 전 여론조사가 명확한 승자를 예측하지 못했지만, 선거 직전 며칠 동안 사람들이 자신의 투표 의도는 변하지 않았음에도 승리할 정당 쪽으로 자신의 예상과 예측을 바꾸는 것처럼 보였다는 것을 관찰했다.", "노엘레-노이만은 이 현상을 설명하기 위해 침묵의 나선 이론을 발전시켰다.", "이 이론은 사람들이 고립에 대한 본능적인 두려움을 가지고 있으며, 자신의 의견이 소수라고 인식할 때, 사회적 거부나 고립을 두려워하여 침묵하는 경향이 있다고 말한다.", "더 많은 사람들이 자신의 견해를 인기 없는 것으로 인식할수록, 그들도 침묵하게 되어, 인식된 소수 의견이 공공 담론에서 점진적으로 사라지는 반면, 인식된 다수 의견은 점점 더 우세해지는 '나선'을 만들어내는데, 이는 실제 다수에 의해 지지되지 않더라도 그렇다.", "대중 매체는 이 과정에서 중요한 역할을 하는데, 사람들이 매체에서 보고 듣는 것을 바탕으로 의견의 분위기를 평가하는 경향이 있으며, 이는 특정 견해의 인식된 우세를 증폭시킬 수 있다.", "이는 여론에 대한 왜곡된 인식을 초래할 수 있는데, 이때 '침묵하는' 소수의 견해는 충분히 대표되지 못하고, 목소리를 내는 다수의 견해는 실제보다 더 널리 퍼진 것처럼 보인다."], "core": [2, 3], "summary": {"gist_en": "Noelle-Neumann's spiral of silence theory holds that people who perceive their opinions to be unpopular tend to stay silent out of fear of isolation, causing minority views to disappear from public discourse while majority views appear increasingly dominant.", "gist_kr": "노엘레-노이만의 침묵의 나선 이론은 자신의 의견이 인기 없다고 인식하는 사람들이 고립에 대한 두려움 때문에 침묵하는 경향이 있어서, 소수 의견은 공공 담론에서 사라지고 다수 의견은 점점 더 우세해진다고 본다.", "topic_en": "The spiral of silence theory of public opinion formation", "topic_kr": "여론 형성에 관한 침묵의 나선 이론"}, "coreChunks": [[["The theory states", "이 이론은 말한다"], ["that people have an innate fear of isolation,", "사람들이 고립에 대한 본능적인 두려움을 가지고 있다고,"], ["and when they perceive their opinion", "그리고 그들이 자신의 의견을 인식할 때"], ["to be in the minority,", "소수라고,"], ["they tend to remain silent,", "그들은 침묵하는 경향이 있다,"], ["fearing social rejection or isolation.", "사회적 거부나 고립을 두려워하여"]], [["As more people perceive their views as unpopular,", "더 많은 사람들이 자신의 견해를 인기 없는 것으로 인식할수록,"], ["they too fall silent,", "그들도 침묵하게 된다,"], ["creating a 'spiral'", "'나선'을 만들어낸다"], ["in which the perceived minority opinion", "그 안에서 인식된 소수 의견은"], ["progressively disappears from public discourse,", "공공 담론에서 점진적으로 사라진다,"], ["while the perceived majority opinion", "반면 인식된 다수 의견은"], ["becomes increasingly dominant —", "점점 더 우세해진다 —"], ["even if it is not necessarily held by an actual majority.", "그것이 실제 다수에 의해 지지되지 않더라도"]]], "sumChunks": {"gist": [["Noelle-Neumann's spiral of silence theory holds", "노엘레-노이만의 침묵의 나선 이론은 본다"], ["that people who perceive their opinions to be unpopular", "자신의 의견이 인기 없다고 인식하는 사람들이"], ["tend to stay silent out of fear of isolation,", "고립에 대한 두려움 때문에 침묵하는 경향이 있다고,"], ["causing minority views to disappear from public discourse", "그래서 소수 의견은 공공 담론에서 사라진다"], ["while majority views appear increasingly dominant.", "반면 다수 의견은 점점 더 우세해진다"]], "topic": [["The spiral of silence theory", "침묵의 나선 이론"], ["of public opinion formation", "여론 형성에 관한"]]}}];
 
 let curP = 0;
-const state1 = {};
-const state2 = {};
+const state = {};
 
 function shuffle(arr){
   const a = arr.slice();
@@ -173,171 +155,161 @@ function switchTab(n){
 }
 
 function initAll(){
-  initStep1();
-  initStep2();
-  document.getElementById('summary').classList.remove('show');
-}
-
-function initStep1(){
   const p = getP();
-  state1.found = [];
-  state1.wrong = 0;
-  const sl = document.getElementById('sl1');
-  sl.innerHTML = '';
-  p.sentences.forEach((s,i)=>{
-    const div = document.createElement('div');
-    div.className = 'sent-item';
-    div.textContent = s;
-    div.onclick = ()=>handleSent1(i);
-    sl.appendChild(div);
-  });
+  state.found = [];
+  state.wrong1 = 0;
   document.getElementById('o1').textContent = '0';
   document.getElementById('n1').textContent = '0';
   document.getElementById('rp1').classList.remove('show');
-}
-
-function handleSent1(i){
-  const p = getP();
-  const sl = document.getElementById('sl1');
-  const items = sl.querySelectorAll('.sent-item');
-  if(items[i].classList.contains('locked')) return;
-
-  if(p.core.includes(i)){
-    items[i].classList.add('correct','locked');
-    state1.found.push(i);
-    document.getElementById('o1').textContent = state1.found.length;
-    if(state1.found.length === p.core.length){
-      document.getElementById('rp1').classList.add('show');
-      document.getElementById('rs1').textContent = `정답 ${p.core.length} / 오답 ${state1.wrong}`;
-    }
-  } else {
-    items[i].classList.add('wrong','locked');
-    state1.wrong++;
-    document.getElementById('n1').textContent = state1.wrong;
-  }
-}
-
-function initStep2(){
-  const p = getP();
-  const area = document.getElementById('core-area');
-  area.innerHTML = '';
   document.getElementById('rp2').classList.remove('show');
+  document.getElementById('sump').classList.remove('show');
 
-  state2.blocks = p.core.map(idx=>{
-    const words = p.sentences[idx].split(' ');
-    return {
-      sentIdx: idx,
-      words,
-      kor: p.korean[idx],
-      filled: [],
-      order: shuffle(words.map((_,i)=>i)),
-      wrong: 0,
-      attemptsForSlot: 0,
-      done: false
-    };
+  const sl = document.getElementById('sl1');
+  sl.innerHTML = '';
+  p.sentences.forEach((s,idx)=>{
+    const btn = document.createElement('button');
+    btn.className = 'sent-btn';
+    btn.textContent = s;
+    btn.onclick = ()=>handleSent1(idx);
+    sl.appendChild(btn);
   });
 
-  state2.blocks.forEach((b, bi)=>{
+  // STEP2 core blocks
+  const cb = document.getElementById('coreBlocks');
+  cb.innerHTML = '';
+  state.core = p.core.map((idx,ci)=>{
+    const chunks = p.coreChunks[ci];
+    const cs = chunks.map(ch=>{
+      const words = ch[0].split(' ');
+      return {words, kor:ch[1], pool:shuffle(words.map((_,i)=>i)), ua:[], ans:false, hintWi:null};
+    });
+    return {idx, cs};
+  });
+
+  state.core.forEach((c,ci)=>{
     const block = document.createElement('div');
     block.className = 'core-block';
     block.innerHTML = `
-      <div class="order-lbl">핵심문장 ${bi+1}</div>
-      <div class="ck-kor">${b.kor}</div>
-      <div class="prog-row"><span class="prog-lbl">어순배열</span><span class="prog-sc">✅<strong id="co${bi}">0</strong>/${b.words.length} ❌<strong id="cn${bi}">0</strong></span></div>
-      <div class="hint-box" id="chb${bi}"><div class="hlbl">💡 힌트</div><div id="cht${bi}"></div></div>
-      <div class="answer-slots" id="cas${bi}"></div>
-      <div class="word-pool" id="cwp${bi}"></div>
+      <div class="ck-title">핵심문장 ${ci+1}</div>
+      <div id="cards2_${ci}"></div>
     `;
-    area.appendChild(block);
+    cb.appendChild(block);
   });
-
-  state2.blocks.forEach((b, bi)=> renderCore(bi));
+  state.core.forEach((c,ci)=>renderCore(ci));
 }
 
-function renderCore(bi){
-  const b = state2.blocks[bi];
-  const slotsEl = document.getElementById('cas'+bi);
-  const poolEl = document.getElementById('cwp'+bi);
-
-  slotsEl.innerHTML = '';
-  const row = document.createElement('div');
-  row.className = 'slot' + (b.done ? ' correct':'') + (b.filled.length>0?' filled':'');
-  row.innerHTML = `<div class="slot-num">${bi+1}</div><div>${b.filled.map(idx=>b.words[idx]).join(' ') || '여기에 단어를 순서대로 배열하세요'}</div>`;
-  slotsEl.appendChild(row);
-
-  poolEl.innerHTML = '';
-  b.order.forEach(idx=>{
-    const btn = document.createElement('button');
-    btn.className = 'word-btn' + (b.filled.includes(idx) ? ' used':'');
-    btn.textContent = b.words[idx];
-    btn.onclick = ()=>handleCoreChoice(bi, idx);
-    poolEl.appendChild(btn);
-  });
-
-  document.getElementById('co'+bi).textContent = b.filled.length;
-  document.getElementById('cn'+bi).textContent = b.wrong;
-  document.getElementById('chb'+bi).classList.remove('show');
+function flash(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.classList.add('wf');
+  setTimeout(()=>el.classList.remove('wf'), 460);
 }
 
-function handleCoreChoice(bi, idx){
-  const b = state2.blocks[bi];
-  const nextSlot = b.filled.length;
-  if(nextSlot >= b.words.length) return;
+function handleSent1(idx){
+  const p = getP();
+  const btns = document.querySelectorAll('#sl1 .sent-btn');
+  if(state.found.includes(idx)) return;
+  if(btns[idx].classList.contains('wrong')) return;
 
-  if(idx === nextSlot){
-    b.filled.push(idx);
-    b.attemptsForSlot = 0;
-    renderCore(bi);
-    if(b.filled.length === b.words.length){
-      b.done = true;
-      renderCore(bi);
-      checkAllDone();
+  if(p.core.includes(idx)){
+    btns[idx].classList.add('correct');
+    state.found.push(idx);
+    document.getElementById('o1').textContent = state.found.length;
+    if(state.found.length === 2){
+      document.getElementById('rp1').classList.add('show');
     }
   } else {
-    b.wrong++;
-    b.attemptsForSlot++;
-    document.getElementById('cn'+bi).textContent = b.wrong;
-    const poolEl = document.getElementById('cwp'+bi);
-    const btns = poolEl.querySelectorAll('.word-btn');
-    const orderIdx = b.order.indexOf(idx);
-    btns[orderIdx].classList.add('wf');
-    setTimeout(()=>btns[orderIdx].classList.remove('wf'), 450);
-
-    if(b.attemptsForSlot >= 2){
-      const hb = document.getElementById('chb'+bi);
-      const ht = document.getElementById('cht'+bi);
-      ht.textContent = '다음 단어: ' + b.words[nextSlot];
-      hb.classList.add('show');
-      const correctOrderIdx = b.order.indexOf(nextSlot);
-      btns[correctOrderIdx].classList.add('hint-show');
-    }
+    btns[idx].classList.add('wrong');
+    state.wrong1++;
+    document.getElementById('n1').textContent = state.wrong1;
   }
 }
 
-function checkAllDone(){
-  if(state2.blocks.every(b=>b.done)){
-    const totalWrong = state2.blocks.reduce((s,b)=>s+b.wrong,0);
+function renderCore(ci){
+  const c = state.core[ci];
+  const wrap = document.getElementById('cards2_'+ci);
+
+  wrap.innerHTML = c.cs.map((s,chi)=>{
+    const prevOk = chi===0 || c.cs[chi-1].ans;
+    const lk = !prevOk && !s.ans;
+    let cls = 'cc';
+    if(lk) cls += ' clk';
+    else if(s.ans) cls += ' cok';
+
+    const azc = 'az' + (s.ans ? ' aok':'');
+    const aH = s.ua.length===0
+      ? '<span class="azph">단어를 클릭해 배열하세요</span>'
+      : s.ua.map((pi,pos)=>`<span class="wc win" onclick="coreRemove(${ci},${chi},${pos})">${s.words[s.pool[pi]]}</span>`).join('');
+
+    const pH = s.pool.map((wIdx,pi)=>
+      `<span class="wc${s.ua.includes(pi)?' wpl':''}${pi===s.hintWi?' hint-blink':''}" id="w2_${ci}_${chi}_${pi}" onclick="coreClick(${ci},${chi},${pi})">${s.words[wIdx]}</span>`
+    ).join('');
+
+    let fb = '';
+    if(s.ans) fb = '<div class="cfb ok show">✅ 정확해요!</div>';
+    else if(s.hintWi!==null) fb = '<div class="cfb ng show">❌ 틀렸어요! 깜박이는 단어가 정답입니다.</div>';
+
+    return `<div class="${cls}"><div class="ccn">CHUNK ${chi+1}/${c.cs.length}</div><div class="cck">${s.kor}</div><div class="${azc}">${aH}</div><div class="wp">${pH}</div>${fb}</div>`;
+  }).join('');
+
+  // check if all core blocks done
+  if(state.core.every(x=>x.cs.every(s=>s.ans))){
     document.getElementById('rp2').classList.add('show');
-    document.getElementById('rs2').textContent = `완료! 오답 ${totalWrong}`;
-    showSummary();
   }
+}
+
+function coreClick(ci, chi, pi){
+  const c = state.core[ci];
+  const s = c.cs[chi];
+  if(s.ans || s.ua.includes(pi)) return;
+  if(chi>0 && !c.cs[chi-1].ans) return;
+
+  const target = s.words[s.ua.length];
+  const clicked = s.words[s.pool[pi]];
+  if(clicked === target){
+    s.ua.push(pi);
+    s.hintWi = null;
+    if(s.ua.length === s.pool.length) s.ans = true;
+    renderCore(ci);
+  } else {
+    const hi = s.pool.findIndex((wIdx,idx)=>s.words[wIdx]===target && !s.ua.includes(idx));
+    s.hintWi = hi>-1 ? hi : null;
+    renderCore(ci);
+    flash('w2_'+ci+'_'+chi+'_'+pi);
+  }
+}
+
+function coreRemove(ci, chi, pos){
+  const c = state.core[ci];
+  const s = c.cs[chi];
+  if(s.ans) return;
+  s.ua.splice(pos,1);
+  s.hintWi = null;
+  renderCore(ci);
+}
+
+function chunkCards(chunks){
+  return chunks.map(c=>`<div class="chunk-card"><div class="chunk-en">${c[0]}</div><div class="chunk-kr">${c[1]}</div></div>`).join('');
 }
 
 function showSummary(){
   const p = getP();
-  const sum = document.getElementById('summary');
-  let html = '<div class="order-lbl" style="margin-bottom:8px;">📝 핵심 요약</div>';
-  p.core.forEach((idx,i)=>{
-    html += `<div class="sum-sec"><div class="sum-lbl">핵심문장 ${i+1}</div><div class="sum-core">${p.sentences[idx]}</div><div class="sum-kor">${p.korean[idx]}</div></div>`;
-  });
-  html += `<div class="sum-sec"><div class="sum-lbl">요지 (GIST)</div><div class="sum-text-en">${p.summary.gist_en}</div><div class="sum-text-kr">${p.summary.gist_kr}</div></div>`;
-  html += `<div class="sum-sec"><div class="sum-lbl">주제 (TOPIC)</div><div class="sum-text-en">${p.summary.topic_en}</div><div class="sum-text-kr">${p.summary.topic_kr}</div></div>`;
-  sum.innerHTML = html;
+  const sum = document.getElementById('sump');
+  const coreHtml = p.core.map((idx,ci)=>`
+    <div class="sum-row">
+      <span class="sum-tag">핵심문장 ${ci+1} · 직독직해</span>
+      ${chunkCards(p.coreChunks[ci])}
+    </div>`).join('');
+  sum.innerHTML = coreHtml + `
+    <div class="sum-row">
+      <span class="sum-tag">요지 GIST · 직독직해</span>
+      ${chunkCards(p.sumChunks.gist)}
+    </div>
+    <div class="sum-row">
+      <span class="sum-tag kr">주제 TOPIC · 직독직해</span>
+      ${chunkCards(p.sumChunks.topic)}
+    </div>`;
   sum.classList.add('show');
-}
-
-function resetAll(){
-  initAll();
 }
 
 function goNextPassage(){
