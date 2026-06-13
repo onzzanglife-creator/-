@@ -3,473 +3,428 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WGT 어순배열 · 동산고2 기말 모고2</title>
-<meta property="og:title" content="WGT 동산고2 모고2 - 어순배열훈련 (21,22,24,30번)">
-<meta property="og:description" content="영한매칭·한영매칭·어순배열 3단계 훈련">
-<meta property="og:type" content="website">
+<title>WGT Program · 동산고2 기말 모고2</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
-:root{
- --bg:#f4f6fb;--surface:#fff;--card:#f0f2f8;
- --accent:#3b5bdb;--accent2:#7048e8;--success:#2f9e44;--error:#e03131;
- --text:#1a1a2e;--muted:#6c757d;--border:#dee2f0;
- --kor-bg:#fff9db;--kor-border:#ffd43b;
- --eng-bg:#e7f5ff;--eng-border:#74c0fc;
- --hint:#fd7e14;
-}
+:root{--bg:#f4f6fb;--surface:#fff;--card:#f0f2f8;--accent:#3b5bdb;--accent2:#7048e8;--success:#2f9e44;--error:#e03131;--text:#1a1a2e;--muted:#6c757d;--border:#dee2f0;--eng-bg:#e7f5ff;--eng-border:#74c0fc;--kor-bg:#fff9db;--kor-border:#ffd43b;--matched-bg:#d3f9d8;--matched-border:#40c057;--t3:#0ca678;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 .site-header{background:linear-gradient(135deg,#2d4fcf,#6a3ccc);padding:18px 16px 14px;text-align:center;color:white;}
 .site-header .tag{font-size:0.67rem;letter-spacing:0.16em;opacity:0.75;margin-bottom:4px;}
 .site-header h1{font-size:1.05rem;font-weight:700;margin-bottom:3px;}
 .site-header .sub{font-size:0.73rem;opacity:0.85;}
-.passage-nav{display:flex;max-width:700px;margin:14px auto 0;gap:6px;padding:0 12px;flex-wrap:wrap;}
-.pnav-btn{flex:1;min-width:60px;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;background:white;color:var(--muted);transition:all 0.18s;text-align:center;}
+/* 지문 선택 */
+.passage-nav{display:flex;max-width:700px;margin:14px auto 0;gap:6px;padding:0 12px;}
+.pnav-btn{flex:1;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;background:white;color:var(--muted);transition:all 0.18s;text-align:center;}
 .pnav-btn.active{background:var(--accent);color:white;border-color:var(--accent);}
+.pnav-btn.done{border-color:var(--success);color:var(--success);}
+/* 탭 */
 .tab-bar{display:flex;max-width:700px;margin:10px auto 0;gap:6px;padding:0 12px;}
-.tab-btn{flex:1;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;background:white;color:var(--muted);transition:all 0.18s;line-height:1.4;text-align:center;}
-.tab-btn .tn{display:block;font-size:0.58rem;opacity:0.8;margin-bottom:1px;}
+.tab-btn{flex:1;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.72rem;font-weight:700;cursor:pointer;background:white;color:var(--muted);transition:all 0.18s;line-height:1.4;}
+.tab-btn .tn{display:block;font-size:0.59rem;opacity:0.8;margin-bottom:1px;}
 .tab-btn.a1{background:#3b5bdb;color:white;border-color:#3b5bdb;}
 .tab-btn.a2{background:#7048e8;color:white;border-color:#7048e8;}
 .tab-btn.a3{background:#0ca678;color:white;border-color:#0ca678;}
 .section{display:none;padding:13px 12px 40px;max-width:700px;margin:0 auto;}
 .section.show{display:block;}
+.prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.prog-lbl{font-size:0.73rem;font-weight:700;color:var(--muted);white-space:nowrap;}
+.prog-wrap{flex:1;height:5px;background:var(--border);border-radius:99px;margin:0 9px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:99px;transition:width 0.4s;}
+.f1{background:linear-gradient(90deg,#3b5bdb,#7048e8);}
+.f2{background:linear-gradient(90deg,#7048e8,#9c36b5);}
+.f3{background:linear-gradient(90deg,#0ca678,#099268);}
+.prog-sc{font-size:0.7rem;color:var(--muted);white-space:nowrap;}
+.prog-sc strong{color:var(--text);}
+.sent-hint{background:#fff8e7;border:1.5px solid var(--kor-border);border-radius:10px;padding:10px 13px;font-size:0.77rem;line-height:1.75;color:#5c4800;margin-bottom:11px;}
+.sent-hint .lbl{font-size:0.64rem;font-weight:700;color:#c49b00;letter-spacing:0.08em;margin-bottom:4px;}
 .how-to{background:white;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;font-size:0.75rem;color:var(--text);line-height:1.85;margin-bottom:12px;}
 .how-to .lbl{font-size:0.64rem;font-weight:700;color:var(--accent);letter-spacing:0.08em;margin-bottom:4px;}
 .how-to ol{padding-left:16px;}
-.prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.prog-lbl{font-size:0.73rem;font-weight:700;color:var(--muted);}
-.prog-sc{font-size:0.7rem;color:var(--muted);}
-.prog-sc strong{color:var(--text);}
-.order-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px;}
-.match-grid{display:flex;gap:8px;}
-.match-col{flex:1;display:flex;flex-direction:column;gap:6px;}
-.match-item{padding:10px 11px;border-radius:10px;border:2px solid var(--border);background:white;font-size:0.74rem;line-height:1.55;cursor:pointer;transition:all 0.15s;}
-.match-item.eng{border-color:var(--eng-border);background:var(--eng-bg);font-family:'JetBrains Mono',monospace;font-size:0.7rem;}
-.match-item.kor{border-color:var(--kor-border);background:var(--kor-bg);}
-.match-item:hover:not(.matched):not(.locked){transform:translateY(-2px);}
-.match-item.selected{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent2) inset;}
-.match-item.matched{opacity:0.3;pointer-events:none;}
-.match-item.wf{animation:wfA 0.42s;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px 9px;}
+.col-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.06em;color:var(--muted);text-align:center;margin-bottom:3px;}
+.cb{border-radius:10px;padding:9px 10px;cursor:pointer;transition:all 0.16s;user-select:none;font-size:0.77rem;line-height:1.5;display:flex;align-items:flex-start;gap:6px;position:relative;min-height:40px;}
+.eb{background:var(--eng-bg);border:2px solid var(--eng-border);font-family:'JetBrains Mono',monospace;font-size:0.69rem;}
+.eb:hover:not(.mt){border-color:var(--accent);transform:translateX(2px);}
+.eb.sel{border-color:var(--accent);background:#dbe4ff;box-shadow:0 0 0 3px rgba(59,91,219,0.18);}
+.eb.mt{background:var(--matched-bg);border-color:var(--matched-border);cursor:default;transform:none;}
+.kb{background:var(--kor-bg);border:2px solid var(--kor-border);}
+.kb:hover:not(.mt){border-color:#f08c00;transform:translateX(-2px);}
+.kb.sel{border-color:#f08c00;background:#fff3bf;box-shadow:0 0 0 3px rgba(240,140,0,0.18);}
+.kb.mt{background:var(--matched-bg);border-color:var(--matched-border);cursor:default;transform:none;}
+.wf{animation:wfA 0.42s;}
 @keyframes wfA{0%,100%{}50%{background:#ffe3e3!important;border-color:var(--error)!important;}}
-.speak-icon{font-size:0.7rem;margin-right:4px;}
-.answer-slots{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;min-height:40px;}
-.slot{border:2px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.74rem;line-height:1.6;color:var(--muted);background:var(--card);display:flex;align-items:flex-start;gap:8px;min-height:48px;font-family:'JetBrains Mono',monospace;flex-wrap:wrap;}
-.slot.filled{background:white;border-color:var(--accent);color:var(--text);}
-.slot.correct{background:#d3f9d8;border-color:var(--success);}
-.slot-num{width:22px;height:22px;border-radius:50%;background:var(--border);color:var(--muted);font-size:0.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Noto Sans KR',sans-serif;}
-.slot.filled .slot-num{background:var(--accent);color:white;}
-.slot.correct .slot-num{background:var(--success);color:white;}
-.word-pool{display:flex;flex-wrap:wrap;gap:6px;}
-.word-btn{padding:8px 12px;border-radius:8px;border:2px solid var(--eng-border);background:var(--eng-bg);font-size:0.74rem;cursor:pointer;transition:all 0.15s;font-family:'JetBrains Mono',monospace;color:var(--text);}
-.word-btn:hover:not(.used){transform:translateY(-2px);border-color:var(--accent);}
-.word-btn.used{opacity:0.25;pointer-events:none;}
-.word-btn.hint-show{border-color:var(--hint);background:#fff4e6;animation:hintPulse 0.6s;}
-@keyframes hintPulse{0%,100%{transform:none;}50%{transform:translateY(-3px);}}
-.hint-box{background:#fff4e6;border:2px solid var(--hint);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:0.74rem;line-height:1.7;display:none;font-family:'JetBrains Mono',monospace;}
-.hint-box.show{display:block;}
-.hint-box .hlbl{font-size:0.63rem;font-weight:700;color:var(--hint);letter-spacing:0.08em;margin-bottom:4px;font-family:'Noto Sans KR',sans-serif;}
-.sent-block{background:white;border:1.5px solid var(--border);border-radius:11px;padding:12px;margin-bottom:14px;}
-.sent-block .ck-kor{font-size:0.76rem;color:var(--muted);background:var(--kor-bg);border:1px solid var(--kor-border);border-radius:8px;padding:8px 10px;margin-bottom:10px;line-height:1.6;}
-.result-panel{background:white;border:2px solid var(--success);border-radius:14px;padding:16px;text-align:center;display:none;margin-top:12px;}
-.result-panel.show{display:block;}
-.r-em{font-size:2rem;margin-bottom:6px;}
-.r-msg{font-size:0.88rem;font-weight:700;color:var(--success);margin-bottom:6px;}
-.r-sc{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:12px;}
-.result-panel button{padding:9px 20px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:0.83rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin:0 4px;}
+.nb{width:17px;height:17px;border-radius:50%;background:var(--accent);color:white;font-size:0.57rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.mt .nb{background:var(--success);}
+.spk{font-size:0.8rem;flex-shrink:0;opacity:0.65;margin-top:1px;}
+.mbadge{position:absolute;right:-6px;top:50%;transform:translateY(-50%);background:var(--success);color:white;border-radius:99px;font-size:0.57rem;font-weight:700;padding:2px 5px;display:none;}
+.mt .mbadge{display:block;}
+.btn-next{display:none;width:100%;margin-top:11px;padding:11px;background:linear-gradient(135deg,#3b5bdb,#7048e8);color:white;border:none;border-radius:11px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.btn-next.gr{background:linear-gradient(135deg,#0ca678,#099268);}
+.rev-panel{background:white;border:1.5px solid var(--matched-border);border-radius:11px;padding:12px;margin-top:10px;display:none;}
+.rev-panel.show{display:block;}
+.ri{margin-bottom:7px;padding-bottom:7px;border-bottom:1px solid var(--border);}
+.ri:last-child{border:none;margin:0;padding:0;}
+.re{font-family:'JetBrains Mono',monospace;font-size:0.69rem;color:var(--accent);font-weight:600;margin-bottom:2px;}
+.rk{font-size:0.75rem;color:#444;}
+.final{background:white;border:2px solid var(--success);border-radius:14px;padding:18px;text-align:center;display:none;margin-top:13px;}
+.final.show{display:block;}
+.f-em{font-size:2rem;margin-bottom:7px;}
+.f-msg{font-size:0.88rem;font-weight:700;color:var(--success);margin-bottom:7px;}
+.f-sc{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--accent);margin-bottom:13px;}
+.final button{padding:9px 20px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:0.83rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.snav{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.snb{padding:4px 10px;border-radius:99px;border:1.5px solid var(--border);background:white;font-size:0.69rem;font-weight:600;cursor:pointer;color:var(--muted);transition:all 0.14s;}
+.snb.act{background:var(--t3);color:white;border-color:var(--t3);}
+.snb.dn{border-color:var(--success);color:var(--success);}
+.cc{background:white;border:1.5px solid var(--border);border-radius:12px;padding:13px 12px;margin-bottom:9px;}
+.cc.ca{box-shadow:0 0 0 2.5px var(--t3);border-color:var(--t3);}
+.cc.cok{border-color:var(--success);background:#f0fdf4;}
+.cc.cng{border-color:var(--error);background:#fef2f2;}
+.cc.clk{opacity:0.38;}
+.ccn{font-family:'JetBrains Mono',monospace;font-size:0.63rem;font-weight:700;color:var(--t3);letter-spacing:0.1em;margin-bottom:5px;}
+.cck{font-size:0.86rem;font-weight:600;line-height:1.6;margin-bottom:8px;padding:7px 10px;background:#e6faf4;border-left:3px solid var(--t3);border-radius:7px;}
+.az{min-height:40px;border:2px dashed var(--border);border-radius:8px;padding:6px 8px;display:flex;flex-wrap:wrap;gap:5px;align-items:center;background:var(--card);margin-bottom:7px;}
+.az.aok{border-color:var(--success);background:#dcfce7;}
+.az.ang{border-color:var(--error);background:#fee2e2;}
+.azph{font-size:0.7rem;color:var(--muted);}
+.wp{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px;}
+.wc{font-family:'JetBrains Mono',monospace;font-size:0.72rem;padding:4px 8px;border-radius:6px;cursor:pointer;transition:all 0.12s;user-select:none;border:1.5px solid var(--border);background:white;color:var(--text);}
+.wc:hover:not(.wpl):not(.win){border-color:var(--t3);color:var(--t3);transform:translateY(-1px);}
+.wc.wpl{opacity:0.2;pointer-events:none;}
+.wc.win{background:#e6faf4;border-color:var(--t3);color:var(--t3);}
+.wc.hint-blink{animation:hintB 0.6s infinite;border:2px solid var(--error)!important;background:#ff8787!important;color:#fff!important;font-weight:700;}
+@keyframes hintB{0%,50%{opacity:1;transform:scale(1.08);}51%,100%{opacity:0.35;transform:scale(1);}}
+.cbr{display:flex;gap:6px;}
+.cbt{flex:1;padding:7px 0;border:none;border-radius:8px;font-family:'Noto Sans KR',sans-serif;font-size:0.76rem;font-weight:700;cursor:pointer;}
+.cbck{background:var(--t3);color:white;}
+.cbck:disabled{opacity:0.32;cursor:not-allowed;}
+.cbcl{background:var(--card);color:var(--muted);border:1.5px solid var(--border);flex:0.45;}
+.cfb{margin-top:6px;font-size:0.74rem;line-height:1.6;display:none;padding:7px 9px;border-radius:7px;}
+.cfb.show{display:block;}
+.cfb.ok{background:#dcfce7;color:var(--success);}
+.cfb.ng{background:#fee2e2;color:#991b1b;}
+.cfb .fa{font-family:'JetBrains Mono',monospace;font-size:0.68rem;margin-top:3px;color:var(--success);}
+.asm{background:white;border:1.5px solid var(--eng-border);border-radius:10px;padding:10px 12px;margin-bottom:11px;font-size:0.78rem;line-height:1.9;}
+.asm .lbl{font-size:0.64rem;font-weight:700;color:var(--accent2);letter-spacing:0.07em;margin-bottom:4px;}
+.ap{margin-right:3px;padding:2px 5px;border-radius:4px;display:inline-block;}
+.ap.dn{background:#e8f0fe;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.68rem;}
+.ap.pd{background:#f3f4f6;color:var(--muted);font-size:0.72rem;}
 .footer{text-align:center;font-size:0.66rem;color:var(--muted);padding:16px 0 26px;}
 </style>
 </head>
 <body>
 <div class="site-header">
- <div class="tag">WGT 어순배열 · 동산고 2학년 1학기 기말</div>
- <h1>모의고사 2 · 영한 매칭 &amp; 어순배열 훈련</h1>
- <div class="sub">21번 · 22번 · 24번 · 30번</div>
+  <div class="tag">WGT PROGRAM · 동산고 2학년 1학기 기말</div>
+  <h1>3단계 어순배열 직독직해 훈련</h1>
+  <div class="sub">모의고사 2 · 21번 · 22번 · 24번 · 30번</div>
 </div>
 <div class="passage-nav" id="pnav"></div>
 <div class="tab-bar">
- <button class="tab-btn a1" onclick="switchTab(1)"><span class="tn">STEP 1</span>영→한 매칭</button>
- <button class="tab-btn" onclick="switchTab(2)"><span class="tn">STEP 2</span>한→영 매칭</button>
- <button class="tab-btn" onclick="switchTab(3)"><span class="tn">STEP 3</span>어순배열</button>
+  <button class="tab-btn a1" onclick="switchTab(1)"><span class="tn">STEP 1</span>영어→한글</button>
+  <button class="tab-btn" onclick="switchTab(2)"><span class="tn">STEP 2</span>한글→영어</button>
+  <button class="tab-btn" onclick="switchTab(3)"><span class="tn">STEP 3</span>어순배열</button>
 </div>
 <div class="section show" id="sec1">
- <div class="how-to"><div class="lbl">📖 STEP 1 사용법</div><ol><li>왼쪽 영어 문장을 클릭하면 음성이 재생돼요</li><li>오른쪽에서 알맞은 한글 해석을 클릭해 짝지으세요</li><li>맞으면 두 항목이 흐려지며 완료 표시돼요</li></ol></div>
- <div class="prog-row"><span class="prog-lbl">영어 문장 → 한글 해석 매칭</span><span class="prog-sc">✅<strong id="o1">0</strong> ❌<strong id="n1">0</strong></span></div>
- <div class="match-grid"><div class="match-col" id="eng1"></div><div class="match-col" id="kor1"></div></div>
- <div class="result-panel" id="rp1"><div class="r-em">🏆</div><div class="r-msg">STEP 1 완료!</div><div class="r-sc" id="rs1"></div><button onclick="switchTab(2)">STEP 2로 →</button><button onclick="resetStep(1)" style="background:var(--muted)">다시 풀기</button></div>
+  <div class="how-to"><div class="lbl">📖 STEP 1 사용법</div><ol><li>왼쪽 영어 덩어리 클릭 → 🔊 음성 재생</li><li>오른쪽에서 알맞은 한국어 뜻을 클릭해 연결</li><li>맞으면 초록색, 틀리면 다시 선택</li></ol></div>
+  <div class="prog-row"><span class="prog-lbl" id="pl1">문장 1/?</span><div class="prog-wrap"><div class="prog-fill f1" id="pb1" style="width:0%"></div></div><span class="prog-sc">✅<strong id="o1">0</strong> ❌<strong id="n1">0</strong></span></div>
+  <div class="sent-hint" id="sh1"><div class="lbl">📌 현재 문장</div><div id="sh1t"></div></div>
+  <div class="match-grid" id="g1"><div class="col-lbl">🔊 영어 (클릭=음성)</div><div class="col-lbl">🇰🇷 한국어 (스크램블)</div></div>
+  <button class="btn-next" id="nx1" onclick="nextS1()"></button>
+  <div class="rev-panel" id="rv1"></div>
+  <div class="final" id="fn1"><div class="f-em">🏆</div><div class="f-msg">STEP 1 완료!</div><div class="f-sc" id="fs1"></div><button onclick="switchTab(2)">STEP 2로 →</button></div>
 </div>
 <div class="section" id="sec2">
- <div class="how-to"><div class="lbl">📖 STEP 2 사용법</div><ol><li>왼쪽 한글 해석을 클릭하세요</li><li>오른쪽에서 알맞은 영어 문장을 클릭하면 음성이 재생돼요</li><li>맞으면 두 항목이 흐려지며 완료 표시돼요</li></ol></div>
- <div class="prog-row"><span class="prog-lbl">한글 해석 → 영어 문장 매칭</span><span class="prog-sc">✅<strong id="o2">0</strong> ❌<strong id="n2">0</strong></span></div>
- <div class="match-grid"><div class="match-col" id="kor2"></div><div class="match-col" id="eng2"></div></div>
- <div class="result-panel" id="rp2"><div class="r-em">🏆</div><div class="r-msg">STEP 2 완료!</div><div class="r-sc" id="rs2"></div><button onclick="switchTab(3)">STEP 3으로 →</button><button onclick="resetStep(2)" style="background:var(--muted)">다시 풀기</button></div>
+  <div class="how-to"><div class="lbl">📖 STEP 2 사용법</div><ol><li>왼쪽 한국어 덩어리를 먼저 클릭</li><li>오른쪽 영어 중 맞는 것 클릭 → 🔊 음성 재생</li><li>STEP 1보다 어려워요!</li></ol></div>
+  <div class="prog-row"><span class="prog-lbl" id="pl2">문장 1/?</span><div class="prog-wrap"><div class="prog-fill f2" id="pb2" style="width:0%"></div></div><span class="prog-sc">✅<strong id="o2">0</strong> ❌<strong id="n2">0</strong></span></div>
+  <div class="match-grid" id="g2"><div class="col-lbl">🇰🇷 한국어 (순서대로)</div><div class="col-lbl">🔊 영어 (스크램블·클릭=음성)</div></div>
+  <button class="btn-next" id="nx2" onclick="nextS2()"></button>
+  <div class="rev-panel" id="rv2"></div>
+  <div class="final" id="fn2"><div class="f-em">🏆</div><div class="f-msg">STEP 2 완료!</div><div class="f-sc" id="fs2"></div><button onclick="switchTab(3)">STEP 3으로 →</button></div>
 </div>
 <div class="section" id="sec3">
- <div class="how-to"><div class="lbl">📖 STEP 3 사용법</div><ol><li>각 문장의 한글 의미를 보고 영어 단어를 순서대로 클릭하세요</li><li>완성되면 음성으로 들려드려요</li><li>2번 틀리면 힌트를 드려요</li></ol></div>
- <div class="prog-row"><span class="prog-lbl">문장별 어순배열</span><span class="prog-sc">✅<strong id="o3">0</strong> ❌<strong id="n3">0</strong></span></div>
- <div id="step3-area"></div>
- <div class="result-panel" id="rp3"><div class="r-em">🎉</div><div class="r-msg">모든 STEP 완료!</div><div class="r-sc" id="rs3"></div><button onclick="goNextPassage()">다음 지문 →</button><button onclick="resetStep(3)" style="background:var(--muted)">다시 풀기</button></div>
+  <div class="how-to"><div class="lbl">📖 STEP 3 사용법</div><ol><li>한국어 뜻을 보고 단어 카드를 영어 순서대로 배열</li><li>앞 청크 완료 후 다음 청크 해금</li><li>완성된 문장이 위에 쌓여요</li></ol></div>
+  <div class="snav" id="sn3"></div>
+  <div class="prog-row"><span class="prog-lbl" id="pl3">문장 1/?</span><div class="prog-wrap"><div class="prog-fill f3" id="pb3" style="width:0%"></div></div><span class="prog-sc">✅<strong id="o3">0</strong> ❌<strong id="n3">0</strong></span></div>
+  <div class="asm" id="asm3"><div class="lbl">🔗 완성되는 문장</div><div id="ap3"></div></div>
+  <div id="ca3"></div>
+  <button class="btn-next gr" id="nx3" onclick="nextS3()"></button>
+  <div class="final" id="fn3"><div class="f-em">🏆</div><div class="f-msg">STEP 3 완료!</div><div class="f-sc" id="fs3"></div><button onclick="resetMode3()">다시 풀기 🔄</button></div>
 </div>
-<div class="footer">WGT 어순배열 · 동산고 2학년 기말 모고2 · 21,22,24,30번</div>
+<div class="footer">WGT 영어훈련 프로그램 · 동산고2 26년 1학기 기말 · 모의고사2 (21,22,24,30번) · 어순배열훈련</div>
 <script>
-const PASSAGES = [
-{"num":"21번","topic":"미각이 행동 경향에 대해 알려주는 것",
- "sentences":["Coat a fresh, wet swab in salt, and gently touch various spots on your tongue, recording where your taste seems strongest.","Then, gargle with water to thoroughly clean your tongue, use a swab coated with sugar on the same spots, and record those results.","Gargle again, and then swab with lemon juice.","After a final gargle, try coffee.","Compare your reactions with your friends'.","Your taste pattern may reveal more than just taste preferences.","Recent studies suggest links between taster status and behavioral disorders.","For example, \"non-tasters\" tend to have a higher incidence of alcoholism, perhaps because liquor seems less bitter to them.","Conversely, \"super-tasters\" may avoid nutritious but mildly bitter foods such as broccoli, thus depriving themselves of a balanced diet.","So, although taste is not nearly as glamorous as vision, hearing, or even touch, it makes sense for you to pay closer attention to it because chemistry, at least in your mouth, could be destiny."],
- "korean":["신선하고 젖은 면봉에 소금을 묻혀, 혀의 여러 부위를 부드럽게 건드려보면서 맛이 가장 강하게 느껴지는 곳을 기록하세요.","그런 다음, 물로 입을 헹궈 혀를 완전히 깨끗이 한 후, 같은 부위에 설탕을 묻힌 면봉을 사용하고 그 결과를 기록하세요.","다시 입을 헹군 다음, 레몬즙으로 면봉을 사용해 보세요.","마지막으로 입을 헹군 후, 커피를 시도해 보세요.","당신의 반응을 친구들의 반응과 비교해 보세요.","당신의 미각 패턴은 단순한 맛 선호도 이상의 것을 드러낼 수도 있다.","최근 연구들은 미각 유형과 행동 장애 사이의 연관성을 시사한다.","예를 들어, '비-맛쟁이(non-tasters)'는 알코올 중독의 발생률이 더 높은 경향이 있는데, 이는 아마도 그들에게 술이 덜 쓰게 느껴지기 때문일 것이다.","반대로, '슈퍼-맛쟁이(super-tasters)'는 브로콜리와 같이 영양가 있지만 약간 쓴 음식을 피할 수 있어, 결과적으로 균형 잡힌 식단을 스스로 박탈하게 된다.","따라서 미각이 시각, 청각, 또는 촉각만큼 화려하지는 않지만, 적어도 입 안에서의 화학 작용이 운명이 될 수 있기 때문에 미각에 좀 더 주의를 기울이는 것이 타당하다."]
-},
-{"num":"22번","topic":"무지와 호기심을 받아들이는 과학의 태도",
- "sentences":["Experiments testify to science's embrace of ignorance.","Arguably the worst thing a scientist can do is to suppose they know what will happen in a given scenario without bothering to check.","The rise of the experimental philosophy coincided with the liberation of curiosity as a valuable rather than a questionable attribute.","For all that experimental science today is often assumed to be supported by a philosophical framework and an approved methodology (\"state your hypothesis and then test it\"), the fact is that, as philosopher of science Ian Hacking says, \"One can conduct an experiment simply out of curiosity to see what will happen.\"","Indeed, in the view of Charles Darwin's son, the astronomer George Darwin, once in a while one should do a completely crazy experiment, even if it is most likely to prove fruitless.","You never know until you try."],
- "korean":["실험은 과학이 무지를 받아들인다는 것을 증명한다.","과학자가 할 수 있는 최악의 행동은 어떤 상황에서 무슨 일이 일어날지 확인해보려 하지 않은 채 그것을 안다고 가정하는 것일 것이다.","실험 철학의 부상은 호기심이 의심스러운 속성이 아니라 가치 있는 속성으로 해방된 것과 동시에 일어났다.","오늘날 실험 과학은 흔히 철학적 틀과 공인된 방법론('가설을 세우고 그것을 검증하라')에 의해 지지된다고 여겨지지만, 과학철학자 이언 해킹이 말하듯, 사실은 '단지 무슨 일이 일어날지 보려는 호기심만으로도 실험을 수행할 수 있다'는 것이다.","실제로, 찰스 다윈의 아들이자 천문학자인 조지 다윈의 견해에 따르면, 비록 그것이 결실을 맺지 못할 가능성이 높더라도, 때때로 완전히 무모한 실험을 해봐야 한다.","직접 해보기 전까지는 결코 알 수 없다."]
-},
-{"num":"24번","topic":"한낮의 휴식과 뉴로빅 운동의 효과",
- "sentences":["Imagine pausing in the middle of a busy day, taking a moment to refresh your mind and recharge your energy.","This power of a midday break is often underestimated.","When you break away from routine, especially with activities designed to stimulate your brain, you prevent cognitive tiredness and enhance productivity for the rest of the day.","Neurobic exercises ― simple yet effective ― are perfect for such breaks.","They target different areas of your brain, keeping it agile and alert.","These exercises create a mental oasis that refreshes and prepares you for the afternoon's challenges.","This strategic pause is not just a break; it boosts your cognitive capabilities, ensuring your mind remains sharp and focused.","Even briefly experimenting with neurobic exercises can work wonders for your cognitive state during lunch.","Start with using your non-dominant hand for routine tasks like writing or eating.","This simple switch challenges your brain, activating pathways that aren't typically engaged and promoting greater flexibility in thinking."],
- "korean":["바쁜 하루 중간에 잠시 멈춰서 마음을 새롭게 하고 에너지를 재충전하는 순간을 상상해 보세요.","이러한 한낮의 휴식의 힘은 흔히 과소평가된다.","일상에서 벗어나, 특히 뇌를 자극하도록 설계된 활동을 할 때, 당신은 인지적 피로를 예방하고 남은 하루의 생산성을 향상시킨다.","뉴로빅 운동―단순하지만 효과적인―은 이러한 휴식에 적합하다.","그것들은 뇌의 다양한 영역을 표적으로 하여, 뇌를 민첩하고 깨어있게 유지시킨다.","이러한 운동은 정신적 오아시스를 만들어 당신을 새롭게 하고 오후의 과제에 대비하게 한다.","이 전략적인 휴식은 단순한 쉼이 아니라, 당신의 인지 능력을 향상시켜 정신을 날카롭고 집중된 상태로 유지시켜 준다.","뉴로빅 운동을 잠깐이라도 시도해보는 것만으로도 점심시간 동안의 인지 상태에 놀라운 효과를 가져올 수 있다.","글쓰기나 식사 같은 일상적인 작업에 비주력 손을 사용하는 것부터 시작하라.","이 간단한 전환은 당신의 뇌에 도전을 주어, 평소에 사용되지 않는 경로를 활성화하고 더 큰 사고의 유연성을 촉진한다."]
-},
-{"num":"30번","topic":"가족의 역할에 대한 자유주의와 유교 문화의 대조적 관점",
- "sentences":["Within liberal culture, the value of fair equality of opportunity for individuals outweighs the preservation of the family's integrity.","In contrast, for Confucian culture, while seeking fair equality of opportunity for individuals is important, the family assumes a fundamental role in human flourishing, and living within a family institution is considered the essential way of life.","Individuals are primarily understood as family members before they are regarded as state citizens.","Therefore, for Confucians, the family possesses inherent value that should never be abandoned, even if it results in certain societal inequalities.","Some cultures, like the liberal one, may choose to impose increasing restrictions on the role of families and implement more egalitarian government programs for education, healthcare, and other positive rights in society in the pursuit of fair equality of opportunity.","On the other hand, other cultures, like the Confucian one, may prefer to primarily assign welfare responsibilities to the family, accepting inequalities stemming from the existence of the family as long as everyone's basic freedoms and rights are safeguarded in the state."],
- "korean":["자유주의 문화 내에서는 개인의 공정한 기회균등의 가치가 가족의 통합성 보존보다 우선한다.","이와 대조적으로, 유교 문화에서는 개인의 공정한 기회균등을 추구하는 것이 중요하지만, 가족은 인간 번영에 있어 근본적인 역할을 하며, 가족 제도 안에서 사는 것이 본질적인 삶의 방식으로 여겨진다.","개인은 국가의 시민으로 여겨지기 전에 우선적으로 가족 구성원으로 이해된다.","따라서 유교적 관점에서, 가족은 비록 그것이 어느 정도의 사회적 불평등을 초래하더라도 절대 버려져서는 안 되는 본질적 가치를 지닌다.","자유주의 문화와 같은 일부 문화는 공정한 기회균등을 추구하는 과정에서 가족의 역할에 점점 더 많은 제약을 부과하고, 교육, 의료 및 기타 적극적 권리를 위한 더 평등주의적인 정부 프로그램을 시행하는 것을 선택할 수도 있다.","반면에, 유교 문화와 같은 다른 문화들은 모두의 기본적 자유와 권리가 국가에서 보장되는 한, 가족의 존재로부터 발생하는 불평등을 받아들이면서, 복지에 대한 책임을 주로 가족에 부여하는 것을 선호할 수도 있다."]
+// ══ 음성: 자가점검 완료 ══
+let BV=null;
+function loadVoice(){
+  const vs=window.speechSynthesis.getVoices();
+  BV=vs.find(v=>v.name==='Google US English')
+    ||vs.find(v=>v.name.includes('Aria'))
+    ||vs.find(v=>v.name.includes('Samantha'))
+    ||vs.find(v=>v.lang==='en-US'&&v.localService)
+    ||vs.find(v=>v.lang==='en-US')
+    ||vs.find(v=>v.lang.startsWith('en'));
 }
-];
-
-let curP = 0;
-const state1 = {};
-const state2 = {};
-const state3 = {};
-let preferredVoice = null;
-
-function loadVoices(){
-  const voices = speechSynthesis.getVoices();
-  preferredVoice = voices.find(v=>v.name==='Google US English') || voices.find(v=>v.lang==='en-US') || voices[0];
+if(window.speechSynthesis){window.speechSynthesis.onvoiceschanged=loadVoice;loadVoice();}
+function speak(t){
+  if(!window.speechSynthesis)return;
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang='en-US';u.rate=0.85;u.pitch=1.05;u.volume=1.0;
+  if(BV)u.voice=BV;
+  window.speechSynthesis.speak(u);
 }
-loadVoices();
-if('onvoiceschanged' in speechSynthesis){ speechSynthesis.onvoiceschanged = loadVoices; }
-
-function speak(text){
-  if(!('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.rate = 0.85;
-  u.lang = 'en-US';
-  if(preferredVoice) u.voice = preferredVoice;
-  speechSynthesis.speak(u);
+// ══ 데이터 ══
+const PASSAGES=[{"num": "21번", "sentences": [{"full": "Coat a fresh, wet swab in salt, and gently touch various spots on your tongue, recording where your taste seems strongest.", "chunks": [["Coat a fresh, wet swab in salt,", "신선하고 젖은 면봉에 소금을 묻혀"], ["and gently touch various spots", "그리고 여러 부위를 부드럽게 건드려보세요"], ["on your tongue,", "혀의"], ["recording where your taste", "맛이 ~한 곳을 기록하면서"], ["seems strongest.", "가장 강하게 느껴지는"]]}, {"full": "Then, gargle with water to thoroughly clean your tongue, use a swab coated with sugar on the same spots, and record those results.", "chunks": [["Then, gargle with water", "그런 다음, 물로 입을 헹궈"], ["to thoroughly clean your tongue,", "혀를 완전히 깨끗이 하기 위해"], ["use a swab coated with sugar", "설탕을 묻힌 면봉을 사용하세요"], ["on the same spots,", "같은 부위에"], ["and record those results.", "그리고 그 결과를 기록하세요"]]}, {"full": "Gargle again, and then swab with lemon juice.", "chunks": [["Gargle again,", "다시 입을 헹군 다음"], ["and then swab with lemon juice.", "레몬즙으로 면봉을 사용해 보세요"]]}, {"full": "After a final gargle, try coffee.", "chunks": [["After a final gargle,", "마지막으로 입을 헹군 후"], ["try coffee.", "커피를 시도해 보세요"]]}, {"full": "Compare your reactions with your friends'.", "chunks": [["Compare your reactions", "당신의 반응을 비교해 보세요"], ["with your friends'.", "친구들의 반응과"]]}, {"full": "Your taste pattern may reveal more than just taste preferences.", "chunks": [["Your taste pattern", "당신의 미각 패턴은"], ["may reveal more", "더 많은 것을 드러낼 수도 있다"], ["than just taste preferences.", "단순한 맛 선호도 이상의"]]}, {"full": "Recent studies suggest links between taster status and behavioral disorders.", "chunks": [["Recent studies suggest links", "최근 연구들은 연관성을 시사한다"], ["between taster status", "미각 유형과"], ["and behavioral disorders.", "행동 장애 사이의"]]}, {"full": "For example, \"non-tasters\" tend to have a higher incidence of alcoholism, perhaps because liquor seems less bitter to them.", "chunks": [["For example,", "예를 들어"], ["\"non-tasters\" tend to have", "'비-맛쟁이'는 ~을 가지는 경향이 있다"], ["a higher incidence of alcoholism,", "알코올 중독의 더 높은 발생률"], ["perhaps because liquor", "이는 아마도 술이 ~ 때문일 것이다"], ["seems less bitter to them.", "그들에게 덜 쓰게 느껴지기"]]}, {"full": "Conversely, \"super-tasters\" may avoid nutritious but mildly bitter foods such as broccoli, thus depriving themselves of a balanced diet.", "chunks": [["Conversely,", "반대로"], ["\"super-tasters\" may avoid", "'슈퍼-맛쟁이'는 피할 수 있다"], ["nutritious but mildly bitter foods", "영양가 있지만 약간 쓴 음식을"], ["such as broccoli,", "브로콜리와 같이"], ["thus depriving themselves", "그래서 스스로 박탈하게 된다"], ["of a balanced diet.", "균형 잡힌 식단을"]]}, {"full": "So, although taste is not nearly as glamorous as vision, hearing, or even touch, it makes sense for you to pay closer attention to it because chemistry, at least in your mouth, could be destiny.", "chunks": [["So, although taste is not nearly", "따라서, 미각이 ~만큼 화려하지는 않지만"], ["as glamorous as vision, hearing, or even touch,", "시각, 청각, 또는 촉각만큼"], ["it makes sense for you", "당신이 ~하는 것이 타당하다"], ["to pay closer attention to it", "미각에 좀 더 주의를 기울이는 것이"], ["because chemistry, at least in your mouth,", "왜냐하면 적어도 입 안에서의 화학 작용이"], ["could be destiny.", "운명이 될 수도 있기 때문에"]]}]}, {"num": "22번", "sentences": [{"full": "Experiments testify to science's embrace of ignorance.", "chunks": [["Experiments testify", "실험은 증명한다"], ["to science's embrace", "과학이 받아들인다는 것을"], ["of ignorance.", "무지를"]]}, {"full": "Arguably the worst thing a scientist can do is to suppose they know what will happen in a given scenario without bothering to check.", "chunks": [["Arguably the worst thing", "아마도 최악의 것은"], ["a scientist can do", "과학자가 할 수 있는"], ["is to suppose they know", "그들이 안다고 가정하는 것이다"], ["what will happen in a given scenario", "어떤 상황에서 무슨 일이 일어날지"], ["without bothering to check.", "확인해보려 애쓰지 않은 채"]]}, {"full": "The rise of the experimental philosophy coincided with the liberation of curiosity as a valuable rather than a questionable attribute.", "chunks": [["The rise of the experimental philosophy", "실험 철학의 부상은"], ["coincided with the liberation of curiosity", "호기심의 해방과 동시에 일어났다"], ["as a valuable", "가치 있는 속성으로서"], ["rather than a questionable attribute.", "의심스러운 속성이 아니라"]]}, {"full": "For all that experimental science today is often assumed to be supported by a philosophical framework and an approved methodology (\"state your hypothesis and then test it\"), the fact is that, as philosopher of science Ian Hacking says, \"One can conduct an experiment simply out of curiosity to see what will happen.\"", "chunks": [["For all that experimental science today", "오늘날 실험 과학이 ~이지만"], ["is often assumed to be supported", "흔히 지지된다고 여겨지는"], ["by a philosophical framework", "철학적 틀에 의해"], ["and an approved methodology", "그리고 공인된 방법론에 의해"], ["(\"state your hypothesis and then test it\"),", "('가설을 세우고 그것을 검증하라')"], ["the fact is that,", "사실은 ~라는 것이다"], ["as philosopher of science Ian Hacking says,", "과학철학자 이언 해킹이 말하듯"], ["\"One can conduct an experiment", "'실험을 수행할 수 있다"], ["simply out of curiosity", "단지 호기심만으로도"], ["to see what will happen.\"", "무슨 일이 일어날지 보기 위해'"]]}, {"full": "Indeed, in the view of Charles Darwin's son, the astronomer George Darwin, once in a while one should do a completely crazy experiment, even if it is most likely to prove fruitless.", "chunks": [["Indeed, in the view of Charles Darwin's son,", "실제로, 찰스 다윈의 아들의 견해에 따르면"], ["the astronomer George Darwin,", "천문학자인 조지 다윈"], ["once in a while", "때때로"], ["one should do a completely crazy experiment,", "완전히 무모한 실험을 해봐야 한다"], ["even if it is most likely", "비록 ~할 가능성이 높더라도"], ["to prove fruitless.", "결실을 맺지 못할"]]}, {"full": "You never know until you try.", "chunks": [["You never know", "결코 알 수 없다"], ["until you try.", "직접 해보기 전까지는"]]}]}, {"num": "24번", "sentences": [{"full": "Imagine pausing in the middle of a busy day, taking a moment to refresh your mind and recharge your energy.", "chunks": [["Imagine pausing", "잠시 멈추는 것을 상상해 보세요"], ["in the middle of a busy day,", "바쁜 하루 중간에"], ["taking a moment", "순간을 가지면서"], ["to refresh your mind", "마음을 새롭게 하고"], ["and recharge your energy.", "에너지를 재충전하는"]]}, {"full": "This power of a midday break is often underestimated.", "chunks": [["This power", "이러한 힘은"], ["of a midday break", "한낮의 휴식의"], ["is often underestimated.", "흔히 과소평가된다"]]}, {"full": "When you break away from routine, especially with activities designed to stimulate your brain, you prevent cognitive tiredness and enhance productivity for the rest of the day.", "chunks": [["When you break away from routine,", "일상에서 벗어날 때"], ["especially with activities", "특히 활동을 통해"], ["designed to stimulate your brain,", "뇌를 자극하도록 설계된"], ["you prevent cognitive tiredness", "당신은 인지적 피로를 예방하고"], ["and enhance productivity", "생산성을 향상시킨다"], ["for the rest of the day.", "남은 하루의"]]}, {"full": "Neurobic exercises ― simple yet effective ― are perfect for such breaks.", "chunks": [["Neurobic exercises", "뉴로빅 운동은"], ["― simple yet effective ―", "단순하지만 효과적인"], ["are perfect for such breaks.", "이러한 휴식에 적합하다"]]}, {"full": "They target different areas of your brain, keeping it agile and alert.", "chunks": [["They target different areas", "그것들은 다양한 영역을 표적으로 한다"], ["of your brain,", "뇌의"], ["keeping it agile and alert.", "뇌를 민첩하고 깨어있게 유지시키면서"]]}, {"full": "These exercises create a mental oasis that refreshes and prepares you for the afternoon's challenges.", "chunks": [["These exercises create", "이러한 운동은 만들어낸다"], ["a mental oasis", "정신적 오아시스를"], ["that refreshes", "당신을 새롭게 하고"], ["and prepares you", "그리고 대비하게 하는"], ["for the afternoon's challenges.", "오후의 과제에"]]}, {"full": "This strategic pause is not just a break; it boosts your cognitive capabilities, ensuring your mind remains sharp and focused.", "chunks": [["This strategic pause", "이 전략적인 휴식은"], ["is not just a break;", "단순한 쉼이 아니다"], ["it boosts your cognitive capabilities,", "그것은 당신의 인지 능력을 향상시켜"], ["ensuring your mind remains", "당신의 정신이 ~한 상태로 유지되게 한다"], ["sharp and focused.", "날카롭고 집중된"]]}, {"full": "Even briefly experimenting with neurobic exercises can work wonders for your cognitive state during lunch.", "chunks": [["Even briefly experimenting", "잠깐이라도 시도해보는 것만으로도"], ["with neurobic exercises", "뉴로빅 운동을"], ["can work wonders", "놀라운 효과를 가져올 수 있다"], ["for your cognitive state", "인지 상태에"], ["during lunch.", "점심시간 동안의"]]}, {"full": "Start with using your non-dominant hand for routine tasks like writing or eating.", "chunks": [["Start with using", "사용하는 것부터 시작하라"], ["your non-dominant hand", "비주력 손을"], ["for routine tasks", "일상적인 작업에"], ["like writing or eating.", "글쓰기나 식사 같은"]]}, {"full": "This simple switch challenges your brain, activating pathways that aren't typically engaged and promoting greater flexibility in thinking.", "chunks": [["This simple switch challenges your brain,", "이 간단한 전환은 당신의 뇌에 도전을 준다"], ["activating pathways", "경로를 활성화하면서"], ["that aren't typically engaged", "평소에 사용되지 않는"], ["and promoting greater flexibility", "그리고 더 큰 유연성을 촉진하면서"], ["in thinking.", "사고의"]]}]}, {"num": "30번", "sentences": [{"full": "Within liberal culture, the value of fair equality of opportunity for individuals outweighs the preservation of the family's integrity.", "chunks": [["Within liberal culture,", "자유주의 문화 내에서는"], ["the value of fair equality of opportunity", "공정한 기회균등의 가치가"], ["for individuals", "개인의"], ["outweighs the preservation", "보존보다 우선한다"], ["of the family's integrity.", "가족의 통합성의"]]}, {"full": "In contrast, for Confucian culture, while seeking fair equality of opportunity for individuals is important, the family assumes a fundamental role in human flourishing, and living within a family institution is considered the essential way of life.", "chunks": [["In contrast, for Confucian culture,", "이와 대조적으로, 유교 문화에서는"], ["while seeking fair equality of opportunity", "공정한 기회균등을 추구하는 것이"], ["for individuals is important,", "개인에게 중요하지만"], ["the family assumes a fundamental role", "가족은 근본적인 역할을 한다"], ["in human flourishing,", "인간 번영에 있어"], ["and living within a family institution", "그리고 가족 제도 안에서 사는 것이"], ["is considered the essential way of life.", "본질적인 삶의 방식으로 여겨진다"]]}, {"full": "Individuals are primarily understood as family members before they are regarded as state citizens.", "chunks": [["Individuals are primarily understood", "개인은 우선적으로 이해된다"], ["as family members", "가족 구성원으로"], ["before they are regarded", "여겨지기 전에"], ["as state citizens.", "국가의 시민으로"]]}, {"full": "Therefore, for Confucians, the family possesses inherent value that should never be abandoned, even if it results in certain societal inequalities.", "chunks": [["Therefore, for Confucians,", "따라서 유교적 관점에서"], ["the family possesses inherent value", "가족은 본질적 가치를 지닌다"], ["that should never be abandoned,", "절대 버려져서는 안 되는"], ["even if it results", "비록 그것이 초래하더라도"], ["in certain societal inequalities.", "어느 정도의 사회적 불평등을"]]}, {"full": "Some cultures, like the liberal one, may choose to impose increasing restrictions on the role of families and implement more egalitarian government programs for education, healthcare, and other positive rights in society in the pursuit of fair equality of opportunity.", "chunks": [["Some cultures, like the liberal one,", "자유주의 문화와 같은 일부 문화는"], ["may choose to impose increasing restrictions", "점점 더 많은 제약을 부과하는 것을 선택할 수도 있다"], ["on the role of families", "가족의 역할에"], ["and implement more egalitarian government programs", "그리고 더 평등주의적인 정부 프로그램을 시행하는 것을"], ["for education, healthcare, and other positive rights", "교육, 의료 및 기타 적극적 권리를 위한"], ["in society", "사회에서"], ["in the pursuit of fair equality of opportunity.", "공정한 기회균등을 추구하는 과정에서"]]}, {"full": "On the other hand, other cultures, like the Confucian one, may prefer to primarily assign welfare responsibilities to the family, accepting inequalities stemming from the existence of the family as long as everyone's basic freedoms and rights are safeguarded in the state.", "chunks": [["On the other hand, other cultures,", "반면에, 다른 문화들은"], ["like the Confucian one,", "유교 문화와 같은"], ["may prefer to primarily assign welfare responsibilities", "복지에 대한 책임을 주로 부여하는 것을 선호할 수도 있다"], ["to the family,", "가족에"], ["accepting inequalities", "불평등을 받아들이면서"], ["stemming from the existence of the family", "가족의 존재로부터 발생하는"], ["as long as everyone's basic freedoms and rights", "모두의 기본적 자유와 권리가 ~하는 한"], ["are safeguarded in the state.", "국가에서 보장되는"]]}]}];
+// 자가검증
+PASSAGES.forEach(p=>{
+  const r=p.sentences.map(s=>s.chunks.map(c=>c[0]).join(' ')).join(' ');
+  const full=p.sentences.map(s=>s.full).join(' ');
+  console.log(r===full?`[${p.num}] ✅ 원문대조 통과`:`[${p.num}] ❌ 불일치`);
+});
+// ══ 상태 ══
+let curP=0;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function switchTab(n){[1,2,3].forEach(i=>{document.getElementById('sec'+i).classList.toggle('show',i===n);const b=document.querySelectorAll('.tab-btn')[i-1];b.className='tab-btn'+(i===n?' a'+i:'');});}
+function flash(i1,i2){[i1,i2].forEach(id=>{const e=document.getElementById(id);if(e){e.classList.add('wf');setTimeout(()=>e.classList.remove('wf'),460);}});}
+function buildPNav(){
+  document.getElementById('pnav').innerHTML=PASSAGES.map((p,i)=>
+    `<button class="pnav-btn${i===curP?' active':''}" onclick="selectPassage(${i})">${p.num}</button>`
+  ).join('');
 }
-
-function shuffle(arr){
-  const a = arr.slice();
-  for(let i=a.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
+function selectPassage(i){
+  curP=i;
+  buildPNav();
+  resetAll();
 }
-
-function getP(){ return PASSAGES[curP]; }
-
-function buildPnav(){
-  const nav = document.getElementById('pnav');
-  nav.innerHTML = '';
-  PASSAGES.forEach((p,i)=>{
-    const b = document.createElement('button');
-    b.className = 'pnav-btn'+(i===curP?' active':'');
-    b.textContent = p.num;
-    b.onclick = ()=>{ curP=i; initAll(); buildPnav(); switchTab(1); };
-    nav.appendChild(b);
+// ══ MODE 1 ══
+let m1={si:0,sE:null,sK:null,mt:[],ks:[],ok:0,ng:0};
+function iM1(){m1.si=0;m1.ok=0;m1.ng=0;document.getElementById('fn1').classList.remove('show');document.getElementById('sh1').style.display='';lS1();}
+function lS1(){
+  const sg=PASSAGES[curP].sentences[m1.si];
+  m1.sE=null;m1.sK=null;m1.mt=[];
+  m1.ks=shuffle(sg.chunks.map((_,i)=>i));
+  document.getElementById('sh1t').textContent=sg.full;
+  document.getElementById('nx1').style.display='none';
+  const rv=document.getElementById('rv1');rv.classList.remove('show');rv.innerHTML='';
+  uP1();bG1();
+}
+function uP1(){
+  const TN=PASSAGES[curP].sentences.length;
+  document.getElementById('pl1').textContent=`문장 ${m1.si+1}/${TN}`;
+  document.getElementById('pb1').style.width=((m1.si/TN)*100)+'%';
+  document.getElementById('o1').textContent=m1.ok;
+  document.getElementById('n1').textContent=m1.ng;
+}
+function bG1(){
+  const sg=PASSAGES[curP].sentences[m1.si],g=document.getElementById('g1');
+  g.innerHTML='<div class="col-lbl">🔊 영어 (클릭=음성)</div><div class="col-lbl">🇰🇷 한국어 (스크램블)</div>';
+  sg.chunks.forEach((c,i)=>{
+    const em=m1.mt.find(m=>m.e===i),ko=m1.ks[i],km=m1.mt.find(m=>m.k===ko);
+    const ed=document.createElement('div');
+    ed.className='cb eb'+(em?' mt':'')+(m1.sE===i?' sel':'');
+    ed.id='e1_'+i;
+    ed.innerHTML=`<span class="nb">${i+1}</span><span class="spk">🔊</span><span>${c[0]}</span><span class="mbadge">✓</span>`;
+    if(!em)ed.onclick=()=>{speak(c[0]);m1.sE=m1.sE===i?null:i;bG1();if(m1.sE!==null&&m1.sK!==null)ck1();};
+    const kd=document.createElement('div');
+    kd.className='cb kb'+(km?' mt':'')+(m1.sK===i?' sel':'');
+    kd.id='k1_'+i;
+    kd.innerHTML=`<span>${sg.chunks[ko][1]}</span><span class="mbadge">✓</span>`;
+    if(!km)kd.onclick=()=>{m1.sK=m1.sK===i?null:i;bG1();if(m1.sE!==null&&m1.sK!==null)ck1();};
+    g.appendChild(ed);g.appendChild(kd);
   });
 }
-
-function switchTab(n){
-  for(let i=1;i<=3;i++){
-    document.getElementById('sec'+i).classList.toggle('show', i===n);
-    document.querySelectorAll('.tab-btn')[i-1].classList.toggle(['a1','a2','a3'][i-1], i===n);
-    if(i!==n) document.querySelectorAll('.tab-btn')[i-1].classList.remove('a1','a2','a3');
-  }
+function ck1(){
+  const e=m1.sE,kp=m1.sK,ko=m1.ks[kp];
+  if(e===ko){m1.ok++;m1.mt.push({e,k:ko});m1.sE=null;m1.sK=null;bG1();uP1();if(m1.mt.length===PASSAGES[curP].sentences[m1.si].chunks.length)setTimeout(sd1,400);}
+  else{m1.ng++;uP1();flash('e1_'+e,'k1_'+kp);m1.sE=null;m1.sK=null;setTimeout(bG1,460);}
 }
-
-function initAll(){
-  initStep1();
-  initStep2();
-  initStep3();
+function sd1(){
+  const sg=PASSAGES[curP].sentences[m1.si],rv=document.getElementById('rv1');
+  rv.innerHTML=sg.chunks.map(c=>`<div class="ri"><div class="re">${c[0]}</div><div class="rk">→ ${c[1]}</div></div>`).join('');
+  rv.classList.add('show');
+  const TN=PASSAGES[curP].sentences.length;
+  const b=document.getElementById('nx1');b.style.display='block';
+  b.textContent=m1.si<TN-1?`다음 문장 (${m1.si+2}/${TN}) →`:'결과 보기 →';
+  setTimeout(()=>b.scrollIntoView({behavior:'smooth',block:'nearest'}),200);
 }
-
-// ---------- STEP 1: 영(클릭->음성)->한 매칭 ----------
-function initStep1(){
-  const p = getP();
-  const n = p.sentences.length;
-  state1.matched = new Set();
-  state1.wrong = 0;
-  state1.selectedEng = null;
-  const engOrder = shuffle([...Array(n).keys()]);
-  const korOrder = shuffle([...Array(n).keys()]);
-  state1.engOrder = engOrder;
-  state1.korOrder = korOrder;
-
-  const engCol = document.getElementById('eng1');
-  const korCol = document.getElementById('kor1');
-  engCol.innerHTML = '';
-  korCol.innerHTML = '';
-
-  engOrder.forEach(idx=>{
-    const div = document.createElement('div');
-    div.className = 'match-item eng';
-    div.innerHTML = '<span class="speak-icon">🔊</span>' + p.sentences[idx];
-    div.dataset.idx = idx;
-    div.onclick = ()=>selectEng1(idx, div);
-    engCol.appendChild(div);
+function nextS1(){
+  const TN=PASSAGES[curP].sentences.length;
+  m1.si++;
+  if(m1.si>=TN){
+    document.getElementById('g1').innerHTML='';document.getElementById('sh1').style.display='none';
+    document.getElementById('nx1').style.display='none';document.getElementById('rv1').classList.remove('show');
+    document.getElementById('pb1').style.width='100%';
+    document.getElementById('fs1').textContent=`정답 ${m1.ok} / 오답 ${m1.ng}`;
+    document.getElementById('fn1').classList.add('show');
+  }else{window.scrollTo({top:0,behavior:'smooth'});lS1();}
+}
+// ══ MODE 2 ══
+let m2={si:0,sK:null,sE:null,mt:[],es:[],ok:0,ng:0};
+function iM2(){m2.si=0;m2.ok=0;m2.ng=0;document.getElementById('fn2').classList.remove('show');lS2();}
+function lS2(){
+  const sg=PASSAGES[curP].sentences[m2.si];
+  m2.sK=null;m2.sE=null;m2.mt=[];
+  m2.es=shuffle(sg.chunks.map((_,i)=>i));
+  document.getElementById('nx2').style.display='none';
+  const rv=document.getElementById('rv2');rv.classList.remove('show');rv.innerHTML='';
+  uP2();bG2();
+}
+function uP2(){
+  const TN=PASSAGES[curP].sentences.length;
+  document.getElementById('pl2').textContent=`문장 ${m2.si+1}/${TN}`;
+  document.getElementById('pb2').style.width=((m2.si/TN)*100)+'%';
+  document.getElementById('o2').textContent=m2.ok;
+  document.getElementById('n2').textContent=m2.ng;
+}
+function bG2(){
+  const sg=PASSAGES[curP].sentences[m2.si],g=document.getElementById('g2');
+  g.innerHTML='<div class="col-lbl">🇰🇷 한국어 (순서대로)</div><div class="col-lbl">🔊 영어 (스크램블·클릭=음성)</div>';
+  sg.chunks.forEach((c,i)=>{
+    const km=m2.mt.find(m=>m.k===i),eo=m2.es[i],em=m2.mt.find(m=>m.e===eo);
+    const kd=document.createElement('div');
+    kd.className='cb kb'+(km?' mt':'')+(m2.sK===i?' sel':'');
+    kd.id='k2_'+i;
+    kd.innerHTML=`<span class="nb">${i+1}</span><span>${c[1]}</span><span class="mbadge">✓</span>`;
+    if(!km)kd.onclick=()=>{m2.sK=m2.sK===i?null:i;bG2();if(m2.sK!==null&&m2.sE!==null)ck2();};
+    const ed=document.createElement('div');
+    ed.className='cb eb'+(em?' mt':'')+(m2.sE===i?' sel':'');
+    ed.id='e2_'+i;
+    ed.innerHTML=`<span class="spk">🔊</span><span>${sg.chunks[eo][0]}</span><span class="mbadge">✓</span>`;
+    if(!em)ed.onclick=()=>{speak(sg.chunks[m2.es[i]][0]);m2.sE=m2.sE===i?null:i;bG2();if(m2.sK!==null&&m2.sE!==null)ck2();};
+    g.appendChild(kd);g.appendChild(ed);
   });
-  korOrder.forEach(idx=>{
-    const div = document.createElement('div');
-    div.className = 'match-item kor';
-    div.textContent = p.korean[idx];
-    div.dataset.idx = idx;
-    div.onclick = ()=>selectKor1(idx, div);
-    korCol.appendChild(div);
-  });
-
-  document.getElementById('o1').textContent = '0';
-  document.getElementById('n1').textContent = '0';
-  document.getElementById('rp1').classList.remove('show');
 }
-
-function selectEng1(idx, el){
-  if(el.classList.contains('matched')) return;
-  speak(getP().sentences[idx]);
-  document.querySelectorAll('#eng1 .match-item').forEach(e=>e.classList.remove('selected'));
-  el.classList.add('selected');
-  state1.selectedEng = idx;
+function ck2(){
+  const k=m2.sK,ep=m2.sE,eo=m2.es[ep];
+  if(k===eo){m2.ok++;m2.mt.push({k,e:eo});m2.sK=null;m2.sE=null;bG2();uP2();if(m2.mt.length===PASSAGES[curP].sentences[m2.si].chunks.length)setTimeout(sd2,400);}
+  else{m2.ng++;uP2();flash('k2_'+k,'e2_'+ep);m2.sK=null;m2.sE=null;setTimeout(bG2,460);}
 }
-
-function selectKor1(idx, el){
-  if(el.classList.contains('matched')) return;
-  if(state1.selectedEng === null) return;
-  const p = getP();
-  if(state1.selectedEng === idx){
-    document.querySelectorAll('#eng1 .match-item').forEach(e=>{
-      if(+e.dataset.idx === idx){ e.classList.add('matched'); e.classList.remove('selected'); }
-    });
-    el.classList.add('matched');
-    state1.matched.add(idx);
-    state1.selectedEng = null;
-    document.getElementById('o1').textContent = state1.matched.size;
-    if(state1.matched.size === p.sentences.length){
-      document.getElementById('rp1').classList.add('show');
-      document.getElementById('rs1').textContent = `정답 ${p.sentences.length} / 오답 ${state1.wrong}`;
-    }
-  } else {
-    state1.wrong++;
-    document.getElementById('n1').textContent = state1.wrong;
-    el.classList.add('wf');
-    setTimeout(()=>el.classList.remove('wf'), 450);
-  }
+function sd2(){
+  const sg=PASSAGES[curP].sentences[m2.si],rv=document.getElementById('rv2');
+  rv.innerHTML=sg.chunks.map(c=>`<div class="ri"><div class="rk">${c[1]}</div><div class="re">→ ${c[0]}</div></div>`).join('');
+  rv.classList.add('show');
+  const TN=PASSAGES[curP].sentences.length;
+  const b=document.getElementById('nx2');b.style.display='block';
+  b.textContent=m2.si<TN-1?`다음 문장 (${m2.si+2}/${TN}) →`:'결과 보기 →';
+  setTimeout(()=>b.scrollIntoView({behavior:'smooth',block:'nearest'}),200);
 }
-
-// ---------- STEP 2: 한(클릭)->영(클릭->음성) 매칭 ----------
-function initStep2(){
-  const p = getP();
-  const n = p.sentences.length;
-  state2.matched = new Set();
-  state2.wrong = 0;
-  state2.selectedKor = null;
-  const korOrder = shuffle([...Array(n).keys()]);
-  const engOrder = shuffle([...Array(n).keys()]);
-  state2.korOrder = korOrder;
-  state2.engOrder = engOrder;
-
-  const korCol = document.getElementById('kor2');
-  const engCol = document.getElementById('eng2');
-  korCol.innerHTML = '';
-  engCol.innerHTML = '';
-
-  korOrder.forEach(idx=>{
-    const div = document.createElement('div');
-    div.className = 'match-item kor';
-    div.textContent = p.korean[idx];
-    div.dataset.idx = idx;
-    div.onclick = ()=>selectKor2(idx, div);
-    korCol.appendChild(div);
-  });
-  engOrder.forEach(idx=>{
-    const div = document.createElement('div');
-    div.className = 'match-item eng';
-    div.innerHTML = '<span class="speak-icon">🔊</span>' + p.sentences[idx];
-    div.dataset.idx = idx;
-    div.onclick = ()=>selectEng2(idx, div);
-    engCol.appendChild(div);
-  });
-
-  document.getElementById('o2').textContent = '0';
-  document.getElementById('n2').textContent = '0';
-  document.getElementById('rp2').classList.remove('show');
+function nextS2(){
+  const TN=PASSAGES[curP].sentences.length;
+  m2.si++;
+  if(m2.si>=TN){
+    document.getElementById('g2').innerHTML='';document.getElementById('nx2').style.display='none';
+    document.getElementById('rv2').classList.remove('show');document.getElementById('pb2').style.width='100%';
+    document.getElementById('fs2').textContent=`정답 ${m2.ok} / 오답 ${m2.ng}`;
+    document.getElementById('fn2').classList.add('show');
+  }else{window.scrollTo({top:0,behavior:'smooth'});lS2();}
 }
-
-function selectKor2(idx, el){
-  if(el.classList.contains('matched')) return;
-  document.querySelectorAll('#kor2 .match-item').forEach(e=>e.classList.remove('selected'));
-  el.classList.add('selected');
-  state2.selectedKor = idx;
+// ══ MODE 3 ══
+let m3={si:0,cs:[],ok:0,ng:0};
+function iM3(){m3.si=0;m3.ok=0;m3.ng=0;document.getElementById('fn3').classList.remove('show');document.getElementById('ca3').style.display='';document.getElementById('asm3').style.display='';lS3();}
+function bSN(){
+  const TN=PASSAGES[curP].sentences.length;
+  document.getElementById('sn3').innerHTML=PASSAGES[curP].sentences.map((s,i)=>{
+    let c='snb';if(i===m3.si)c+=' act';else if(i<m3.si)c+=' dn';
+    return `<button class="${c}" onclick="jS3(${i})">${i+1}</button>`;
+  }).join('');
 }
-
-function selectEng2(idx, el){
-  if(el.classList.contains('matched')) return;
-  if(state2.selectedKor === null) return;
-  const p = getP();
-  speak(p.sentences[idx]);
-  if(state2.selectedKor === idx){
-    document.querySelectorAll('#kor2 .match-item').forEach(e=>{
-      if(+e.dataset.idx === idx){ e.classList.add('matched'); e.classList.remove('selected'); }
-    });
-    el.classList.add('matched');
-    state2.matched.add(idx);
-    state2.selectedKor = null;
-    document.getElementById('o2').textContent = state2.matched.size;
-    if(state2.matched.size === p.sentences.length){
-      document.getElementById('rp2').classList.add('show');
-      document.getElementById('rs2').textContent = `정답 ${p.sentences.length} / 오답 ${state2.wrong}`;
-    }
-  } else {
-    state2.wrong++;
-    document.getElementById('n2').textContent = state2.wrong;
-    el.classList.add('wf');
-    setTimeout(()=>el.classList.remove('wf'), 450);
-  }
+function jS3(i){m3.si=i;lS3();}
+function lS3(){
+  const sg=PASSAGES[curP].sentences[m3.si];
+  m3.cs=sg.chunks.map(c=>({ua:[],ans:false,ok:false,pool:shuffle(c[0].split(' ')),wrong:0,hintWi:null,hintAi:null}));
+  document.getElementById('nx3').style.display='none';
+  document.getElementById('fn3').classList.remove('show');
+  document.getElementById('ca3').style.display='';
+  document.getElementById('asm3').style.display='';
+  bSN();rA3();rC3();uP3();
 }
-
-// ---------- STEP 3: 문장별 어순배열 ----------
-function initStep3(){
-  const p = getP();
-  const area = document.getElementById('step3-area');
-  area.innerHTML = '';
-  document.getElementById('rp3').classList.remove('show');
-
-  state3.blocks = p.sentences.map((s,i)=>{
-    const words = s.split(' ');
-    return {
-      sentIdx: i,
-      words,
-      kor: p.korean[i],
-      filled: [],
-      order: shuffle(words.map((_,wi)=>wi)),
-      wrong: 0,
-      attemptsForSlot: 0,
-      done: false
-    };
-  });
-
-  document.getElementById('o3').textContent = '0';
-  document.getElementById('n3').textContent = '0';
-
-  state3.blocks.forEach((b, bi)=>{
-    const block = document.createElement('div');
-    block.className = 'sent-block';
-    block.innerHTML = `
-      <div class="order-lbl">문장 ${bi+1}</div>
-      <div class="ck-kor">${b.kor}</div>
-      <div class="hint-box" id="s3hb${bi}"><div class="hlbl">💡 힌트</div><div id="s3ht${bi}"></div></div>
-      <div class="answer-slots" id="s3as${bi}"></div>
-      <div class="word-pool" id="s3wp${bi}"></div>
-    `;
-    area.appendChild(block);
-  });
-
-  state3.blocks.forEach((b, bi)=> renderStep3(bi));
+function uP3(){
+  const TN=PASSAGES[curP].sentences.length;
+  document.getElementById('pl3').textContent=`문장 ${m3.si+1}/${TN}`;
+  document.getElementById('pb3').style.width=((m3.si/TN)*100)+'%';
+  document.getElementById('o3').textContent=m3.ok;
+  document.getElementById('n3').textContent=m3.ng;
 }
-
-function renderStep3(bi){
-  const b = state3.blocks[bi];
-  const slotsEl = document.getElementById('s3as'+bi);
-  const poolEl = document.getElementById('s3wp'+bi);
-
-  slotsEl.innerHTML = '';
-  const row = document.createElement('div');
-  row.className = 'slot' + (b.done ? ' correct':'') + (b.filled.length>0?' filled':'');
-  row.innerHTML = `<div class="slot-num">${bi+1}</div><div>${b.filled.map(idx=>b.words[idx]).join(' ') || '여기에 단어를 순서대로 배열하세요'}</div>`;
-  slotsEl.appendChild(row);
-
-  poolEl.innerHTML = '';
-  b.order.forEach(idx=>{
-    const btn = document.createElement('button');
-    btn.className = 'word-btn' + (b.filled.includes(idx) ? ' used':'');
-    btn.textContent = b.words[idx];
-    btn.onclick = ()=>handleStep3Choice(bi, idx);
-    poolEl.appendChild(btn);
-  });
-
-  document.getElementById('s3hb'+bi).classList.remove('show');
-  updateStep3Totals();
+function rA3(){
+  const sg=PASSAGES[curP].sentences[m3.si];
+  document.getElementById('ap3').innerHTML=sg.chunks.map((c,i)=>{
+    const st=m3.cs[i];
+    return st.ans&&st.ok?`<span class="ap dn">${c[0]}</span>`:`<span class="ap pd">[청크 ${i+1}]</span>`;
+  }).join('');
 }
-
-function updateStep3Totals(){
-  let correct = 0, wrong = 0;
-  state3.blocks.forEach(b=>{
-    correct += b.filled.length;
-    wrong += b.wrong;
-  });
-  document.getElementById('o3').textContent = correct;
-  document.getElementById('n3').textContent = wrong;
+function rC3(){
+  const sg=PASSAGES[curP].sentences[m3.si];
+  document.getElementById('ca3').innerHTML=sg.chunks.map((c,ci)=>{
+    const st=m3.cs[ci];
+    const ans=c[0].split(' ');
+    const prev=ci===0||(m3.cs[ci-1].ans&&m3.cs[ci-1].ok);
+    const lk=!prev&&!st.ans;
+    let cc='cc';
+    if(lk)cc+=' clk';else if(st.ans&&st.ok)cc+=' cok';else if(st.ans&&!st.ok)cc+=' cng';else cc+=' ca';
+    const azc='az'+(st.ans?(st.ok?' aok':' ang'):'');
+    const aH=st.ua.length===0?'<span class="azph">단어를 클릭해 배열하세요</span>'
+      :st.ua.map((wi,pi)=>`<span class="wc win" onclick="m3R(${ci},${pi})">${st.pool[wi]}</span>`).join('');
+    const pH=st.pool.map((w,wi)=>
+      `<span class="wc${st.ua.includes(wi)?' wpl':''}${wi===st.hintWi?' hint-blink':''}" id="w3_${ci}_${wi}" onclick="m3A(${ci},${wi})">${w}</span>`
+    ).join('');
+    let fb='';
+    if(st.ans)fb=`<div class="cfb ok show">✅ 정확해요!</div>`;
+    else if(st.hintWi!==null)fb=`<div class="cfb ng show">❌ 틀렸어요! 깜박이는 단어가 정답입니다.</div>`;
+    const dis=st.ans||lk?'disabled':'';
+    return `<div class="${cc}"><div class="ccn">CHUNK ${ci+1}/${sg.chunks.length}</div><div class="cck">${c[1]}</div><div class="${azc}" id="az3_${ci}">${aH}</div><div class="wp" id="wp3_${ci}">${pH}</div><div class="cbr"><button class="cbt cbcl" onclick="m3C(${ci})" ${dis}>초기화</button></div>${fb}</div>`;
+  }).join('');
 }
-
-function handleStep3Choice(bi, idx){
-  const b = state3.blocks[bi];
-  const nextSlot = b.filled.length;
-  if(nextSlot >= b.words.length) return;
-
-  if(idx === nextSlot){
-    b.filled.push(idx);
-    b.attemptsForSlot = 0;
-    renderStep3(bi);
-    if(b.filled.length === b.words.length){
-      b.done = true;
-      renderStep3(bi);
-      speak(b.words.join(' '));
-      checkAllStep3Done();
-    }
-  } else {
-    b.wrong++;
-    b.attemptsForSlot++;
-    updateStep3Totals();
-    const poolEl = document.getElementById('s3wp'+bi);
-    const btns = poolEl.querySelectorAll('.word-btn');
-    const orderIdx = b.order.indexOf(idx);
-    btns[orderIdx].classList.add('wf');
-    setTimeout(()=>btns[orderIdx].classList.remove('wf'), 450);
-
-    if(b.attemptsForSlot >= 2){
-      const hb = document.getElementById('s3hb'+bi);
-      const ht = document.getElementById('s3ht'+bi);
-      ht.textContent = '다음 단어: ' + b.words[nextSlot];
-      hb.classList.add('show');
-      const correctOrderIdx = b.order.indexOf(nextSlot);
-      btns[correctOrderIdx].classList.add('hint-show');
-    }
+function m3Complete(ci){
+  const s=m3.cs[ci];
+  s.ans=true;s.ok=true;s.hintWi=null;s.hintAi=null;m3.ok++;
+  uP3();rA3();rC3();
+  const TN=PASSAGES[curP].sentences.length;
+  if(m3.cs.every(x=>x.ans&&x.ok)){
+    const b=document.getElementById('nx3');b.style.display='block';
+    b.textContent=m3.si<TN-1?`다음 문장 (${m3.si+2}/${TN}) →`:'결과 보기 →';
+    setTimeout(()=>b.scrollIntoView({behavior:'smooth',block:'nearest'}),300);
   }
 }
-
-function checkAllStep3Done(){
-  if(state3.blocks.every(b=>b.done)){
-    const totalWrong = state3.blocks.reduce((s,b)=>s+b.wrong,0);
-    document.getElementById('rp3').classList.add('show');
-    document.getElementById('rs3').textContent = `완료! 오답 ${totalWrong}`;
+function m3A(ci,wi){
+  const s=m3.cs[ci];if(s.ans||s.ua.includes(wi))return;
+  const ans=PASSAGES[curP].sentences[m3.si].chunks[ci][0].split(' ');
+  const target=ans[s.ua.length];
+  if(s.pool[wi]===target){
+    s.ua.push(wi);s.hintWi=null;s.hintAi=null;
+    if(s.ua.length===s.pool.length){m3Complete(ci);return;}
+    m3U(ci);
+  }else{
+    m3.ng++;
+    const hi=s.pool.findIndex((w,idx)=>w===target&&!s.ua.includes(idx));
+    s.hintWi=hi>-1?hi:null;s.hintAi=null;
+    rC3();
+    flash('w3_'+ci+'_'+wi,'w3_'+ci+'_'+wi);
   }
 }
-
-function resetStep(step){
-  if(step===1) initStep1();
-  if(step===2) initStep2();
-  if(step===3) initStep3();
+function m3R(ci,pi){const s=m3.cs[ci];if(s.ans)return;s.ua.splice(pi,1);s.hintWi=null;s.hintAi=null;m3U(ci);}
+function m3C(ci){const s=m3.cs[ci];if(s.ans)return;s.ua=[];s.hintWi=null;s.hintAi=null;m3U(ci);}
+function m3U(ci){
+  const s=m3.cs[ci];
+  document.getElementById('az3_'+ci).innerHTML=s.ua.length===0?'<span class="azph">단어를 클릭해 배열하세요</span>'
+    :s.ua.map((wi,pi)=>`<span class="wc win" onclick="m3R(${ci},${pi})">${s.pool[wi]}</span>`).join('');
+  document.getElementById('wp3_'+ci).innerHTML=s.pool.map((w,wi)=>
+    `<span class="wc${s.ua.includes(wi)?' wpl':''}${wi===s.hintWi?' hint-blink':''}" id="w3_${ci}_${wi}" onclick="m3A(${ci},${wi})">${w}</span>`
+  ).join('');
 }
-
-function goNextPassage(){
-  if(curP < PASSAGES.length-1){
-    curP++;
-    initAll();
-    buildPnav();
-    switchTab(1);
-  } else {
-    alert('모든 지문을 완료했습니다! 🎉');
-  }
+function nextS3(){
+  const TN=PASSAGES[curP].sentences.length;
+  m3.si++;
+  if(m3.si>=TN){
+    document.getElementById('ca3').style.display='none';document.getElementById('asm3').style.display='none';
+    document.getElementById('nx3').style.display='none';document.getElementById('pb3').style.width='100%';
+    document.getElementById('fs3').textContent=`정답 ${m3.ok} / 오답 ${m3.ng}`;
+    document.getElementById('fn3').classList.add('show');
+  }else{window.scrollTo({top:0,behavior:'smooth'});lS3();}
 }
-
-buildPnav();
-initAll();
+function resetMode3(){document.getElementById('ca3').style.display='';document.getElementById('asm3').style.display='';iM3();}
+function resetAll(){iM1();iM2();iM3();switchTab(1);}
+buildPNav();
+iM1();iM2();iM3();
 </script>
 </body>
 </html>

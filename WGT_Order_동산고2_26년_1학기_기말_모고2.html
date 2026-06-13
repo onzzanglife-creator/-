@@ -290,7 +290,7 @@ function render(step){
     const item = st.items[idx];
     const btn = document.createElement('button');
     btn.className = 'choice-btn ' + item.cls + (st.filled.includes(idx) ? ' used':'');
-    btn.textContent = (item.label ? '['+item.label+'] ' : '') + item.text;
+    btn.textContent = item.text;
     btn.onclick = ()=>handleChoice(step, idx);
     choicesEl.appendChild(btn);
   });
@@ -340,7 +340,7 @@ function handleChoice(step, idx){
       const hb = document.getElementById('hb'+step);
       const ht = document.getElementById('ht'+step);
       const preview = correctItem.text.split(' ').slice(0,6).join(' ') + ' ...';
-      ht.textContent = (correctItem.label ? '['+correctItem.label+'] ' : '') + preview;
+      ht.textContent = preview;
       hb.classList.add('show');
       const correctOrderIdx = st.order.indexOf(nextSlot);
       btns[correctOrderIdx].classList.add('hint-show');
