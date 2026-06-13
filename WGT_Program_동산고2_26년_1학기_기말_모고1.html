@@ -412,4 +412,19 @@ function m3U(ci){
   ).join('');
 }
 function nextS3(){
-  const TN=PASSAGES[curP
+  const TN=PASSAGES[curP].sentences.length;
+  m3.si++;
+  if(m3.si>=TN){
+    document.getElementById('ca3').style.display='none';document.getElementById('asm3').style.display='none';
+    document.getElementById('nx3').style.display='none';document.getElementById('pb3').style.width='100%';
+    document.getElementById('fs3').textContent=`정답 ${m3.ok} / 오답 ${m3.ng}`;
+    document.getElementById('fn3').classList.add('show');
+  }else{window.scrollTo({top:0,behavior:'smooth'});lS3();}
+}
+function resetMode3(){document.getElementById('ca3').style.display='';document.getElementById('asm3').style.display='';iM3();}
+function resetAll(){iM1();iM2();iM3();switchTab(1);}
+buildPNav();
+iM1();iM2();iM3();
+</script>
+</body>
+</html>
