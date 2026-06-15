@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WGT 영어어순감각 마스터 프로그램 - 1형식</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#4C5FD5; --bg:#F5F6F8; --card:#FFFFFF; --text:#1E2233; --muted:#9AA1B1; --border:#E4E7ED;
+  --c-S:#4C7CF3; --c-V:#F0974A; --c-O:#9B5DE5; --c-C:#00BBA7; --c-M:#AEB4C2; --c-Q:#6E7A91; --c-success:#2FA86A; --danger:#E0524C;
+}
+*{box-sizing:border-box; font-family:'Noto Sans KR',sans-serif;}
+body{margin:0; background:var(--bg); color:var(--text);}
+.container{max-width:640px; margin:0 auto; padding:20px 16px 40px;}
+header{padding:18px 16px; text-align:center; background:var(--card); border-bottom:1px solid var(--border);}
+header h1{margin:0; font-size:17px; font-weight:700; letter-spacing:.02em;}
+.crumb{text-align:center; color:var(--muted); font-size:13px; margin-bottom:14px;}
+.card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:14px;}
+h2.title{font-size:16px; font-weight:700; text-align:center; margin:0 0 14px;}
+.pill-tabs{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:10px;}
+.pill{padding:7px 16px; border-radius:999px; border:1px solid var(--border); background:var(--card); cursor:pointer; font-size:14px; font-weight:600; color:var(--text);}
+.pill.active{background:var(--primary); color:#fff; border-color:var(--primary);}
+.pill.done{border-color:var(--c-success); color:var(--c-success);}
+.pill.active.done{background:var(--c-success); color:#fff; border-color:var(--c-success);}
+.verb-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:10px;}
+.verb-card{padding:16px 8px; text-align:center; border:1px solid var(--border); border-radius:12px; background:var(--card); font-family:'JetBrains Mono',monospace; font-weight:700; font-size:16px; cursor:pointer;}
+.verb-card.disabled{opacity:.35; cursor:default; background:var(--bg);}
+.verb-card.done{border-color:var(--c-success); color:var(--c-success);}
+.conj{text-align:center; font-family:'JetBrains Mono',monospace; font-size:19px; font-weight:700; color:var(--primary); margin-bottom:16px;}
+.section-label{text-align:center; font-size:12px; font-weight:700; color:var(--muted); margin:4px 0 8px;}
+.tense-box{background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:12px; margin-top:4px;}
+.progress{height:6px; background:var(--border); border-radius:3px; overflow:hidden; margin:10px 0;}
+.progress-bar{height:100%; background:var(--primary); width:0%; transition:width .25s;}
+.kor-sentence{font-size:20px; text-align:center; margin:18px 0; line-height:1.9; font-weight:600;}
+.kor-sentence span{padding:2px 6px; border-radius:6px;}
+.kor-sentence.colored span{color:#fff;}
+.role-S{background:var(--c-S);}
+.role-V{background:var(--c-V);}
+.role-O{background:var(--c-O);}
+.role-C{background:var(--c-C);}
+.role-M{background:var(--c-M);}
+.role-Q{background:var(--c-Q);}
+.answer-area{min-height:54px; border:2px dashed var(--border); border-radius:12px; padding:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px;}
+.pool-area{display:flex; gap:8px; flex-wrap:wrap; min-height:46px; padding:10px; border-radius:12px; background:var(--bg);}
+.chunk{padding:9px 14px; border-radius:8px; font-family:'JetBrains Mono',monospace; font-size:16px; cursor:pointer; user-select:none; color:#fff; background:var(--muted);}
+.chunk.colored.role-S{background:var(--c-S);}
+.chunk.colored.role-V{background:var(--c-V);}
+.chunk.colored.role-O{background:var(--c-O);}
+.chunk.colored.role-C{background:var(--c-C);}
+.chunk.colored.role-M{background:var(--c-M);}
+.chunk.colored.role-Q{background:var(--c-Q);}
+.chunk.revealed.role-S{background:var(--c-S);}
+.chunk.revealed.role-V{background:var(--c-V);}
+.chunk.revealed.role-O{background:var(--c-O);}
+.chunk.revealed.role-C{background:var(--c-C);}
+.chunk.revealed.role-M{background:var(--c-M);}
+.chunk.revealed.role-Q{background:var(--c-Q);}
+.chunk.wrong{border:3px solid var(--danger); animation:blinkBorder .8s ease-in-out infinite;}
+@keyframes blinkBorder{0%,100%{box-shadow:0 0 0 0 rgba(224,82,76,0);}50%{box-shadow:0 0 0 5px rgba(224,82,76,.55);}}
+.btn{padding:10px 22px; border:none; border-radius:10px; background:var(--primary); color:#fff; font-weight:700; cursor:pointer; margin:4px; font-size:14px;}
+.btn.secondary{background:var(--card); color:var(--text); border:1px solid var(--border);}
+.btn:disabled{opacity:.35; cursor:not-allowed;}
+.result-msg{text-align:center; font-size:15px; font-weight:700; min-height:22px; margin:8px 0;}
+.result-msg.correct{color:var(--c-success);}
+.result-msg.wrong{color:var(--danger);}
+.legend{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; font-size:12px; margin-bottom:14px;}
+.legend span{padding:2px 8px; border-radius:6px; color:#fff;}
+.actions{text-align:center; margin-top:10px;}
+.screen{display:none;}
+.screen.active{display:block;}
+</style>
+</head>
+<body>
+<header><h1>WGT 영어어순감각 마스터 프로그램</h1></header>
+<div class="container">
+
+<div class="screen active" id="screen-verbs">
+  <h2 class="title" id="formTitle"></h2>
+  <div class="verb-grid" id="verbList"></div>
+</div>
+
+<div class="screen" id="screen-level">
+  <button class="btn secondary" onclick="goVerbList()">← 동사 목록</button>
+  <div class="card">
+    <div class="conj" id="conjLine"></div>
+    <div class="section-label">1단계: 학습 난이도를 선택하세요.</div>
+    <div class="pill-tabs" id="levelTabs"></div>
+    <div class="tense-box">
+      <div class="section-label" id="tenseLabel">2단계 · 시제를 선택하면 문제가 시작됩니다</div>
+      <div class="pill-tabs" id="tenseTabs"></div>
+    </div>
+    <div class="progress"><div class="progress-bar" id="levelProgress"></div></div>
+  </div>
+</div>
+
+<div class="screen" id="screen-sentence">
+  <button class="btn secondary" onclick="backToLevel()">← 단계 선택</button>
+  <div class="legend" id="legend">
+    <span class="role-S">주어 S</span>
+    <span class="role-V">동사 V</span>
+    <span class="role-M">부가어 M</span>
+    <span class="role-Q">의문 Q</span>
+  </div>
+  <div class="progress"><div class="progress-bar" id="sentProgress"></div></div>
+  <p class="crumb" id="sentCounter"></p>
+  <div class="kor-sentence" id="korSentence"></div>
+  <div class="answer-area" id="answerArea"></div>
+  <div class="pool-area" id="poolArea"></div>
+  <div class="result-msg" id="resultMsg"></div>
+  <div class="actions">
+    <button class="btn" id="checkBtn" onclick="checkAnswer()">확인</button>
+    <button class="btn secondary" id="speakBtn" onclick="speakFull()" disabled>🔊 듣기</button>
+    <button class="btn" id="nextBtn" onclick="nextSentence()" disabled>다음 →</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+/* ===== SENTENCE GENERATOR ===== */
+function buildGoSentences(){
+  const TENSES=["현재","과거","미래"];
+  const groups = {
+    1: ["I","We","I","We","I","We","I","We","I"],
+    2: ["You","You","You","You","You","You","You","You","You"],
+    3: ["He","She","It","They","He","She","It","They","He"]
+  };
+  const subjKor = {
+    I:{stmt:"나는",q:"내가"}, We:{stmt:"우리는",q:"우리는"}, You:{stmt:"너는",q:"너는"},
+    He:{stmt:"그는",q:"그는"}, She:{stmt:"그녀는",q:"그녀는"}, It:{stmt:"그것은",q:"그것은"}, They:{stmt:"그들은",q:"그들은"}
+  };
+  const third = new Set(["He","She","It"]);
+
+  const M = {
+    장소: [["to school","학교에"],["to the park","공원에"],["home","집에"]],
+    방법: [["by bus","버스로"],["by bike","자전거로"],["on foot","걸어서"]],
+    시간: [["every day","매일"],["at 8","8시에"],["in the morning","아침에"]],
+    이유: [["to study","공부하러"],["for the meeting","회의 때문에"],["because of the rain","비 때문에"]]
+  };
+  const order = ["장소","방법","시간","이유"];
+  const pairs = [["장소","방법"],["장소","시간"],["방법","시간"],["장소","이유"],["시간","이유"],["방법","이유"]];
+
+  function polarityFor(idx){ return ["긍정","부정","의문"][idx%3]; }
+
+  function verbInfo(tense, polarity, subj){
+    const isThird = third.has(subj);
+    if(tense==="현재"){
+      if(polarity==="긍정") return {v: isThird? "goes":"go", q:null, korV: "간다."};
+      if(polarity==="부정") return {v: isThird? "doesn't go":"don't go", q:null, korV:"가지 않는다."};
+      return {v:"go", q: isThird? "Does":"Do", korV:"가니?"};
+    }
+    if(tense==="과거"){
+      if(polarity==="긍정") return {v:"went", q:null, korV:"갔다."};
+      if(polarity==="부정") return {v:"didn't go", q:null, korV:"가지 않았다."};
+      return {v:"go", q:"Did", korV:"갔니?"};
+    }
+    if(polarity==="긍정") return {v:"will go", q:null, korV:"갈 것이다."};
+    if(polarity==="부정") return {v:"won't go", q:null, korV:"가지 않을 것이다."};
+    return {v:"go", q:"Will", korV: subj==="You" ? "갈 거니?" : "갈까?"};
+  }
+
+  function buildBase(tense){
+    const sentences=[];
+    [1,2,3].forEach(g=>{
+      const subjs = groups[g];
+      for(let i=0;i<9;i++){
+        const subj = subjs[i];
+        const polarity = polarityFor(i);
+        const vi = verbInfo(tense, polarity, subj);
+        const isQ = polarity==="의문";
+        let subjEnFinal = subj;
+        if(isQ && subj!=="I") subjEnFinal = subj.charAt(0).toLowerCase()+subj.slice(1);
+        const sKor = isQ ? subjKor[subj].q : subjKor[subj].stmt;
+
+        let chunks, kor;
+        if(isQ){
+          chunks=[[vi.q,"Q"],[subjEnFinal,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        } else {
+          chunks=[[subj,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        }
+        sentences.push({subj, polarity, isQ, chunks, kor});
+      }
+    });
+    return sentences;
+  }
+
+  function finalizePunct(chunks, isQ){
+    const c = chunks.map(x=>[x[0],x[1]]);
+    const last = c[c.length-1];
+    last[0] = last[0] + (isQ ? "?" : ".");
+    return c;
+  }
+
+  function build기초(base){
+    return base.map(s=>{
+      const chunks = finalizePunct(s.chunks, s.isQ);
+      return {full: chunks.map(c=>c[0]).join(' '), kor: s.kor, chunks};
+    });
+  }
+
+  function build기본(base){
+    return base.map((s,idx)=>{
+      const cat = order[idx%4];
+      const phrase = M[cat][idx % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([phrase[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [phrase[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  function build도전(base){
+    return base.map((s,idx)=>{
+      const pair = pairs[idx % pairs.length];
+      const sorted = pair.slice().sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+      const cat1 = sorted[0], cat2 = sorted[1];
+      const p1 = M[cat1][idx % 3];
+      const p2 = M[cat2][(idx+1) % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([p1[0],"M"]);
+      chunks.push([p2[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [p2[1],"M"], [p1[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  const result = {기초:{}, 기본:{}, 도전:{}};
+  TENSES.forEach(tense=>{
+    const base = buildBase(tense);
+    result.기초[tense] = build기초(base);
+    result.기본[tense] = build기본(base);
+    result.도전[tense] = build도전(base);
+  });
+  return result;
+}
+
+function buildComeSentences(){
+  const TENSES=["현재","과거","미래"];
+  const groups = {
+    1: ["I","We","I","We","I","We","I","We","I"],
+    2: ["You","You","You","You","You","You","You","You","You"],
+    3: ["He","She","It","They","He","She","It","They","He"]
+  };
+  const subjKor = {
+    I:{stmt:"나는",q:"내가"}, We:{stmt:"우리는",q:"우리는"}, You:{stmt:"너는",q:"너는"},
+    He:{stmt:"그는",q:"그는"}, She:{stmt:"그녀는",q:"그녀는"}, It:{stmt:"그것은",q:"그것은"}, They:{stmt:"그들은",q:"그들은"}
+  };
+  const third = new Set(["He","She","It"]);
+
+  const M = {
+    장소: [["here","이리"],["to my house","우리 집에"],["to the party","파티에"]],
+    방법: [["by car","차로"],["by train","기차로"],["on foot","걸어서"]],
+    시간: [["every weekend","주말마다"],["at noon","정오에"],["after school","방과 후에"]],
+    이유: [["to see you","너를 보러"],["for dinner","저녁 식사 때문에"],["because of the snow","눈 때문에"]]
+  };
+  const order = ["장소","방법","시간","이유"];
+  const pairs = [["장소","방법"],["장소","시간"],["방법","시간"],["장소","이유"],["시간","이유"],["방법","이유"]];
+
+  function polarityFor(idx){ return ["긍정","부정","의문"][idx%3]; }
+
+  function verbInfo(tense, polarity, subj){
+    const isThird = third.has(subj);
+    if(tense==="현재"){
+      if(polarity==="긍정") return {v: isThird? "comes":"come", q:null, korV: "온다."};
+      if(polarity==="부정") return {v: isThird? "doesn't come":"don't come", q:null, korV:"오지 않는다."};
+      return {v:"come", q: isThird? "Does":"Do", korV:"오니?"};
+    }
+    if(tense==="과거"){
+      if(polarity==="긍정") return {v:"came", q:null, korV:"왔다."};
+      if(polarity==="부정") return {v:"didn't come", q:null, korV:"오지 않았다."};
+      return {v:"come", q:"Did", korV:"왔니?"};
+    }
+    if(polarity==="긍정") return {v:"will come", q:null, korV:"올 것이다."};
+    if(polarity==="부정") return {v:"won't come", q:null, korV:"오지 않을 것이다."};
+    return {v:"come", q:"Will", korV: subj==="You" ? "올 거니?" : "올까?"};
+  }
+
+  function buildBase(tense){
+    const sentences=[];
+    [1,2,3].forEach(g=>{
+      const subjs = groups[g];
+      for(let i=0;i<9;i++){
+        const subj = subjs[i];
+        const polarity = polarityFor(i);
+        const vi = verbInfo(tense, polarity, subj);
+        const isQ = polarity==="의문";
+        let subjEnFinal = subj;
+        if(isQ && subj!=="I") subjEnFinal = subj.charAt(0).toLowerCase()+subj.slice(1);
+        const sKor = isQ ? subjKor[subj].q : subjKor[subj].stmt;
+
+        let chunks, kor;
+        if(isQ){
+          chunks=[[vi.q,"Q"],[subjEnFinal,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        } else {
+          chunks=[[subj,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        }
+        sentences.push({subj, polarity, isQ, chunks, kor});
+      }
+    });
+    return sentences;
+  }
+
+  function finalizePunct(chunks, isQ){
+    const c = chunks.map(x=>[x[0],x[1]]);
+    const last = c[c.length-1];
+    last[0] = last[0] + (isQ ? "?" : ".");
+    return c;
+  }
+
+  function build기초(base){
+    return base.map(s=>{
+      const chunks = finalizePunct(s.chunks, s.isQ);
+      return {full: chunks.map(c=>c[0]).join(' '), kor: s.kor, chunks};
+    });
+  }
+
+  function build기본(base){
+    return base.map((s,idx)=>{
+      const cat = order[idx%4];
+      const phrase = M[cat][idx % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([phrase[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [phrase[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  function build도전(base){
+    return base.map((s,idx)=>{
+      const pair = pairs[idx % pairs.length];
+      const sorted = pair.slice().sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+      const cat1 = sorted[0], cat2 = sorted[1];
+      const p1 = M[cat1][idx % 3];
+      const p2 = M[cat2][(idx+1) % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([p1[0],"M"]);
+      chunks.push([p2[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [p2[1],"M"], [p1[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  const result = {기초:{}, 기본:{}, 도전:{}};
+  TENSES.forEach(tense=>{
+    const base = buildBase(tense);
+    result.기초[tense] = build기초(base);
+    result.기본[tense] = build기본(base);
+    result.도전[tense] = build도전(base);
+  });
+  return result;
+}
+
+function buildRunSentences(){
+  const TENSES=["현재","과거","미래"];
+  const groups = {
+    1: ["I","We","I","We","I","We","I","We","I"],
+    2: ["You","You","You","You","You","You","You","You","You"],
+    3: ["He","She","It","They","He","She","It","They","He"]
+  };
+  const subjKor = {
+    I:{stmt:"나는",q:"내가"}, We:{stmt:"우리는",q:"우리는"}, You:{stmt:"너는",q:"너는"},
+    He:{stmt:"그는",q:"그는"}, She:{stmt:"그녀는",q:"그녀는"}, It:{stmt:"그것은",q:"그것은"}, They:{stmt:"그들은",q:"그들은"}
+  };
+  const third = new Set(["He","She","It"]);
+
+  const M = {
+    장소: [["in the park","공원에서"],["on the track","트랙에서"],["along the river","강변을 따라"]],
+    방법: [["very fast","아주 빨리"],["with friends","친구들과"],["barefoot","맨발로"]],
+    시간: [["every morning","매일 아침"],["after dinner","저녁 식사 후에"],["on weekends","주말에"]],
+    이유: [["to stay healthy","건강을 위해"],["for the race","경주를 위해"],["because of the rain","비 때문에"]]
+  };
+  const order = ["장소","방법","시간","이유"];
+  const pairs = [["장소","방법"],["장소","시간"],["방법","시간"],["장소","이유"],["시간","이유"],["방법","이유"]];
+
+  function polarityFor(idx){ return ["긍정","부정","의문"][idx%3]; }
+
+  function verbInfo(tense, polarity, subj){
+    const isThird = third.has(subj);
+    if(tense==="현재"){
+      if(polarity==="긍정") return {v: isThird? "runs":"run", q:null, korV: "달린다."};
+      if(polarity==="부정") return {v: isThird? "doesn't run":"don't run", q:null, korV:"달리지 않는다."};
+      return {v:"run", q: isThird? "Does":"Do", korV:"달리니?"};
+    }
+    if(tense==="과거"){
+      if(polarity==="긍정") return {v:"ran", q:null, korV:"달렸다."};
+      if(polarity==="부정") return {v:"didn't run", q:null, korV:"달리지 않았다."};
+      return {v:"run", q:"Did", korV:"달렸니?"};
+    }
+    if(polarity==="긍정") return {v:"will run", q:null, korV:"달릴 것이다."};
+    if(polarity==="부정") return {v:"won't run", q:null, korV:"달리지 않을 것이다."};
+    return {v:"run", q:"Will", korV: subj==="You" ? "달릴 거니?" : "달릴까?"};
+  }
+
+  function buildBase(tense){
+    const sentences=[];
+    [1,2,3].forEach(g=>{
+      const subjs = groups[g];
+      for(let i=0;i<9;i++){
+        const subj = subjs[i];
+        const polarity = polarityFor(i);
+        const vi = verbInfo(tense, polarity, subj);
+        const isQ = polarity==="의문";
+        let subjEnFinal = subj;
+        if(isQ && subj!=="I") subjEnFinal = subj.charAt(0).toLowerCase()+subj.slice(1);
+        const sKor = isQ ? subjKor[subj].q : subjKor[subj].stmt;
+
+        let chunks, kor;
+        if(isQ){
+          chunks=[[vi.q,"Q"],[subjEnFinal,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        } else {
+          chunks=[[subj,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        }
+        sentences.push({subj, polarity, isQ, chunks, kor});
+      }
+    });
+    return sentences;
+  }
+
+  function finalizePunct(chunks, isQ){
+    const c = chunks.map(x=>[x[0],x[1]]);
+    const last = c[c.length-1];
+    last[0] = last[0] + (isQ ? "?" : ".");
+    return c;
+  }
+
+  function build기초(base){
+    return base.map(s=>{
+      const chunks = finalizePunct(s.chunks, s.isQ);
+      return {full: chunks.map(c=>c[0]).join(' '), kor: s.kor, chunks};
+    });
+  }
+
+  function build기본(base){
+    return base.map((s,idx)=>{
+      const cat = order[idx%4];
+      const phrase = M[cat][idx % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([phrase[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [phrase[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  function build도전(base){
+    return base.map((s,idx)=>{
+      const pair = pairs[idx % pairs.length];
+      const sorted = pair.slice().sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+      const cat1 = sorted[0], cat2 = sorted[1];
+      const p1 = M[cat1][idx % 3];
+      const p2 = M[cat2][(idx+1) % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([p1[0],"M"]);
+      chunks.push([p2[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [p2[1],"M"], [p1[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  const result = {기초:{}, 기본:{}, 도전:{}};
+  TENSES.forEach(tense=>{
+    const base = buildBase(tense);
+    result.기초[tense] = build기초(base);
+    result.기본[tense] = build기본(base);
+    result.도전[tense] = build도전(base);
+  });
+  return result;
+}
+
+function buildWalkSentences(){
+  const TENSES=["현재","과거","미래"];
+  const groups = {
+    1: ["I","We","I","We","I","We","I","We","I"],
+    2: ["You","You","You","You","You","You","You","You","You"],
+    3: ["He","She","It","They","He","She","It","They","He"]
+  };
+  const subjKor = {
+    I:{stmt:"나는",q:"내가"}, We:{stmt:"우리는",q:"우리는"}, You:{stmt:"너는",q:"너는"},
+    He:{stmt:"그는",q:"그는"}, She:{stmt:"그녀는",q:"그녀는"}, It:{stmt:"그것은",q:"그것은"}, They:{stmt:"그들은",q:"그들은"}
+  };
+  const third = new Set(["He","She","It"]);
+
+  const M = {
+    장소: [["in the park","공원에서"],["along the street","거리를 따라"],["to the station","역까지"]],
+    방법: [["slowly","천천히"],["with my dog","내 강아지와"],["hand in hand","손을 잡고"]],
+    시간: [["every evening","매일 저녁"],["after lunch","점심 후에"],["at sunset","해질 무렵에"]],
+    이유: [["for exercise","운동을 위해"],["to clear my mind","머리를 식히려고"],["because of the traffic","교통 때문에"]]
+  };
+  const order = ["장소","방법","시간","이유"];
+  const pairs = [["장소","방법"],["장소","시간"],["방법","시간"],["장소","이유"],["시간","이유"],["방법","이유"]];
+
+  function polarityFor(idx){ return ["긍정","부정","의문"][idx%3]; }
+
+  function verbInfo(tense, polarity, subj){
+    const isThird = third.has(subj);
+    if(tense==="현재"){
+      if(polarity==="긍정") return {v: isThird? "walks":"walk", q:null, korV: "걷는다."};
+      if(polarity==="부정") return {v: isThird? "doesn't walk":"don't walk", q:null, korV:"걷지 않는다."};
+      return {v:"walk", q: isThird? "Does":"Do", korV:"걷니?"};
+    }
+    if(tense==="과거"){
+      if(polarity==="긍정") return {v:"walked", q:null, korV:"걸었다."};
+      if(polarity==="부정") return {v:"didn't walk", q:null, korV:"걷지 않았다."};
+      return {v:"walk", q:"Did", korV:"걸었니?"};
+    }
+    if(polarity==="긍정") return {v:"will walk", q:null, korV:"걸을 것이다."};
+    if(polarity==="부정") return {v:"won't walk", q:null, korV:"걷지 않을 것이다."};
+    return {v:"walk", q:"Will", korV: subj==="You" ? "걸을 거니?" : "걸을까?"};
+  }
+
+  function buildBase(tense){
+    const sentences=[];
+    [1,2,3].forEach(g=>{
+      const subjs = groups[g];
+      for(let i=0;i<9;i++){
+        const subj = subjs[i];
+        const polarity = polarityFor(i);
+        const vi = verbInfo(tense, polarity, subj);
+        const isQ = polarity==="의문";
+        let subjEnFinal = subj;
+        if(isQ && subj!=="I") subjEnFinal = subj.charAt(0).toLowerCase()+subj.slice(1);
+        const sKor = isQ ? subjKor[subj].q : subjKor[subj].stmt;
+
+        let chunks, kor;
+        if(isQ){
+          chunks=[[vi.q,"Q"],[subjEnFinal,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        } else {
+          chunks=[[subj,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        }
+        sentences.push({subj, polarity, isQ, chunks, kor});
+      }
+    });
+    return sentences;
+  }
+
+  function finalizePunct(chunks, isQ){
+    const c = chunks.map(x=>[x[0],x[1]]);
+    const last = c[c.length-1];
+    last[0] = last[0] + (isQ ? "?" : ".");
+    return c;
+  }
+
+  function build기초(base){
+    return base.map(s=>{
+      const chunks = finalizePunct(s.chunks, s.isQ);
+      return {full: chunks.map(c=>c[0]).join(' '), kor: s.kor, chunks};
+    });
+  }
+
+  function build기본(base){
+    return base.map((s,idx)=>{
+      const cat = order[idx%4];
+      const phrase = M[cat][idx % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([phrase[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [phrase[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  function build도전(base){
+    return base.map((s,idx)=>{
+      const pair = pairs[idx % pairs.length];
+      const sorted = pair.slice().sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+      const cat1 = sorted[0], cat2 = sorted[1];
+      const p1 = M[cat1][idx % 3];
+      const p2 = M[cat2][(idx+1) % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([p1[0],"M"]);
+      chunks.push([p2[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [p2[1],"M"], [p1[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  const result = {기초:{}, 기본:{}, 도전:{}};
+  TENSES.forEach(tense=>{
+    const base = buildBase(tense);
+    result.기초[tense] = build기초(base);
+    result.기본[tense] = build기본(base);
+    result.도전[tense] = build도전(base);
+  });
+  return result;
+}
+
+function buildLiveSentences(){
+  const TENSES=["현재","과거","미래"];
+  const groups = {
+    1: ["I","We","I","We","I","We","I","We","I"],
+    2: ["You","You","You","You","You","You","You","You","You"],
+    3: ["He","She","It","They","He","She","It","They","He"]
+  };
+  const subjKor = {
+    I:{stmt:"나는",q:"내가"}, We:{stmt:"우리는",q:"우리는"}, You:{stmt:"너는",q:"너는"},
+    He:{stmt:"그는",q:"그는"}, She:{stmt:"그녀는",q:"그녀는"}, It:{stmt:"그것은",q:"그것은"}, They:{stmt:"그들은",q:"그들은"}
+  };
+  const third = new Set(["He","She","It"]);
+
+  const M = {
+    장소: [["in Seoul","서울에"],["near the school","학교 근처에"],["in an apartment","아파트에"]],
+    방법: [["alone","혼자"],["with their family","가족과 함께"],["happily","행복하게"]],
+    시간: [["these days","요즘"],["since 2020","2020년부터"],["for ten years","10년 동안"]],
+    이유: [["for work","일 때문에"],["to be near school","학교 가까이 있으려고"],["because of their job","직장 때문에"]]
+  };
+  const order = ["장소","방법","시간","이유"];
+  const pairs = [["장소","방법"],["장소","시간"],["방법","시간"],["장소","이유"],["시간","이유"],["방법","이유"]];
+
+  function polarityFor(idx){ return ["긍정","부정","의문"][idx%3]; }
+
+  function verbInfo(tense, polarity, subj){
+    const isThird = third.has(subj);
+    if(tense==="현재"){
+      if(polarity==="긍정") return {v: isThird? "lives":"live", q:null, korV: "산다."};
+      if(polarity==="부정") return {v: isThird? "doesn't live":"don't live", q:null, korV:"살지 않는다."};
+      return {v:"live", q: isThird? "Does":"Do", korV:"사니?"};
+    }
+    if(tense==="과거"){
+      if(polarity==="긍정") return {v:"lived", q:null, korV:"살았다."};
+      if(polarity==="부정") return {v:"didn't live", q:null, korV:"살지 않았다."};
+      return {v:"live", q:"Did", korV:"살았니?"};
+    }
+    if(polarity==="긍정") return {v:"will live", q:null, korV:"살 것이다."};
+    if(polarity==="부정") return {v:"won't live", q:null, korV:"살지 않을 것이다."};
+    return {v:"live", q:"Will", korV: subj==="You" ? "살 거니?" : "살까?"};
+  }
+
+  function buildBase(tense){
+    const sentences=[];
+    [1,2,3].forEach(g=>{
+      const subjs = groups[g];
+      for(let i=0;i<9;i++){
+        const subj = subjs[i];
+        const polarity = polarityFor(i);
+        const vi = verbInfo(tense, polarity, subj);
+        const isQ = polarity==="의문";
+        let subjEnFinal = subj;
+        if(isQ && subj!=="I") subjEnFinal = subj.charAt(0).toLowerCase()+subj.slice(1);
+        const sKor = isQ ? subjKor[subj].q : subjKor[subj].stmt;
+
+        let chunks, kor;
+        if(isQ){
+          chunks=[[vi.q,"Q"],[subjEnFinal,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        } else {
+          chunks=[[subj,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        }
+        sentences.push({subj, polarity, isQ, chunks, kor});
+      }
+    });
+    return sentences;
+  }
+
+  function finalizePunct(chunks, isQ){
+    const c = chunks.map(x=>[x[0],x[1]]);
+    const last = c[c.length-1];
+    last[0] = last[0] + (isQ ? "?" : ".");
+    return c;
+  }
+
+  function build기초(base){
+    return base.map(s=>{
+      const chunks = finalizePunct(s.chunks, s.isQ);
+      return {full: chunks.map(c=>c[0]).join(' '), kor: s.kor, chunks};
+    });
+  }
+
+  function build기본(base){
+    return base.map((s,idx)=>{
+      const cat = order[idx%4];
+      const phrase = M[cat][idx % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([phrase[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [phrase[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  function build도전(base){
+    return base.map((s,idx)=>{
+      const pair = pairs[idx % pairs.length];
+      const sorted = pair.slice().sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+      const cat1 = sorted[0], cat2 = sorted[1];
+      const p1 = M[cat1][idx % 3];
+      const p2 = M[cat2][(idx+1) % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([p1[0],"M"]);
+      chunks.push([p2[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [p2[1],"M"], [p1[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  const result = {기초:{}, 기본:{}, 도전:{}};
+  TENSES.forEach(tense=>{
+    const base = buildBase(tense);
+    result.기초[tense] = build기초(base);
+    result.기본[tense] = build기본(base);
+    result.도전[tense] = build도전(base);
+  });
+  return result;
+}
+
+function buildWorkSentences(){
+  const TENSES=["현재","과거","미래"];
+  const groups = {
+    1: ["I","We","I","We","I","We","I","We","I"],
+    2: ["You","You","You","You","You","You","You","You","You"],
+    3: ["He","She","It","They","He","She","It","They","He"]
+  };
+  const subjKor = {
+    I:{stmt:"나는",q:"내가"}, We:{stmt:"우리는",q:"우리는"}, You:{stmt:"너는",q:"너는"},
+    He:{stmt:"그는",q:"그는"}, She:{stmt:"그녀는",q:"그녀는"}, It:{stmt:"그것은",q:"그것은"}, They:{stmt:"그들은",q:"그들은"}
+  };
+  const third = new Set(["He","She","It"]);
+
+  const M = {
+    장소: [["at a hospital","병원에서"],["from home","집에서"],["in an office","사무실에서"]],
+    방법: [["hard","열심히"],["as a team","팀으로"],["part-time","파트타임으로"]],
+    시간: [["every day","매일"],["until late","늦게까지"],["on weekdays","평일에"]],
+    이유: [["to earn money","돈을 벌려고"],["for the project","프로젝트 때문에"],["because of the deadline","마감 때문에"]]
+  };
+  const order = ["장소","방법","시간","이유"];
+  const pairs = [["장소","방법"],["장소","시간"],["방법","시간"],["장소","이유"],["시간","이유"],["방법","이유"]];
+
+  function polarityFor(idx){ return ["긍정","부정","의문"][idx%3]; }
+
+  function verbInfo(tense, polarity, subj){
+    const isThird = third.has(subj);
+    if(tense==="현재"){
+      if(polarity==="긍정") return {v: isThird? "works":"work", q:null, korV: "일한다."};
+      if(polarity==="부정") return {v: isThird? "doesn't work":"don't work", q:null, korV:"일하지 않는다."};
+      return {v:"work", q: isThird? "Does":"Do", korV:"일하니?"};
+    }
+    if(tense==="과거"){
+      if(polarity==="긍정") return {v:"worked", q:null, korV:"일했다."};
+      if(polarity==="부정") return {v:"didn't work", q:null, korV:"일하지 않았다."};
+      return {v:"work", q:"Did", korV:"일했니?"};
+    }
+    if(polarity==="긍정") return {v:"will work", q:null, korV:"일할 것이다."};
+    if(polarity==="부정") return {v:"won't work", q:null, korV:"일하지 않을 것이다."};
+    return {v:"work", q:"Will", korV: subj==="You" ? "일할 거니?" : "일할까?"};
+  }
+
+  function buildBase(tense){
+    const sentences=[];
+    [1,2,3].forEach(g=>{
+      const subjs = groups[g];
+      for(let i=0;i<9;i++){
+        const subj = subjs[i];
+        const polarity = polarityFor(i);
+        const vi = verbInfo(tense, polarity, subj);
+        const isQ = polarity==="의문";
+        let subjEnFinal = subj;
+        if(isQ && subj!=="I") subjEnFinal = subj.charAt(0).toLowerCase()+subj.slice(1);
+        const sKor = isQ ? subjKor[subj].q : subjKor[subj].stmt;
+
+        let chunks, kor;
+        if(isQ){
+          chunks=[[vi.q,"Q"],[subjEnFinal,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        } else {
+          chunks=[[subj,"S"],[vi.v,"V"]];
+          kor=[[sKor,"S"],[vi.korV,"V"]];
+        }
+        sentences.push({subj, polarity, isQ, chunks, kor});
+      }
+    });
+    return sentences;
+  }
+
+  function finalizePunct(chunks, isQ){
+    const c = chunks.map(x=>[x[0],x[1]]);
+    const last = c[c.length-1];
+    last[0] = last[0] + (isQ ? "?" : ".");
+    return c;
+  }
+
+  function build기초(base){
+    return base.map(s=>{
+      const chunks = finalizePunct(s.chunks, s.isQ);
+      return {full: chunks.map(c=>c[0]).join(' '), kor: s.kor, chunks};
+    });
+  }
+
+  function build기본(base){
+    return base.map((s,idx)=>{
+      const cat = order[idx%4];
+      const phrase = M[cat][idx % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([phrase[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [phrase[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  function build도전(base){
+    return base.map((s,idx)=>{
+      const pair = pairs[idx % pairs.length];
+      const sorted = pair.slice().sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+      const cat1 = sorted[0], cat2 = sorted[1];
+      const p1 = M[cat1][idx % 3];
+      const p2 = M[cat2][(idx+1) % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([p1[0],"M"]);
+      chunks.push([p2[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [sKor, [p2[1],"M"], [p1[1],"M"], vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  const result = {기초:{}, 기본:{}, 도전:{}};
+  TENSES.forEach(tense=>{
+    const base = buildBase(tense);
+    result.기초[tense] = build기초(base);
+    result.기본[tense] = build기본(base);
+    result.도전[tense] = build도전(base);
+  });
+  return result;
+}
+
+function buildBeSentences(){
+  const TENSES=["현재","과거","미래"];
+
+  // 9 noun phrases (긍정 set), with countability
+  const NP_POS = [
+    {en:"an apple", kor:"사과가", plural:false},
+    {en:"a book", kor:"책이", plural:false},
+    {en:"two pens", kor:"펜 두 개가", plural:true},
+    {en:"three students", kor:"학생 세 명이", plural:true},
+    {en:"some chairs", kor:"의자 몇 개가", plural:true},
+    {en:"a cat", kor:"고양이가", plural:false},
+    {en:"four cars", kor:"자동차 네 대가", plural:true},
+    {en:"some water", kor:"물이", plural:false},
+    {en:"five trees", kor:"나무 다섯 그루가", plural:true}
+  ];
+  // 부정/의문 set: swap quantifiers to "any"
+  const NP_NEG = [
+    {en:"an apple", kor:"사과가", plural:false},
+    {en:"a book", kor:"책이", plural:false},
+    {en:"any pens", kor:"펜이", plural:true},
+    {en:"any students", kor:"학생이", plural:true},
+    {en:"any chairs", kor:"의자가", plural:true},
+    {en:"a cat", kor:"고양이가", plural:false},
+    {en:"any cars", kor:"자동차가", plural:true},
+    {en:"any water", kor:"물이", plural:false},
+    {en:"any trees", kor:"나무가", plural:true}
+  ];
+
+  // 명사 카테고리: 0=사람, 1=동물, 2=사물 (index는 NP_POS/NP_NEG와 동일 순서)
+  const NP_CAT = ["사물","사물","사물","사람","사물","동물","사물","사물","사물"];
+  const M장소_BY_CAT = {
+    "사람": [["in the classroom","교실에"],["in the room","방에"],["on the playground","운동장에"]],
+    "동물": [["at the zoo","동물원에"],["in the jungle","정글에"],["on the mountain","산에"]],
+    "사물": [["in the box","상자 안에"],["on the shelf","선반에"],["on the table","탁자 위에"]]
+  };
+  const M이유 = [["for the party","파티 때문에"],["for the trip","여행 때문에"],["for the meeting","회의 때문에"]];
+
+  function verbFor(tense, polarity, plural){
+    if(tense==="현재"){
+      if(polarity==="긍정") return {chunks:[plural?"are":"is"], korV:"있다."};
+      if(polarity==="부정") return {chunks:[plural?"aren't":"isn't"], korV:"없다."};
+      return {chunks:[plural?"Are":"Is"], korV:"있니?"};
+    }
+    if(tense==="과거"){
+      if(polarity==="긍정") return {chunks:[plural?"were":"was"], korV:"있었다."};
+      if(polarity==="부정") return {chunks:[plural?"weren't":"wasn't"], korV:"없었다."};
+      return {chunks:[plural?"Were":"Was"], korV:"있었니?"};
+    }
+    // 미래
+    if(polarity==="긍정") return {chunks:["will be"], korV:"있을 것이다."};
+    if(polarity==="부정") return {chunks:["won't be"], korV:"없을 것이다."};
+    return {chunks:["Will","be"], korV:"있을까?"};
+  }
+
+  function buildBase(tense){
+    const sentences=[];
+    ["긍정","부정","의문"].forEach(polarity=>{
+      const NP = polarity==="긍정" ? NP_POS : NP_NEG;
+      for(let i=0;i<9;i++){
+        const np = NP[i];
+        const isQ = polarity==="의문";
+        const vi = verbFor(tense, polarity, np.plural);
+
+        let chunks;
+        if(isQ){
+          if(tense==="미래"){
+            // [Will,V] [there,Q] [be,V] [NP,S]
+            chunks = [[vi.chunks[0],"V"], ["there","Q"], [vi.chunks[1],"V"], [np.en,"S"]];
+          } else {
+            // [V,V] [there,Q] [NP,S]
+            chunks = [[vi.chunks[0],"V"], ["there","Q"], [np.en,"S"]];
+          }
+        } else {
+          // [There,Q] [V,V] [NP,S]
+          chunks = [["There","Q"], [vi.chunks[0],"V"], [np.en,"S"]];
+        }
+        const kor = [[np.kor,"S"], [vi.korV,"V"]];
+        sentences.push({np, polarity, isQ, chunks, kor});
+      }
+    });
+    return sentences;
+  }
+
+  function finalizePunct(chunks, isQ){
+    const c = chunks.map(x=>[x[0],x[1]]);
+    const last = c[c.length-1];
+    last[0] = last[0] + (isQ ? "?" : ".");
+    return c;
+  }
+
+  function build기초(base){
+    return base.map(s=>{
+      const chunks = finalizePunct(s.chunks, s.isQ);
+      return {full: chunks.map(c=>c[0]).join(' '), kor: s.kor, chunks};
+    });
+  }
+
+  function build기본(base){
+    return base.map((s,idx)=>{
+      const npIdx = idx % 9;
+      const cat = NP_CAT[npIdx];
+      const pool = M장소_BY_CAT[cat];
+      const m = pool[idx % pool.length];
+      let chunks = s.chunks.slice();
+      chunks.push([m[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [[m[1],"M"], sKor, vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  function build도전(base){
+    return base.map((s,idx)=>{
+      const npIdx = idx % 9;
+      const cat = NP_CAT[npIdx];
+      const pool = M장소_BY_CAT[cat];
+      const m1 = pool[(idx+1) % pool.length];
+      const m2 = M이유[idx % 3];
+      let chunks = s.chunks.slice();
+      chunks.push([m1[0],"M"]);
+      chunks.push([m2[0],"M"]);
+      chunks = finalizePunct(chunks, s.isQ);
+      const sKor = s.kor[0];
+      const vKor = s.kor[s.kor.length-1];
+      const kor = [[m2[1],"M"], [m1[1],"M"], sKor, vKor];
+      return {full: chunks.map(c=>c[0]).join(' '), kor, chunks};
+    });
+  }
+
+  const result = {기초:{}, 기본:{}, 도전:{}};
+  TENSES.forEach(tense=>{
+    const base = buildBase(tense);
+    result.기초[tense] = build기초(base);
+    result.기본[tense] = build기본(base);
+    result.도전[tense] = build도전(base);
+  });
+  return result;
+}
+
+/* ===== DATA ===== */
+const PATTERNS = [
+  {
+    form: "1형식",
+    verbs: [
+      {
+        verb: "go", label: "go", conj: "go – went – gone",
+...buildGoSentences()
+      },
+      {
+        verb: "come", label: "come", conj: "come – came – come",
+        ...buildComeSentences()
+      },
+      {
+        verb: "run", label: "run", conj: "run – ran – run",
+        ...buildRunSentences()
+      },
+      {
+        verb: "walk", label: "walk", conj: "walk – walked – walked",
+        ...buildWalkSentences()
+      },
+      {
+        verb: "live", label: "live", conj: "live – lived – lived",
+        ...buildLiveSentences()
+      },
+      {
+        verb: "work", label: "work", conj: "work – worked – worked",
+        ...buildWorkSentences()
+      },
+      {
+        verb:"be", label:"be", conj:"be – was/were – been (there is/are 구문)",
+        ...buildBeSentences()
+      }
+    ]
+  }
+];
+
+const LEVELS = ["기초","기본","도전"];
+const TENSES = ["현재","과거","미래"];
+
+/* ===== TTS ===== */
+let voice=null;
+function loadVoice(){
+  const vs=speechSynthesis.getVoices();
+  voice = vs.find(v=>v.lang==='en-US') || vs.find(v=>v.lang && v.lang.startsWith('en')) || null;
+}
+if (typeof speechSynthesis !== 'undefined'){
+  speechSynthesis.onvoiceschanged = loadVoice;
+  loadVoice();
+}
+function speak(t){
+  if (typeof speechSynthesis === 'undefined') return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);
+  if(voice) u.voice=voice;
+  u.lang='en-US';
+  speechSynthesis.speak(u);
+}
+
+/* ===== STATE ===== */
+let state = { formIdx:0, verbIdx:null, level:null, tense:null, sentIdx:0, current:null, placed:[], pool:[] };
+
+function shuffle(a){
+  const r=[...a];
+  for(let i=r.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [r[i],r[j]]=[r[j],r[i]];
+  }
+  return r;
+}
+
+/* ===== SCREEN HELPERS ===== */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ===== VERB LIST ===== */
+function renderVerbList(){
+  const f=PATTERNS[state.formIdx];
+  document.getElementById('formTitle').textContent = f.form + ' – 대표동사';
+  const el=document.getElementById('verbList');
+  el.innerHTML='';
+  f.verbs.forEach((v,vi)=>{
+    const b=document.createElement('div');
+    let cls='verb-card';
+    if(!v.기초) cls+=' disabled';
+    if(v.done) cls+=' done';
+    b.className=cls;
+    b.textContent=v.label;
+    if(v.기초) b.onclick=()=>selectVerb(vi);
+    el.appendChild(b);
+  });
+}
+function goVerbList(){
+  renderVerbList();
+  showScreen('screen-verbs');
+}
+
+/* ===== LEVEL / TENSE SCREEN ===== */
+function selectVerb(vi){
+  state.verbIdx=vi;
+  const v=PATTERNS[state.formIdx].verbs[vi];
+  if(!v.progress){
+    v.progress = {};
+    LEVELS.forEach(l=>{ v.progress[l]={}; TENSES.forEach(t=>v.progress[l][t]=false); });
+  }
+  state.level = '기초';
+  renderLevelScreen();
+  showScreen('screen-level');
+}
+function levelDone(v,l){
+  return TENSES.every(t=>v.progress[l][t]);
+}
+function renderLevelScreen(){
+  const v=PATTERNS[state.formIdx].verbs[state.verbIdx];
+  document.getElementById('conjLine').textContent = v.conj;
+
+  const lt=document.getElementById('levelTabs');
+  lt.innerHTML='';
+  LEVELS.forEach(l=>{
+    const b=document.createElement('div');
+    b.className='pill'+(state.level===l?' active':'')+(levelDone(v,l)?' done':'');
+    b.textContent=l;
+    b.onclick=()=>{ state.level=l; renderLevelScreen(); };
+    lt.appendChild(b);
+  });
+
+  document.getElementById('tenseLabel').textContent = `2단계: 시제를 선택하면 문제가 시작됩니다. (${state.level})`;
+
+  const tt=document.getElementById('tenseTabs');
+  tt.innerHTML='';
+  TENSES.forEach(t=>{
+    const b=document.createElement('div');
+    b.className='pill'+(v.progress[state.level][t]?' done':'');
+    b.textContent=t;
+    b.onclick=()=>selectTense(t);
+    tt.appendChild(b);
+  });
+
+  const done = TENSES.filter(t=>v.progress[state.level][t]).length;
+  document.getElementById('levelProgress').style.width = (done/3*100)+'%';
+}
+function backToLevel(){
+  renderLevelScreen();
+  showScreen('screen-level');
+}
+
+/* ===== SENTENCE ENGINE ===== */
+function getSentences(v, level, tense){
+  return v[level][tense];
+}
+function isColored(){ return state.level === '기초'; }
+
+function selectTense(t){
+  state.tense=t; state.sentIdx=0;
+  loadSentence();
+  showScreen('screen-sentence');
+}
+function loadSentence(){
+  const v=PATTERNS[state.formIdx].verbs[state.verbIdx];
+  const sentences = getSentences(v, state.level, state.tense);
+  state.current = sentences[state.sentIdx];
+  state.placed = [];
+  state.pool = shuffle(state.current.chunks.map((c,i)=>({text:c[0], role:c[1], id:i})));
+
+  document.getElementById('legend').style.display = isColored() ? 'flex' : 'none';
+  document.getElementById('sentCounter').textContent = `${state.level} · ${state.tense} ${state.sentIdx+1} / ${sentences.length}`;
+  document.getElementById('sentProgress').style.width = (state.sentIdx/sentences.length*100)+'%';
+
+  const msg=document.getElementById('resultMsg');
+  msg.textContent=''; msg.className='result-msg';
+  document.getElementById('speakBtn').disabled=true;
+  document.getElementById('nextBtn').disabled=true;
+  document.getElementById('checkBtn').disabled=false;
+
+  renderKor();
+  renderAnswer();
+  renderPool();
+}
+function renderKor(){
+  const el=document.getElementById('korSentence');
+  el.className = 'kor-sentence' + (isColored()?' colored':'');
+  el.innerHTML='';
+  if(isColored()){
+    state.current.kor.forEach(([txt,role])=>{
+      const s=document.createElement('span');
+      s.className='role-'+role;
+      s.textContent=txt;
+      el.appendChild(s);
+    });
+  } else {
+    el.textContent = state.current.kor.map(([txt])=>txt).join(' ');
+  }
+}
+function renderPool(){
+  const el=document.getElementById('poolArea');
+  el.innerHTML='';
+  state.pool.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='chunk'+(isColored()?' colored role-'+c.role:'');
+    d.textContent=c.text;
+    d.onclick=()=>placeChunk(c.id);
+    el.appendChild(d);
+  });
+}
+function renderAnswer(){
+  const el=document.getElementById('answerArea');
+  el.innerHTML='';
+  state.placed.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='chunk'+(isColored()?' colored role-'+c.role:'');
+    if(c.id!==i) d.classList.add('wrong');
+    d.textContent=c.text;
+    d.onclick=()=>returnChunk(c.id);
+    el.appendChild(d);
+  });
+}
+function placeChunk(id){
+  const idx=state.pool.findIndex(c=>c.id===id);
+  if(idx===-1) return;
+  state.placed.push(state.pool[idx]);
+  state.pool.splice(idx,1);
+  renderPool(); renderAnswer();
+}
+function returnChunk(id){
+  const idx=state.placed.findIndex(c=>c.id===id);
+  if(idx===-1) return;
+  state.pool.push(state.placed[idx]);
+  state.placed.splice(idx,1);
+  renderPool(); renderAnswer();
+}
+function checkAnswer(){
+  const msg=document.getElementById('resultMsg');
+  if(state.placed.length !== state.current.chunks.length){
+    msg.textContent='모든 청크를 배치해 보세요!';
+    msg.className='result-msg wrong';
+    return;
+  }
+  const allCorrect = state.placed.every((c,i)=>c.id===i);
+  if(allCorrect){
+    msg.textContent='정답입니다!';
+    msg.className='result-msg correct';
+    document.getElementById('speakBtn').disabled=false;
+    document.getElementById('nextBtn').disabled=false;
+    document.getElementById('checkBtn').disabled=true;
+    if(!isColored()){
+      document.querySelectorAll('#answerArea .chunk').forEach((d,i)=>{
+        d.classList.add('revealed','role-'+state.placed[i].role);
+      });
+    }
+    speakFull();
+  } else {
+    msg.textContent='빨간 청크를 다시 배치해 보세요';
+    msg.className='result-msg wrong';
+  }
+}
+function speakFull(){ speak(state.current.full); }
+
+function nextSentence(){
+  const v0=PATTERNS[state.formIdx].verbs[state.verbIdx];
+  const total = getSentences(v0, state.level, state.tense).length;
+  state.sentIdx++;
+  if(state.sentIdx<total){
+    loadSentence();
+    return;
+  }
+  const v=PATTERNS[state.formIdx].verbs[state.verbIdx];
+  v.progress[state.level][state.tense]=true;
+  const ti=TENSES.indexOf(state.tense);
+  if(ti<2){
+    state.tense=TENSES[ti+1];
+    state.sentIdx=0;
+    loadSentence();
+    return;
+  }
+  const li=LEVELS.indexOf(state.level);
+  if(li<2){
+    state.level=LEVELS[li+1];
+    state.tense=TENSES[0];
+    state.sentIdx=0;
+    backToLevel();
+    return;
+  }
+  v.done=true;
+  goVerbList();
+}
+
+/* ===== INIT ===== */
+renderVerbList();
+</script>
+</body>
+</html>
