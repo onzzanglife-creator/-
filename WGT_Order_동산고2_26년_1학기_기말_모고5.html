@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WGT 순서배열 · 동산고2 기말 모고5</title>
+<meta property="og:title" content="WGT 동산고2 모고5 - 순서배열훈련 (34,37,39,40번)">
+<meta property="og:description" content="글의 구조를 4단계로 분석하는 순서배열 훈련">
+<meta property="og:type" content="website">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+:root{
+ --bg:#f4f6fb;--surface:#fff;--card:#f0f2f8;
+ --accent:#3b5bdb;--accent2:#7048e8;--success:#2f9e44;--error:#e03131;
+ --text:#1a1a2e;--muted:#6c757d;--border:#dee2f0;
+ --kor-bg:#fff9db;--kor-border:#ffd43b;
+ --eng-bg:#e7f5ff;--eng-border:#74c0fc;
+ --hint:#fd7e14;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.site-header{background:linear-gradient(135deg,#2d4fcf,#6a3ccc);padding:18px 16px 14px;text-align:center;color:white;}
+.site-header .tag{font-size:0.67rem;letter-spacing:0.16em;opacity:0.75;margin-bottom:4px;}
+.site-header h1{font-size:1.05rem;font-weight:700;margin-bottom:3px;}
+.site-header .sub{font-size:0.73rem;opacity:0.85;}
+.passage-nav{display:flex;max-width:700px;margin:14px auto 0;gap:6px;padding:0 12px;flex-wrap:wrap;}
+.pnav-btn{flex:1;min-width:60px;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;background:white;color:var(--muted);transition:all 0.18s;text-align:center;}
+.pnav-btn.active{background:var(--accent);color:white;border-color:var(--accent);}
+.tab-bar{display:flex;max-width:700px;margin:10px auto 0;gap:6px;padding:0 12px;}
+.tab-btn{flex:1;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;background:white;color:var(--muted);transition:all 0.18s;line-height:1.4;text-align:center;}
+.tab-btn .tn{display:block;font-size:0.58rem;opacity:0.8;margin-bottom:1px;}
+.tab-btn.a1{background:#3b5bdb;color:white;border-color:#3b5bdb;}
+.tab-btn.a2{background:#7048e8;color:white;border-color:#7048e8;}
+.tab-btn.a3{background:#0ca678;color:white;border-color:#0ca678;}
+.tab-btn.a4{background:#e67700;color:white;border-color:#e67700;}
+.section{display:none;padding:13px 12px 40px;max-width:700px;margin:0 auto;}
+.section.show{display:block;}
+.how-to{background:white;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;font-size:0.75rem;color:var(--text);line-height:1.85;margin-bottom:12px;}
+.how-to .lbl{font-size:0.64rem;font-weight:700;color:var(--accent);letter-spacing:0.08em;margin-bottom:4px;}
+.how-to ol{padding-left:16px;}
+.prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.prog-lbl{font-size:0.73rem;font-weight:700;color:var(--muted);}
+.prog-sc{font-size:0.7rem;color:var(--muted);}
+.prog-sc strong{color:var(--text);}
+.order-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px;}
+.answer-slots{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;min-height:40px;}
+.slot{border:2px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.8rem;line-height:1.6;color:var(--muted);background:var(--card);display:flex;align-items:center;gap:8px;min-height:52px;}
+.slot.filled{background:white;border-color:var(--accent);color:var(--text);cursor:pointer;}
+.slot.filled:hover{border-color:var(--error);background:#fff5f5;}
+.slot.correct{background:#d3f9d8;border-color:var(--success);cursor:default;}
+.slot-num{width:22px;height:22px;border-radius:50%;background:var(--border);color:var(--muted);font-size:0.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.slot.filled .slot-num{background:var(--accent);color:white;}
+.slot.correct .slot-num{background:var(--success);color:white;}
+.choices{display:flex;flex-direction:column;gap:6px;}
+.choice-btn{padding:10px 12px;border-radius:10px;border:2px solid var(--border);background:white;font-size:0.8rem;line-height:1.6;cursor:pointer;transition:all 0.15s;text-align:left;font-family:'Noto Sans KR',sans-serif;color:var(--text);}
+.choice-btn.kor{border-color:var(--kor-border);background:var(--kor-bg);}
+.choice-btn.eng{border-color:var(--eng-border);background:var(--eng-bg);font-family:'JetBrains Mono',monospace;font-size:0.72rem;}
+.choice-btn:hover:not(.used){transform:translateX(3px);border-color:var(--accent);}
+.choice-btn.used{opacity:0.25;pointer-events:none;}
+.choice-btn.hint-show{border-color:var(--hint);background:#fff4e6;animation:hintPulse 0.6s;}
+@keyframes hintPulse{0%,100%{transform:none;}50%{transform:translateX(5px);}}
+.wf{animation:wfA 0.42s;}
+@keyframes wfA{0%,100%{}50%{background:#ffe3e3!important;border-color:var(--error)!important;}}
+.hint-box{background:#fff4e6;border:2px solid var(--hint);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:0.77rem;line-height:1.7;display:none;}
+.hint-box.show{display:block;}
+.hint-box .hlbl{font-size:0.63rem;font-weight:700;color:var(--hint);letter-spacing:0.08em;margin-bottom:4px;}
+.result-panel{background:white;border:2px solid var(--success);border-radius:14px;padding:16px;text-align:center;display:none;margin-top:12px;}
+.result-panel.show{display:block;}
+.r-em{font-size:2rem;margin-bottom:6px;}
+.r-msg{font-size:0.88rem;font-weight:700;color:var(--success);margin-bottom:6px;}
+.r-sc{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:12px;}
+.result-panel button{padding:9px 20px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:0.83rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin:0 4px;}
+.struct-panel{background:white;border:1.5px solid var(--border);border-radius:11px;padding:12px;margin-top:12px;display:none;}
+.struct-panel.show{display:block;}
+.struct-item{display:flex;gap:8px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.struct-item:last-child{border:none;margin:0;padding:0;}
+.struct-label{width:28px;height:28px;border-radius:8px;background:var(--accent);color:white;font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.struct-role{font-size:0.7rem;color:var(--muted);margin-bottom:3px;}
+.struct-text{font-size:0.75rem;line-height:1.6;color:var(--text);}
+.btn-next{display:none;width:100%;margin-top:10px;padding:11px;background:linear-gradient(135deg,#3b5bdb,#7048e8);color:white;border:none;border-radius:11px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.footer{text-align:center;font-size:0.66rem;color:var(--muted);padding:16px 0 26px;}
+</style>
+</head>
+<body>
+<div class="site-header">
+ <div class="tag">WGT 순서배열 · 동산고 2학년 1학기 기말</div>
+ <h1>모의고사 4 · 4단계 순서배열 훈련</h1>
+ <div class="sub">21번 · 24번 · 30번 · 33번</div>
+</div>
+<div class="passage-nav" id="pnav"></div>
+<div class="tab-bar">
+ <button class="tab-btn a1" onclick="switchTab(1)"><span class="tn">STEP 1</span>한글 덩어리</button>
+ <button class="tab-btn" onclick="switchTab(2)"><span class="tn">STEP 2</span>영어 덩어리</button>
+ <button class="tab-btn" onclick="switchTab(3)"><span class="tn">STEP 3</span>한글 문장</button>
+ <button class="tab-btn" onclick="switchTab(4)"><span class="tn">STEP 4</span>영어 문장</button>
+</div>
+<div class="section show" id="sec1">
+ <div class="how-to"><div class="lbl">📖 STEP 1 사용법</div><ol><li>한국어 해석을 4개 덩어리로 나눴어요</li><li>올바른 순서대로 클릭해 위쪽 칸을 채우세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl1"></span><span class="prog-sc">✅<strong id="o1">0</strong> ❌<strong id="n1">0</strong></span></div>
+ <div class="hint-box" id="hb1"><div class="hlbl">💡 힌트</div><div id="ht1"></div></div>
+ <div class="answer-slots" id="as1"></div>
+ <div class="order-lbl">🇰🇷 덩어리 선택</div>
+ <div class="choices" id="ch1"></div>
+ <button class="btn-next" id="nx1" onclick="nextStep(1)"></button>
+ <div class="struct-panel" id="sp1"></div>
+ <div class="result-panel" id="rp1"><div class="r-em">🏆</div><div class="r-msg">STEP 1 완료!</div><div class="r-sc" id="rs1"></div><button onclick="switchTab(2)">STEP 2로 →</button><button onclick="resetStep(1)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="section" id="sec2">
+ <div class="how-to"><div class="lbl">📖 STEP 2 사용법</div><ol><li>영어 지문을 4개 덩어리로 나눴어요</li><li>올바른 순서대로 클릭해 위쪽 칸을 채우세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl2"></span><span class="prog-sc">✅<strong id="o2">0</strong> ❌<strong id="n2">0</strong></span></div>
+ <div class="hint-box" id="hb2"><div class="hlbl">💡 힌트</div><div id="ht2"></div></div>
+ <div class="answer-slots" id="as2"></div>
+ <div class="order-lbl">🔤 덩어리 선택</div>
+ <div class="choices" id="ch2"></div>
+ <button class="btn-next" id="nx2" onclick="nextStep(2)"></button>
+ <div class="struct-panel" id="sp2"></div>
+ <div class="result-panel" id="rp2"><div class="r-em">🏆</div><div class="r-msg">STEP 2 완료!</div><div class="r-sc" id="rs2"></div><button onclick="switchTab(3)">STEP 3으로 →</button><button onclick="resetStep(2)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="section" id="sec3">
+ <div class="how-to"><div class="lbl">📖 STEP 3 사용법</div><ol><li>지문의 모든 한국어 문장을 섞었어요</li><li>올바른 순서대로 클릭하세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl3"></span><span class="prog-sc">✅<strong id="o3">0</strong> ❌<strong id="n3">0</strong></span></div>
+ <div class="hint-box" id="hb3"><div class="hlbl">💡 힌트</div><div id="ht3"></div></div>
+ <div class="answer-slots" id="as3"></div>
+ <div class="order-lbl">🇰🇷 문장 선택</div>
+ <div class="choices" id="ch3"></div>
+ <button class="btn-next" id="nx3" onclick="nextStep(3)"></button>
+ <div class="result-panel" id="rp3"><div class="r-em">🏆</div><div class="r-msg">STEP 3 완료!</div><div class="r-sc" id="rs3"></div><button onclick="switchTab(4)">STEP 4로 →</button><button onclick="resetStep(3)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="section" id="sec4">
+ <div class="how-to"><div class="lbl">📖 STEP 4 사용법</div><ol><li>지문의 모든 영어 문장을 섞었어요</li><li>올바른 순서대로 클릭하세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl4"></span><span class="prog-sc">✅<strong id="o4">0</strong> ❌<strong id="n4">0</strong></span></div>
+ <div class="hint-box" id="hb4"><div class="hlbl">💡 힌트</div><div id="ht4"></div></div>
+ <div class="answer-slots" id="as4"></div>
+ <div class="order-lbl">🔤 문장 선택</div>
+ <div class="choices" id="ch4"></div>
+ <button class="btn-next" id="nx4" onclick="nextStep(4)"></button>
+ <div class="result-panel" id="rp4"><div class="r-em">🏆</div><div class="r-msg">STEP 4 완료!</div><div class="r-sc" id="rs4"></div><button onclick="goNextPassage()">다음 지문 →</button><button onclick="resetStep(4)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="footer">WGT 순서배열 · 동산고 2학년 기말 모고5 · 34,37,39,40번</div>
+<script>
+const PASSAGES = [
+{
+"num": "34번",
+"topic": "AI의 침묵 처리와 소리 선호",
+"blocks_kor": [
+{
+"label": "A",
+"text": "그런 인위적인 '채움말'은 침묵을 위한 기계 생성 보충물로서 기계 생성 음성 패턴에서 더욱 자연스럽게 들리는 리듬을 만들어내는 데 도움이 될 수 있으며, AI의 인간 대화 상대자들로 하여금 자신들이 또 다른 인간과 대화하고 있다고 납득시키는 데도 도움이 된다.",
+"role": "도입: AI 채움말이 자연스러운 음성 리듬을 만들어 인간과의 대화 환상을 형성"
+},
+{
+"label": "B",
+"text": "침묵에 대한 AI의 '인간성'은 짧은 침묵의 시간이 '사고를 위한 멈춤'으로 해석될 가능성이 높기 때문에 무엇보다도 이러한 맥락들에서 나타나며, 따라서 기계가 마치 인간처럼 응답하기 전에 '생각하고' 있다는 환상을 강화한다.",
+"role": "전개: 짧은 침묵이 '사고의 멈춤'으로 해석되어 AI 인간성 환상 강화"
+},
+{
+"label": "C",
+"text": "그러나 AI의 더 긴 지속 시간과 빈도의 침묵에 대한 형편없는 처리 방식에서 지적된 기술적 문제들은, 일부 대화 상황에서 침묵이 관련 소리들로 채워질 수 있다는 기계의 추론 못지않게, 둘 다 중요하다. 적어도 이러한 맥락에서, AI는 침묵을 부재로서가 아니라 의미 있는 데이터로 인식하기 시작하고 있을 수 있다.",
+"role": "반전: AI의 침묵 처리 기술적 한계와 침묵을 의미 데이터로 인식할 가능성"
+},
+{
+"label": "D",
+"text": "그러나 상당한 침묵들과 맞닥뜨렸을 때의 AI의 혼란과, 짧은 쉬기 표시가 '어'나 '아'와 같은 음성 표지들과 동등하다는 그것의 이해는, 침묵보다는 소리에 대한, 부재보다는 현재에 대한 AI의 지속적인 선호를 나타낸다.",
+"role": "결론: AI의 혼란과 이해 방식이 소리·현재 선호를 드러냄"
+}
+],
+"blocks_eng": [
+{
+"label": "A",
+"text": "Such artificial 'pause fillers' as machine-generated supplements for silence may help to produce a more natural-sounding cadence in machine-generated speech patterns and so help to convince the AI's human interlocutors that they are engaging with another human.",
+"role": "도입: AI 채움말이 자연스러운 음성 리듬을 만들어 인간과의 대화 환상을 형성"
+},
+{
+"label": "B",
+"text": "AI's 'humanity' of silence emerges in these contexts not least because a short period of silence is likely to be interpreted as a 'pause for thought', therefore reinforcing the illusion that the machine is 'thinking' before responding, just as a human might.",
+"role": "전개: 짧은 침묵이 '사고의 멈춤'으로 해석되어 AI 인간성 환상 강화"
+},
+{
+"label": "C",
+"text": "However, the technical issues flagged in AI's poor handling of higher duration and frequency silences, no less than the machine inference that silence can be filled with relevant sounds in some conversational situations, are both significant. In this context at least, the AI may be starting to recognise silence not as an absence but as meaningful data.",
+"role": "반전: AI의 침묵 처리 기술적 한계와 침묵을 의미 데이터로 인식할 가능성"
+},
+{
+"label": "D",
+"text": "Yet the AI's confusion when presented with substantial silences, and its understanding that short break tags are equivalent to vocal markers such as 'uh\\'s' and 'ah\\'s' indicate the AI's continuing preferences for sound over silence, for presence over absence.",
+"role": "결론: AI의 혼란과 이해 방식이 소리·현재 선호를 드러냄"
+}
+],
+"korean": [
+"그런 인위적인 '채움말'은 침묵을 위한 기계 생성 보충물로서 기계 생성 음성 패턴에서 더욱 자연스럽게 들리는 리듬을 만들어내는 데 도움이 될 수 있으며, AI의 인간 대화 상대자들로 하여금 자신들이 또 다른 인간과 대화하고 있다고 납득시키는 데도 도움이 된다.",
+"침묵에 대한 AI의 '인간성'은 짧은 침묵의 시간이 '사고를 위한 멈춤'으로 해석될 가능성이 높기 때문에 무엇보다도 이러한 맥락들에서 나타나며, 따라서 기계가 마치 인간처럼 응답하기 전에 '생각하고' 있다는 환상을 강화한다.",
+"그러나 AI의 더 긴 지속 시간과 빈도의 침묵에 대한 형편없는 처리 방식에서 지적된 기술적 문제들은, 일부 대화 상황에서 침묵이 관련 소리들로 채워질 수 있다는 기계의 추론 못지않게, 둘 다 중요하다.",
+"적어도 이러한 맥락에서, AI는 침묵을 부재로서가 아니라 의미 있는 데이터로 인식하기 시작하고 있을 수 있다.",
+"그러나 상당한 침묵들과 맞닥뜨렸을 때의 AI의 혼란과, 짧은 쉬기 표시가 '어'나 '아'와 같은 음성 표지들과 동등하다는 그것의 이해는, 침묵보다는 소리에 대한, 부재보다는 현재에 대한 AI의 지속적인 선호를 나타낸다."
+],
+"sentences": [
+"Such artificial 'pause fillers' as machine-generated supplements for silence may help to produce a more natural-sounding cadence in machine-generated speech patterns and so help to convince the AI's human interlocutors that they are engaging with another human.",
+"AI's 'humanity' of silence emerges in these contexts not least because a short period of silence is likely to be interpreted as a 'pause for thought', therefore reinforcing the illusion that the machine is 'thinking' before responding, just as a human might.",
+"However, the technical issues flagged in AI's poor handling of higher duration and frequency silences, no less than the machine inference that silence can be filled with relevant sounds in some conversational situations, are both significant.",
+"In this context at least, the AI may be starting to recognise silence not as an absence but as meaningful data.",
+"Yet the AI's confusion when presented with substantial silences, and its understanding that short break tags are equivalent to vocal markers such as 'uh's' and 'ah's' indicate the AI's continuing preferences for sound over silence, for presence over absence."
+]
+},
+{
+"num": "37번",
+"topic": "친족 용어의 핵심성과 파생 구조",
+"blocks_kor": [
+{
+"label": "A",
+"text": "언어들을 비교하려 한다면, 모든 언어에서 발견할 수 있다고 자신할 수 있는 것으로 시작하는 것이 도움이 된다. 예를 들어 어머니와 아버지를 나타내는 기호나 단어들을 살펴보라.",
+"role": "도입: 언어 비교 시 모든 언어에 존재하는 것으로 시작할 것을 제안하며 친족어를 예시로 제시"
+},
+{
+"label": "B",
+"text": "이 범주에 다른 가족 관계들 — 아들, 할머니, 이모/고모, 처남/매부, 사촌 — 을 추가한다면, 우리는 친족 용어의 범주를 정의하고 있는 것이다. 친족 용어에 관한 비교 유형론적 연구들은 언어들이 일부 가족 관계에는 명칭을 갖지만 모든 관계에는 그렇지 않다는 것을 발견했다.",
+"role": "전개: 친족 용어 범주 정의 및 언어가 일부 관계에만 명칭을 부여한다는 연구 발견"
+},
+{
+"label": "C",
+"text": "그리고 특정 친족 관계가 명칭을 갖는 확률은 해당 언어의 다른 친족 용어들에 근거하여 예측 가능하다. 예를 들어, 모든 언어는 어머니와 아버지처럼 핵심적인 친족 용어들의 집합을 가진다.",
+"role": "심화: 친족어 명칭 보유 확률은 예측 가능하며 모든 언어는 어머니·아버지 같은 핵심 친족어를 가짐"
+},
+{
+"label": "D",
+"text": "이와는 대조적으로, 덜 핵심적인 범주 구성원들을 위한 용어들은 장모/시어머니와 의붓아버지처럼 핵심 용어들로부터 만들어지는 경우가 많다. 세계 전반에 걸쳐 언어들을 비교한다면, 우리는 어떤 친족 관계들이 일반적으로 핵심 용어들로 표현되고, 어떤 관계들이 핵심 용어들을 변형함으로써 표현되는지 물을 수 있다.",
+"role": "결론: 주변 친족어는 핵심어에서 파생되며, 세계 언어 비교로 핵심어와 파생어 분포를 물을 수 있음"
+}
+],
+"blocks_eng": [
+{
+"label": "A",
+"text": "If you are going to compare languages, it helps to start with something that you are confident you can find in all languages. Take for example signs or words for mother and father.",
+"role": "도입: 언어 비교 시 모든 언어에 존재하는 것으로 시작할 것을 제안하며 친족어를 예시로 제시"
+},
+{
+"label": "B",
+"text": "If we add other family relationships to this category — son, grandmother, aunt, brother-in-law, cousin — we are defining the category of kinship terminology. Comparative typological studies of kinship terminology have discovered that languages have labels for some but not all family relationships.",
+"role": "전개: 친족 용어 범주 정의 및 언어가 일부 관계에만 명칭을 부여한다는 연구 발견"
+},
+{
+"label": "C",
+"text": "And the probability that a specific kin relationship has a label is predictable based on the other kinship terms in the language. For example, all languages have a core set of kinship terms — like mother and father.",
+"role": "심화: 친족어 명칭 보유 확률은 예측 가능하며 모든 언어는 어머니·아버지 같은 핵심 친족어를 가짐"
+},
+{
+"label": "D",
+"text": "By contrast, terms for less central category members are often built up from the core terms — like mother-in-law and step-father. If we compare languages across the world, we can ask what kinship relationships are typically expressed with core terminology, and what relationships are expressed by modifying the core terminology.",
+"role": "결론: 주변 친족어는 핵심어에서 파생되며, 세계 언어 비교로 핵심어와 파생어 분포를 물을 수 있음"
+}
+],
+"korean": [
+"언어들을 비교하려 한다면, 모든 언어에서 발견할 수 있다고 자신할 수 있는 것으로 시작하는 것이 도움이 된다.",
+"예를 들어 어머니와 아버지를 나타내는 기호나 단어들을 살펴보라.",
+"이 범주에 다른 가족 관계들 — 아들, 할머니, 이모/고모, 처남/매부, 사촌 — 을 추가한다면, 우리는 친족 용어의 범주를 정의하고 있는 것이다.",
+"친족 용어에 관한 비교 유형론적 연구들은 언어들이 일부 가족 관계에는 명칭을 갖지만 모든 관계에는 그렇지 않다는 것을 발견했다.",
+"그리고 특정 친족 관계가 명칭을 갖는 확률은 해당 언어의 다른 친족 용어들에 근거하여 예측 가능하다.",
+"예를 들어, 모든 언어는 어머니와 아버지처럼 핵심적인 친족 용어들의 집합을 가진다.",
+"이와는 대조적으로, 덜 핵심적인 범주 구성원들을 위한 용어들은 장모/시어머니와 의붓아버지처럼 핵심 용어들로부터 만들어지는 경우가 많다.",
+"세계 전반에 걸쳐 언어들을 비교한다면, 우리는 어떤 친족 관계들이 일반적으로 핵심 용어들로 표현되고, 어떤 관계들이 핵심 용어들을 변형함으로써 표현되는지 물을 수 있다."
+],
+"sentences": [
+"If you are going to compare languages, it helps to start with something that you are confident you can find in all languages.",
+"Take for example signs or words for mother and father.",
+"If we add other family relationships to this category — son, grandmother, aunt, brother-in-law, cousin — we are defining the category of kinship terminology.",
+"Comparative typological studies of kinship terminology have discovered that languages have labels for some but not all family relationships.",
+"And the probability that a specific kin relationship has a label is predictable based on the other kinship terms in the language.",
+"For example, all languages have a core set of kinship terms — like mother and father.",
+"By contrast, terms for less central category members are often built up from the core terms — like mother-in-law and step-father.",
+"If we compare languages across the world, we can ask what kinship relationships are typically expressed with core terminology, and what relationships are expressed by modifying the core terminology."
+]
+},
+{
+"num": "39번",
+"topic": "물질 상태 직관의 온도 편향과 행성의 광대한 압력 범위",
+"blocks_kor": [
+{
+"label": "A",
+"text": "물질의 상태에 대한 우리의 직관은 지구 표면에서의 우리의 경험에서 비롯되는데, 그곳에서 압력은 균일하게 낮고 온도의 변화가 물질의 상태를 고체에서 액체로, 그리고 기체로 변화시킨다. 따라서, 우리가 용해나 끓음 또는 플라즈마의 생성을 생각할 때, 우리는 직관적으로 그것이 온도의 상승을 반영한다고 가정한다.",
+"role": "도입: 지구 표면 경험에서 비롯된 물질 상태 직관은 온도 변화를 중심으로 형성됨"
+},
+{
+"label": "B",
+"text": "이 편향은 우리가 매우 일정한 압력 환경에서 살고 있다는 사실에서 비롯된다. 물속에 있거나 높은 산꼭대기에 있을 때 경험하는 것들과 같은 압력의 작은 변화조차도 우리의 신진대사에 매우 큰 영향을 미칠 수 있다.",
+"role": "전개: 일정한 압력 환경에서의 생활이 편향을 낳으며, 작은 압력 변화도 신진대사에 큰 영향"
+},
+{
+"label": "C",
+"text": "하지만 우리가 경험하는 압력 변화는 전체 행성 환경의 압력 범위에 비하면 사소하다. 압력은 위에 놓인 물질의 무게에 의해 조절되기 때문에, 압력은 깊이에 따라 급격히 증가한다.",
+"role": "심화: 우리가 경험하는 압력 변화는 행성 규모에 비해 사소하며 깊이에 따라 압력이 급증"
+},
+{
+"label": "D",
+"text": "1마일 두께의 암석의 무게에 의해 생성되는 압력들을 상상해 보라! 이런 이유로 행성의 압력 범위는 엄청나다 — 우주에서 본질적으로 0의 압력부터 행성 내부에서 수백만 대기압의 압력까지.",
+"role": "결론: 행성의 압력 범위는 우주의 0에서 내부의 수백만 대기압까지 엄청나게 광대함"
+}
+],
+"blocks_eng": [
+{
+"label": "A",
+"text": "Our intuition about states of matter comes from our experience on Earth's surface, where the pressure is uniformly low and variations in temperature cause changes in the state of matter from solid to liquid to gas. Therefore, when we think of melting or boiling or the creation of plasma, we intuitively assume it reflects an increase in temperature.",
+"role": "도입: 지구 표면 경험에서 비롯된 물질 상태 직관은 온도 변화를 중심으로 형성됨"
+},
+{
+"label": "B",
+"text": "This bias comes from the fact that we live in a very constant pressure environment. Even small changes in pressure, such as those we experience when under water or on high mountaintops, can have very large effects on our metabolism.",
+"role": "전개: 일정한 압력 환경에서의 생활이 편향을 낳으며, 작은 압력 변화도 신진대사에 큰 영향"
+},
+{
+"label": "C",
+"text": "But the pressure changes we experience are trivial compared to the pressure range of the overall planetary environment. Since pressure is controlled by the weight of overlying material, pressures increase rapidly with depth.",
+"role": "심화: 우리가 경험하는 압력 변화는 행성 규모에 비해 사소하며 깊이에 따라 압력이 급증"
+},
+{
+"label": "D",
+"text": "Imagine the pressures generated by the weight of rock a mile thick! For this reason a planet's pressure ranges are enormous — from essentially zero pressure in space to pressures of millions of atmospheres in planetary interiors.",
+"role": "결론: 행성의 압력 범위는 우주의 0에서 내부의 수백만 대기압까지 엄청나게 광대함"
+}
+],
+"korean": [
+"물질의 상태에 대한 우리의 직관은 지구 표면에서의 우리의 경험에서 비롯되는데, 그곳에서 압력은 균일하게 낮고 온도의 변화가 물질의 상태를 고체에서 액체로, 그리고 기체로 변화시킨다.",
+"따라서, 우리가 용해나 끓음 또는 플라즈마의 생성을 생각할 때, 우리는 직관적으로 그것이 온도의 상승을 반영한다고 가정한다.",
+"이 편향은 우리가 매우 일정한 압력 환경에서 살고 있다는 사실에서 비롯된다.",
+"물속에 있거나 높은 산꼭대기에 있을 때 경험하는 것들과 같은 압력의 작은 변화조차도 우리의 신진대사에 매우 큰 영향을 미칠 수 있다.",
+"하지만 우리가 경험하는 압력 변화는 전체 행성 환경의 압력 범위에 비하면 사소하다.",
+"압력은 위에 놓인 물질의 무게에 의해 조절되기 때문에, 압력은 깊이에 따라 급격히 증가한다.",
+"1마일 두께의 암석의 무게에 의해 생성되는 압력들을 상상해 보라!",
+"이런 이유로 행성의 압력 범위는 엄청나다 — 우주에서 본질적으로 0의 압력부터 행성 내부에서 수백만 대기압의 압력까지."
+],
+"sentences": [
+"Our intuition about states of matter comes from our experience on Earth's surface, where the pressure is uniformly low and variations in temperature cause changes in the state of matter from solid to liquid to gas.",
+"Therefore, when we think of melting or boiling or the creation of plasma, we intuitively assume it reflects an increase in temperature.",
+"This bias comes from the fact that we live in a very constant pressure environment.",
+"Even small changes in pressure, such as those we experience when under water or on high mountaintops, can have very large effects on our metabolism.",
+"But the pressure changes we experience are trivial compared to the pressure range of the overall planetary environment.",
+"Since pressure is controlled by the weight of overlying material, pressures increase rapidly with depth.",
+"Imagine the pressures generated by the weight of rock a mile thick!",
+"For this reason a planet's pressure ranges are enormous — from essentially zero pressure in space to pressures of millions of atmospheres in planetary interiors."
+]
+},
+{
+"num": "40번",
+"topic": "자기 실험 선행, 일반 실험 후행의 최적 연구 전략",
+"blocks_kor": [
+{
+"label": "A",
+"text": "자기 실험과 일반적인 실험 모두 가능할 때, 그것들 사이의 차이는 종종 학습과 보여주기 사이의 차이와 유사하다: 자기 실험은 발견에는 더 낫지만 해결책이 유용하거나 답이 옳다는 것을 다른 이들에게 납득시키는 데는 더 나쁘다. 물론, 대부분의 과학자들은 무언가를 발견하고 그들의 발견에 대해 다른 이들을 납득시키는 것, 둘 다 하기를 원한다.",
+"role": "도입: 자기 실험은 발견에, 일반 실험은 납득에 유리하며 과학자들은 둘 다 원함"
+},
+{
+"label": "B",
+"text": "따라서, 심리학자들은 자기 실험과 일반적인 실험 둘 다를 수행하는 것을 고려해야 한다. 자원의 최선의 활용은 자기 실험 후 일반적인 실험이 뒤따르는 것이 될 수 있다.",
+"role": "전개: 심리학자는 두 방식 모두 고려해야 하며 자기 실험 후 일반 실험 순서가 최선"
+},
+{
+"label": "C",
+"text": "연구자는 자기 실험으로 시작하는데, 그것이 잘 진행된다면 큰 효과를 발견하고/또는 많은 가설들을 생성하고 제거한다. 이 탐색적이고 이론 구축 단계는 편리한 해결책이나 큰 효과가 발견될 때까지 지속된다.",
+"role": "심화: 연구자는 자기 실험으로 시작해 탐색·이론 구축 단계를 거쳐 편리한 해결책을 발견"
+},
+{
+"label": "D",
+"text": "그런 다음 연구자는 해결책을 최적화하거나 효과를 극대화하는 절차적 매개변수들(예: 지속 시간, 하루 중 시간, 강도)을 찾기 위해 자기 실험을 사용한다. 그때서야 연구자는 최적화된 매개변수들을 사용하여 일반적인 실험들을 시작할 것이다. 자기 실험은 탐색에 적합하고 일반적인 실험들은 검증을 제공하므로, 가장 효율적인 전략은 전자가 후자보다 먼저 오는 것이다.",
+"role": "결론: 절차적 매개변수 최적화 후 일반 실험을 시작하는 것이 가장 효율적인 전략"
+}
+],
+"blocks_eng": [
+{
+"label": "A",
+"text": "When self-experimentation and conventional experiments are both possible, the difference between them often resembles the difference between learning and showing: Self-experiments are better for discovery but worse for convincing others that the solution is helpful or the answer is correct. Of course, most scientists want to do both — discover something and convince others of their discovery.",
+"role": "도입: 자기 실험은 발견에, 일반 실험은 납득에 유리하며 과학자들은 둘 다 원함"
+},
+{
+"label": "B",
+"text": "Thus, psychologists should consider doing both self-experiments and conventional ones. The best use of resources may often be self-experiments followed by conventional ones.",
+"role": "전개: 심리학자는 두 방식 모두 고려해야 하며 자기 실험 후 일반 실험 순서가 최선"
+},
+{
+"label": "C",
+"text": "The researcher begins with self-experiments that, if all goes well, find large effects and/or generate and eliminate many hypotheses. This exploratory and theory-building phase lasts until a convenient solution or large effect is found.",
+"role": "심화: 연구자는 자기 실험으로 시작해 탐색·이론 구축 단계를 거쳐 편리한 해결책을 발견"
+},
+{
+"label": "D",
+"text": "Then the researcher uses self-experiments to find the procedural parameters (e.g., duration, time of day, intensity) that optimize the solution or maximize the effect. Only then would the researcher begin conventional experiments, using the optimized parameters. Since self-experiments are suited to exploration while conventional experiments provide validation, the most efficient strategy is for the former to precede the latter.",
+"role": "결론: 절차적 매개변수 최적화 후 일반 실험을 시작하는 것이 가장 효율적인 전략"
+}
+],
+"korean": [
+"자기 실험과 일반적인 실험 모두 가능할 때, 그것들 사이의 차이는 종종 학습과 보여주기 사이의 차이와 유사하다: 자기 실험은 발견에는 더 낫지만 해결책이 유용하거나 답이 옳다는 것을 다른 이들에게 납득시키는 데는 더 나쁘다.",
+"물론, 대부분의 과학자들은 무언가를 발견하고 그들의 발견에 대해 다른 이들을 납득시키는 것, 둘 다 하기를 원한다.",
+"따라서, 심리학자들은 자기 실험과 일반적인 실험 둘 다를 수행하는 것을 고려해야 한다.",
+"자원의 최선의 활용은 자기 실험 후 일반적인 실험이 뒤따르는 것이 될 수 있다.",
+"연구자는 자기 실험으로 시작하는데, 그것이 잘 진행된다면 큰 효과를 발견하고/또는 많은 가설들을 생성하고 제거한다.",
+"이 탐색적이고 이론 구축 단계는 편리한 해결책이나 큰 효과가 발견될 때까지 지속된다.",
+"그런 다음 연구자는 해결책을 최적화하거나 효과를 극대화하는 절차적 매개변수들(예: 지속 시간, 하루 중 시간, 강도)을 찾기 위해 자기 실험을 사용한다.",
+"그때서야 연구자는 최적화된 매개변수들을 사용하여 일반적인 실험들을 시작할 것이다.",
+"자기 실험은 탐색에 적합하고 일반적인 실험들은 검증을 제공하므로, 가장 효율적인 전략은 전자가 후자보다 먼저 오는 것이다."
+],
+"sentences": [
+"When self-experimentation and conventional experiments are both possible, the difference between them often resembles the difference between learning and showing: Self-experiments are better for discovery but worse for convincing others that the solution is helpful or the answer is correct.",
+"Of course, most scientists want to do both — discover something and convince others of their discovery.",
+"Thus, psychologists should consider doing both self-experiments and conventional ones.",
+"The best use of resources may often be self-experiments followed by conventional ones.",
+"The researcher begins with self-experiments that, if all goes well, find large effects and/or generate and eliminate many hypotheses.",
+"This exploratory and theory-building phase lasts until a convenient solution or large effect is found.",
+"Then the researcher uses self-experiments to find the procedural parameters (e.g., duration, time of day, intensity) that optimize the solution or maximize the effect.",
+"Only then would the researcher begin conventional experiments, using the optimized parameters.",
+"Since self-experiments are suited to exploration while conventional experiments provide validation, the most efficient strategy is for the former to precede the latter."
+]
+}
+];
+
+let curP = 0;
+const state = {};
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function getP(){ return PASSAGES[curP]; }
+
+function buildPnav(){
+  const nav = document.getElementById('pnav');
+  nav.innerHTML = '';
+  PASSAGES.forEach((p,i)=>{
+    const b = document.createElement('button');
+    b.className = 'pnav-btn'+(i===curP?' active':'');
+    b.textContent = p.num;
+    b.onclick = ()=>{ curP=i; initAllSteps(); buildPnav(); switchTab(1); };
+    nav.appendChild(b);
+  });
+}
+
+function switchTab(n){
+  for(let i=1;i<=4;i++){
+    document.getElementById('sec'+i).classList.toggle('show', i===n);
+    document.querySelectorAll('.tab-btn')[i-1].classList.toggle(['a1','a2','a3','a4'][i-1], i===n);
+    if(i!==n) document.querySelectorAll('.tab-btn')[i-1].classList.remove('a1','a2','a3','a4');
+  }
+}
+
+function getItems(step){
+  const p = getP();
+  if(step===1) return p.blocks_kor.map(b=>(({text:b.text, cls:'kor', label:b.label})));
+  if(step===2) return p.blocks_eng.map(b=>(({text:b.text, cls:'eng', label:b.label})));
+  if(step===3) return p.korean.map(t=>(({text:t, cls:'kor'})));
+  if(step===4) return p.sentences.map(t=>(({text:t, cls:'eng'})));
+}
+
+function initStep(step){
+  const items = getItems(step);
+  const order = shuffle(items.map((_,i)=>i));
+  state[step] = {
+    items, order, filled: [], wrong: 0
+  };
+  render(step);
+}
+
+function initAllSteps(){
+  for(let s=1;s<=4;s++) initStep(s);
+  document.getElementById('pl1').textContent = '한국어 4덩어리 순서 맞추기';
+  document.getElementById('pl2').textContent = '영어 4덩어리 순서 맞추기';
+  document.getElementById('pl3').textContent = '한국어 전체문장 순서 맞추기';
+  document.getElementById('pl4').textContent = '영어 전체문장 순서 맞추기';
+}
+
+function render(step){
+  const st = state[step];
+  const slotsEl = document.getElementById('as'+step);
+  const choicesEl = document.getElementById('ch'+step);
+  const total = st.items.length;
+
+  slotsEl.innerHTML = '';
+  for(let i=0;i<total;i++){
+    const slot = document.createElement('div');
+    const filledIdx = st.filled[i];
+    if(filledIdx !== undefined){
+      const correct = filledIdx === i;
+      slot.className = 'slot filled' + (correct && st.done ? ' correct':'');
+      slot.innerHTML = `<div class="slot-num">${i+1}</div><div>${st.items[filledIdx].text}</div>`;
+    } else {
+      slot.className = 'slot';
+      slot.innerHTML = `<div class="slot-num">${i+1}</div><div>이곳에 ${i+1}번째 내용이 채워집니다</div>`;
+    }
+    slotsEl.appendChild(slot);
+  }
+
+  choicesEl.innerHTML = '';
+  st.order.forEach(idx=>{
+    const item = st.items[idx];
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn ' + item.cls + (st.filled.includes(idx) ? ' used':'');
+    btn.textContent = item.text;
+    btn.onclick = ()=>handleChoice(step, idx);
+    choicesEl.appendChild(btn);
+  });
+
+  document.getElementById('o'+step).textContent = st.filled.filter((v,i)=>v===i).length;
+  document.getElementById('n'+step).textContent = st.wrong;
+
+  const hb = document.getElementById('hb'+step);
+  hb.classList.remove('show');
+
+  const nx = document.getElementById('nx'+step);
+  nx.style.display = 'none';
+
+  const rp = document.getElementById('rp'+step);
+  rp.classList.remove('show');
+
+  if(step<=2){
+    document.getElementById('sp'+step).classList.remove('show');
+  }
+}
+
+function handleChoice(step, idx){
+  const st = state[step];
+  const nextSlot = st.filled.length;
+  if(nextSlot >= st.items.length) return;
+
+  if(idx === nextSlot){
+    st.filled.push(idx);
+    st.attemptsForSlot = 0;
+    render(step);
+    if(st.filled.length === st.items.length){
+      finishStep(step);
+    }
+  } else {
+    st.wrong++;
+    st.attemptsForSlot = (st.attemptsForSlot||0) + 1;
+    document.getElementById('o'+step).textContent = st.filled.filter((v,i)=>v===i).length;
+    document.getElementById('n'+step).textContent = st.wrong;
+    const choicesEl = document.getElementById('ch'+step);
+    const btns = choicesEl.querySelectorAll('.choice-btn');
+    const orderIdx = st.order.indexOf(idx);
+    btns[orderIdx].classList.add('wf');
+    setTimeout(()=>btns[orderIdx].classList.remove('wf'), 450);
+
+    if(st.attemptsForSlot >= 2){
+      const correctItem = st.items[nextSlot];
+      const hb = document.getElementById('hb'+step);
+      const ht = document.getElementById('ht'+step);
+      const preview = correctItem.text.split(' ').slice(0,6).join(' ') + ' ...';
+      ht.textContent = preview;
+      hb.classList.add('show');
+      const correctOrderIdx = st.order.indexOf(nextSlot);
+      btns[correctOrderIdx].classList.add('hint-show');
+    }
+  }
+}
+
+function finishStep(step){
+  const st = state[step];
+  st.done = true;
+  render(step);
+  document.getElementById('rp'+step).classList.add('show');
+  document.getElementById('rs'+step).textContent = `정답 ${st.items.length} / 오답 ${st.wrong}`;
+
+  if(step===1 || step===2){
+    if(state[1] && state[1].done && state[2] && state[2].done){
+      showStructPanels();
+    }
+  }
+}
+
+function showStructPanels(){
+  const p = getP();
+  [1,2].forEach(step=>{
+    const blocks = step===1 ? p.blocks_kor : p.blocks_eng;
+    const sp = document.getElementById('sp'+step);
+    sp.innerHTML = '<div class="order-lbl" style="margin-bottom:8px;">📝 글의 구조 해설</div>' +
+      blocks.map(b=>`<div class="struct-item"><div class="struct-label">${b.label}</div><div><div class="struct-role">${b.role}</div><div class="struct-text">${b.text}</div></div></div>`).join('');
+    sp.classList.add('show');
+  });
+}
+
+function nextStep(step){
+  switchTab(step+1);
+}
+
+function resetStep(step){
+  initStep(step);
+  if(step<=2) document.getElementById('sp'+step).classList.remove('show');
+}
+
+function goNextPassage(){
+  if(curP < PASSAGES.length-1){
+    curP++;
+    initAllSteps();
+    buildPnav();
+    switchTab(1);
+  } else {
+    alert('모든 지문을 완료했습니다! 🎉');
+  }
+}
+
+buildPnav();
+initAllSteps();
+</script>
+</body>
+</html>

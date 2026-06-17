@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WGT 순서배열 · 동산고2 기말 모고4</title>
+<meta property="og:title" content="WGT 동산고2 모고4 - 순서배열훈련 (21,24,30,33번)">
+<meta property="og:description" content="글의 구조를 4단계로 분석하는 순서배열 훈련">
+<meta property="og:type" content="website">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+:root{
+ --bg:#f4f6fb;--surface:#fff;--card:#f0f2f8;
+ --accent:#3b5bdb;--accent2:#7048e8;--success:#2f9e44;--error:#e03131;
+ --text:#1a1a2e;--muted:#6c757d;--border:#dee2f0;
+ --kor-bg:#fff9db;--kor-border:#ffd43b;
+ --eng-bg:#e7f5ff;--eng-border:#74c0fc;
+ --hint:#fd7e14;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.site-header{background:linear-gradient(135deg,#2d4fcf,#6a3ccc);padding:18px 16px 14px;text-align:center;color:white;}
+.site-header .tag{font-size:0.67rem;letter-spacing:0.16em;opacity:0.75;margin-bottom:4px;}
+.site-header h1{font-size:1.05rem;font-weight:700;margin-bottom:3px;}
+.site-header .sub{font-size:0.73rem;opacity:0.85;}
+.passage-nav{display:flex;max-width:700px;margin:14px auto 0;gap:6px;padding:0 12px;flex-wrap:wrap;}
+.pnav-btn{flex:1;min-width:60px;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;background:white;color:var(--muted);transition:all 0.18s;text-align:center;}
+.pnav-btn.active{background:var(--accent);color:white;border-color:var(--accent);}
+.tab-bar{display:flex;max-width:700px;margin:10px auto 0;gap:6px;padding:0 12px;}
+.tab-btn{flex:1;padding:9px 4px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;background:white;color:var(--muted);transition:all 0.18s;line-height:1.4;text-align:center;}
+.tab-btn .tn{display:block;font-size:0.58rem;opacity:0.8;margin-bottom:1px;}
+.tab-btn.a1{background:#3b5bdb;color:white;border-color:#3b5bdb;}
+.tab-btn.a2{background:#7048e8;color:white;border-color:#7048e8;}
+.tab-btn.a3{background:#0ca678;color:white;border-color:#0ca678;}
+.tab-btn.a4{background:#e67700;color:white;border-color:#e67700;}
+.section{display:none;padding:13px 12px 40px;max-width:700px;margin:0 auto;}
+.section.show{display:block;}
+.how-to{background:white;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;font-size:0.75rem;color:var(--text);line-height:1.85;margin-bottom:12px;}
+.how-to .lbl{font-size:0.64rem;font-weight:700;color:var(--accent);letter-spacing:0.08em;margin-bottom:4px;}
+.how-to ol{padding-left:16px;}
+.prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.prog-lbl{font-size:0.73rem;font-weight:700;color:var(--muted);}
+.prog-sc{font-size:0.7rem;color:var(--muted);}
+.prog-sc strong{color:var(--text);}
+.order-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px;}
+.answer-slots{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;min-height:40px;}
+.slot{border:2px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.8rem;line-height:1.6;color:var(--muted);background:var(--card);display:flex;align-items:center;gap:8px;min-height:52px;}
+.slot.filled{background:white;border-color:var(--accent);color:var(--text);cursor:pointer;}
+.slot.filled:hover{border-color:var(--error);background:#fff5f5;}
+.slot.correct{background:#d3f9d8;border-color:var(--success);cursor:default;}
+.slot-num{width:22px;height:22px;border-radius:50%;background:var(--border);color:var(--muted);font-size:0.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.slot.filled .slot-num{background:var(--accent);color:white;}
+.slot.correct .slot-num{background:var(--success);color:white;}
+.choices{display:flex;flex-direction:column;gap:6px;}
+.choice-btn{padding:10px 12px;border-radius:10px;border:2px solid var(--border);background:white;font-size:0.8rem;line-height:1.6;cursor:pointer;transition:all 0.15s;text-align:left;font-family:'Noto Sans KR',sans-serif;color:var(--text);}
+.choice-btn.kor{border-color:var(--kor-border);background:var(--kor-bg);}
+.choice-btn.eng{border-color:var(--eng-border);background:var(--eng-bg);font-family:'JetBrains Mono',monospace;font-size:0.72rem;}
+.choice-btn:hover:not(.used){transform:translateX(3px);border-color:var(--accent);}
+.choice-btn.used{opacity:0.25;pointer-events:none;}
+.choice-btn.hint-show{border-color:var(--hint);background:#fff4e6;animation:hintPulse 0.6s;}
+@keyframes hintPulse{0%,100%{transform:none;}50%{transform:translateX(5px);}}
+.wf{animation:wfA 0.42s;}
+@keyframes wfA{0%,100%{}50%{background:#ffe3e3!important;border-color:var(--error)!important;}}
+.hint-box{background:#fff4e6;border:2px solid var(--hint);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:0.77rem;line-height:1.7;display:none;}
+.hint-box.show{display:block;}
+.hint-box .hlbl{font-size:0.63rem;font-weight:700;color:var(--hint);letter-spacing:0.08em;margin-bottom:4px;}
+.result-panel{background:white;border:2px solid var(--success);border-radius:14px;padding:16px;text-align:center;display:none;margin-top:12px;}
+.result-panel.show{display:block;}
+.r-em{font-size:2rem;margin-bottom:6px;}
+.r-msg{font-size:0.88rem;font-weight:700;color:var(--success);margin-bottom:6px;}
+.r-sc{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:12px;}
+.result-panel button{padding:9px 20px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:0.83rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin:0 4px;}
+.struct-panel{background:white;border:1.5px solid var(--border);border-radius:11px;padding:12px;margin-top:12px;display:none;}
+.struct-panel.show{display:block;}
+.struct-item{display:flex;gap:8px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.struct-item:last-child{border:none;margin:0;padding:0;}
+.struct-label{width:28px;height:28px;border-radius:8px;background:var(--accent);color:white;font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.struct-role{font-size:0.7rem;color:var(--muted);margin-bottom:3px;}
+.struct-text{font-size:0.75rem;line-height:1.6;color:var(--text);}
+.btn-next{display:none;width:100%;margin-top:10px;padding:11px;background:linear-gradient(135deg,#3b5bdb,#7048e8);color:white;border:none;border-radius:11px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.footer{text-align:center;font-size:0.66rem;color:var(--muted);padding:16px 0 26px;}
+</style>
+</head>
+<body>
+<div class="site-header">
+ <div class="tag">WGT 순서배열 · 동산고 2학년 1학기 기말</div>
+ <h1>모의고사 4 · 4단계 순서배열 훈련</h1>
+ <div class="sub">21번 · 24번 · 30번 · 33번</div>
+</div>
+<div class="passage-nav" id="pnav"></div>
+<div class="tab-bar">
+ <button class="tab-btn a1" onclick="switchTab(1)"><span class="tn">STEP 1</span>한글 덩어리</button>
+ <button class="tab-btn" onclick="switchTab(2)"><span class="tn">STEP 2</span>영어 덩어리</button>
+ <button class="tab-btn" onclick="switchTab(3)"><span class="tn">STEP 3</span>한글 문장</button>
+ <button class="tab-btn" onclick="switchTab(4)"><span class="tn">STEP 4</span>영어 문장</button>
+</div>
+<div class="section show" id="sec1">
+ <div class="how-to"><div class="lbl">📖 STEP 1 사용법</div><ol><li>한국어 해석을 4개 덩어리로 나눴어요</li><li>올바른 순서대로 클릭해 위쪽 칸을 채우세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl1"></span><span class="prog-sc">✅<strong id="o1">0</strong> ❌<strong id="n1">0</strong></span></div>
+ <div class="hint-box" id="hb1"><div class="hlbl">💡 힌트</div><div id="ht1"></div></div>
+ <div class="answer-slots" id="as1"></div>
+ <div class="order-lbl">🇰🇷 덩어리 선택</div>
+ <div class="choices" id="ch1"></div>
+ <button class="btn-next" id="nx1" onclick="nextStep(1)"></button>
+ <div class="struct-panel" id="sp1"></div>
+ <div class="result-panel" id="rp1"><div class="r-em">🏆</div><div class="r-msg">STEP 1 완료!</div><div class="r-sc" id="rs1"></div><button onclick="switchTab(2)">STEP 2로 →</button><button onclick="resetStep(1)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="section" id="sec2">
+ <div class="how-to"><div class="lbl">📖 STEP 2 사용법</div><ol><li>영어 지문을 4개 덩어리로 나눴어요</li><li>올바른 순서대로 클릭해 위쪽 칸을 채우세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl2"></span><span class="prog-sc">✅<strong id="o2">0</strong> ❌<strong id="n2">0</strong></span></div>
+ <div class="hint-box" id="hb2"><div class="hlbl">💡 힌트</div><div id="ht2"></div></div>
+ <div class="answer-slots" id="as2"></div>
+ <div class="order-lbl">🔤 덩어리 선택</div>
+ <div class="choices" id="ch2"></div>
+ <button class="btn-next" id="nx2" onclick="nextStep(2)"></button>
+ <div class="struct-panel" id="sp2"></div>
+ <div class="result-panel" id="rp2"><div class="r-em">🏆</div><div class="r-msg">STEP 2 완료!</div><div class="r-sc" id="rs2"></div><button onclick="switchTab(3)">STEP 3으로 →</button><button onclick="resetStep(2)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="section" id="sec3">
+ <div class="how-to"><div class="lbl">📖 STEP 3 사용법</div><ol><li>지문의 모든 한국어 문장을 섞었어요</li><li>올바른 순서대로 클릭하세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl3"></span><span class="prog-sc">✅<strong id="o3">0</strong> ❌<strong id="n3">0</strong></span></div>
+ <div class="hint-box" id="hb3"><div class="hlbl">💡 힌트</div><div id="ht3"></div></div>
+ <div class="answer-slots" id="as3"></div>
+ <div class="order-lbl">🇰🇷 문장 선택</div>
+ <div class="choices" id="ch3"></div>
+ <button class="btn-next" id="nx3" onclick="nextStep(3)"></button>
+ <div class="result-panel" id="rp3"><div class="r-em">🏆</div><div class="r-msg">STEP 3 완료!</div><div class="r-sc" id="rs3"></div><button onclick="switchTab(4)">STEP 4로 →</button><button onclick="resetStep(3)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="section" id="sec4">
+ <div class="how-to"><div class="lbl">📖 STEP 4 사용법</div><ol><li>지문의 모든 영어 문장을 섞었어요</li><li>올바른 순서대로 클릭하세요</li><li>2번 틀리면 해당 순서 힌트를 드려요</li></ol></div>
+ <div class="prog-row"><span class="prog-lbl" id="pl4"></span><span class="prog-sc">✅<strong id="o4">0</strong> ❌<strong id="n4">0</strong></span></div>
+ <div class="hint-box" id="hb4"><div class="hlbl">💡 힌트</div><div id="ht4"></div></div>
+ <div class="answer-slots" id="as4"></div>
+ <div class="order-lbl">🔤 문장 선택</div>
+ <div class="choices" id="ch4"></div>
+ <button class="btn-next" id="nx4" onclick="nextStep(4)"></button>
+ <div class="result-panel" id="rp4"><div class="r-em">🏆</div><div class="r-msg">STEP 4 완료!</div><div class="r-sc" id="rs4"></div><button onclick="goNextPassage()">다음 지문 →</button><button onclick="resetStep(4)" style="background:var(--muted)">다시 풀기</button></div>
+</div>
+<div class="footer">WGT 순서배열 · 동산고 2학년 기말 모고4 · 21,24,30,33번</div>
+<script>
+const PASSAGES = [
+{
+"num": "21번",
+"topic": "존중하는 교실 학습 공동체와 모든 답안 수용",
+"blocks_kor": [
+{
+"label": "A",
+"text": "존중하는 교실 학습 공동체를 구축하기 위한 첫 번째 단계는 명백한 오류에 상관없이 모든 아이디어와 답안을 수용하는 것이다. 이러한 기대가 자리 잡지 않으면 풍부한 수학적 토론은 일어날 수 없다.",
+"role": "도입: 존중하는 교실 공동체의 첫 단계는 오류 여부와 관계없이 모든 답안을 수용하는 것"
+},
+{
+"label": "B",
+"text": "우리는 잘못된 답안이 흔히 오개념에 뿌리를 두고 있다는 것을 기억해야 하며, 이러한 생각들이 전면에 드러나도록 허용되지 않는다면 학생들이 자신의 사고를 직면하도록 도울 수 없다. 안전한 학습 환경에 있는 학생들은 수학적으로 성장하기 위해 동료들과 잘못된 답안을 위험을 감수하고 공유하려 한다.",
+"role": "전개: 잘못된 답안을 허용해야 학생들이 사고를 직면할 수 있고, 안전한 환경에서 기꺼이 틀린 답을 공유함"
+},
+{
+"label": "C",
+"text": "모욕적인 발언 없이 모든 아이디어의 수용을 본보기로 보여주고 기대하는 것이 중요하다. 교육자로서 우리는 어떤 답안에 대한 동의나 반대를 나타내는 어떠한 언어적 또는 신체적 표현도 없이 고려될 모든 답안을 기록함으로써 이를 본보기로 보여줄 수 있다.",
+"role": "심화: 교육자는 언어적·신체적 표현 없이 모든 답안을 기록함으로써 수용의 본보기를 보임"
+},
+{
+"label": "D",
+"text": "교사는 '무표정'을 연습할 필요가 있을 수 있다. 학생들은 올바른 답의 출처로 교사를 바라본다. 안전한 학습 공동체를 구축하는 것의 일부는 학생들이 자신의 풀이 뒤에 있는 사고를 방어하도록 준비시킴으로써 이 지식의 원천을 학생들에게로 옮기는 것이다.",
+"role": "결론: 지식의 원천을 교사에서 학생으로 이동시켜 학생들이 스스로 사고를 방어하도록 해야 함"
+}
+],
+"blocks_eng": [
+{
+"label": "A",
+"text": "A first step toward establishing a respectful classroom learning community is acceptance of all ideas and answers — regardless of any obvious errors. Rich mathematical discussions cannot occur if this expectation is not in place.",
+"role": "도입: 존중하는 교실 공동체의 첫 단계는 오류 여부와 관계없이 모든 답안을 수용하는 것"
+},
+{
+"label": "B",
+"text": "We must remember that wrong answers are often rooted in misconceptions, and unless these ideas are allowed to be brought to the forefront, we cannot help students confront their thinking. Students who are in safe learning environments are willing to risk sharing an incorrect answer with their peers in order to grow mathematically.",
+"role": "전개: 잘못된 답안을 허용해야 학생들이 사고를 직면할 수 있고, 안전한 환경에서 기꺼이 틀린 답을 공유함"
+},
+{
+"label": "C",
+"text": "It is important to model and expect the acceptance of all ideas without derogatory comments. As educators we can model this by recording all answers to be considered without giving any verbal or physical expressions that indicate agreement or disagreement with any answer.",
+"role": "심화: 교육자는 언어적·신체적 표현 없이 모든 답안을 기록함으로써 수용의 본보기를 보임"
+},
+{
+"label": "D",
+"text": "The teacher may need to practice having a \"blank face.\" Students look to teachers as the source of correct answers. Part of building a safe learning community is to shift this source of knowledge to the students by equipping them to defend the thinking behind their solutions.",
+"role": "결론: 지식의 원천을 교사에서 학생으로 이동시켜 학생들이 스스로 사고를 방어하도록 해야 함"
+}
+],
+"korean": [
+"존중하는 교실 학습 공동체를 구축하기 위한 첫 번째 단계는 명백한 오류에 상관없이 모든 아이디어와 답안을 수용하는 것이다.",
+"이러한 기대가 자리 잡지 않으면 풍부한 수학적 토론은 일어날 수 없다.",
+"우리는 잘못된 답안이 흔히 오개념에 뿌리를 두고 있다는 것을 기억해야 하며, 이러한 생각들이 전면에 드러나도록 허용되지 않는다면 학생들이 자신의 사고를 직면하도록 도울 수 없다.",
+"안전한 학습 환경에 있는 학생들은 수학적으로 성장하기 위해 동료들과 잘못된 답안을 위험을 감수하고 공유하려 한다.",
+"모욕적인 발언 없이 모든 아이디어의 수용을 본보기로 보여주고 기대하는 것이 중요하다.",
+"교육자로서 우리는 어떤 답안에 대한 동의나 반대를 나타내는 어떠한 언어적 또는 신체적 표현도 없이 고려될 모든 답안을 기록함으로써 이를 본보기로 보여줄 수 있다.",
+"교사는 '무표정'을 연습할 필요가 있을 수 있다.",
+"학생들은 올바른 답의 출처로 교사를 바라본다.",
+"안전한 학습 공동체를 구축하는 것의 일부는 학생들이 자신의 풀이 뒤에 있는 사고를 방어하도록 준비시킴으로써 이 지식의 원천을 학생들에게로 옮기는 것이다."
+],
+"sentences": [
+"A first step toward establishing a respectful classroom learning community is acceptance of all ideas and answers — regardless of any obvious errors.",
+"Rich mathematical discussions cannot occur if this expectation is not in place.",
+"We must remember that wrong answers are often rooted in misconceptions, and unless these ideas are allowed to be brought to the forefront, we cannot help students confront their thinking.",
+"Students who are in safe learning environments are willing to risk sharing an incorrect answer with their peers in order to grow mathematically.",
+"It is important to model and expect the acceptance of all ideas without derogatory comments.",
+"As educators we can model this by recording all answers to be considered without giving any verbal or physical expressions that indicate agreement or disagreement with any answer.",
+"The teacher may need to practice having a \"blank face.\"",
+"Students look to teachers as the source of correct answers.",
+"Part of building a safe learning community is to shift this source of knowledge to the students by equipping them to defend the thinking behind their solutions."
+]
+},
+{
+"num": "24번",
+"topic": "방의 음향 특성이 소리에 미치는 영향",
+"blocks_kor": [
+{
+"label": "A",
+"text": "방은 그 안에 포함된 오디오 신호에 자체적인 특성을 부과하기 때문에 자체적인 \"소리\"를 가진다. 그것은 사실 꽤 놀라운 일이다.",
+"role": "도입: 방은 자체적인 음향 특성을 가지며, 이는 오디오 신호에 영향을 미침"
+},
+{
+"label": "B",
+"text": "헤드폰에서 나오는 음악과 같은 소리는 어디서나 똑같이 들릴 것이다. 우리가 어떤 음향 환경에 있든, 헤드폰은 똑같이 들린다. 그것은 방이 그 재생 신호 경로의 일부가 아니기 때문이다.",
+"role": "대조1: 헤드폰 소리는 방의 음향 환경과 무관하게 항상 동일함"
+},
+{
+"label": "C",
+"text": "하지만 스피커에서 나오는 음악과 같은 소리는 모든 음향 환경에서 다르게 들릴 것이다. 스피커를 설치하는 모든 방은 당신이 듣는 소리가 달라지게 할 것이다 — 때로는 극적으로 다르게; 그것은 방이 이제 신호 경로의 일부이기 때문이다.",
+"role": "대조2: 스피커 소리는 방이 신호 경로의 일부가 되어 음향 환경에 따라 달라짐"
+},
+{
+"label": "D",
+"text": "또한, 같은 방에서도, 스피커는 방의 다른 위치에 놓일 때 다르게 들릴 것이고 방 안을 돌아다닐 때도 다르게 들릴 것이다. 마찬가지로, 악기를 녹음할 때, 마이크에서 받는 소리는 모든 방에서 다를 것이고 악기나 마이크가 움직임에 따라 녹음된 소리도 다르게 들릴 것이다.",
+"role": "확장: 같은 방에서도 위치에 따라, 녹음 시 악기·마이크 위치에 따라 소리가 달라짐"
+}
+],
+"blocks_eng": [
+{
+"label": "A",
+"text": "Rooms have their own \"sound\" because they impose their own characteristics on audio signals contained within them. It's actually kind of remarkable.",
+"role": "도입: 방은 자체적인 음향 특성을 가지며, 이는 오디오 신호에 영향을 미침"
+},
+{
+"label": "B",
+"text": "Sound such as music coming from headphones will sound the same everywhere. No matter what acoustical environment we are in, the headphones sound the same. That's because the room is not part of that playback signal path.",
+"role": "대조1: 헤드폰 소리는 방의 음향 환경과 무관하게 항상 동일함"
+},
+{
+"label": "C",
+"text": "But sound such as music from a loudspeaker will sound different in every acoustical environment. Every room where you set up the loudspeaker will cause the sound you hear to be different — sometimes dramatically different; that is because the room is now part of the signal path.",
+"role": "대조2: 스피커 소리는 방이 신호 경로의 일부가 되어 음향 환경에 따라 달라짐"
+},
+{
+"label": "D",
+"text": "Also, in the same room, the loudspeaker will sound different when it is placed in different locations in the room and it will sound different as you move around the room. Similarly, when you are recording a musical instrument, the sound you receive at the microphone will be different in every room and the recorded sound will sound different as the instrument or the microphone is moved.",
+"role": "확장: 같은 방에서도 위치에 따라, 녹음 시 악기·마이크 위치에 따라 소리가 달라짐"
+}
+],
+"korean": [
+"방은 그 안에 포함된 오디오 신호에 자체적인 특성을 부과하기 때문에 자체적인 \"소리\"를 가진다.",
+"그것은 사실 꽤 놀라운 일이다.",
+"헤드폰에서 나오는 음악과 같은 소리는 어디서나 똑같이 들릴 것이다.",
+"우리가 어떤 음향 환경에 있든, 헤드폰은 똑같이 들린다.",
+"그것은 방이 그 재생 신호 경로의 일부가 아니기 때문이다.",
+"하지만 스피커에서 나오는 음악과 같은 소리는 모든 음향 환경에서 다르게 들릴 것이다.",
+"스피커를 설치하는 모든 방은 당신이 듣는 소리가 달라지게 할 것이다 — 때로는 극적으로 다르게; 그것은 방이 이제 신호 경로의 일부이기 때문이다.",
+"또한, 같은 방에서도, 스피커는 방의 다른 위치에 놓일 때 다르게 들릴 것이고 방 안을 돌아다닐 때도 다르게 들릴 것이다.",
+"마찬가지로, 악기를 녹음할 때, 마이크에서 받는 소리는 모든 방에서 다를 것이고 악기나 마이크가 움직임에 따라 녹음된 소리도 다르게 들릴 것이다."
+],
+"sentences": [
+"Rooms have their own \"sound\" because they impose their own characteristics on audio signals contained within them.",
+"It's actually kind of remarkable.",
+"Sound such as music coming from headphones will sound the same everywhere.",
+"No matter what acoustical environment we are in, the headphones sound the same.",
+"That's because the room is not part of that playback signal path.",
+"But sound such as music from a loudspeaker will sound different in every acoustical environment.",
+"Every room where you set up the loudspeaker will cause the sound you hear to be different — sometimes dramatically different; that is because the room is now part of the signal path.",
+"Also, in the same room, the loudspeaker will sound different when it is placed in different locations in the room and it will sound different as you move around the room.",
+"Similarly, when you are recording a musical instrument, the sound you receive at the microphone will be different in every room and the recorded sound will sound different as the instrument or the microphone is moved."
+]
+},
+{
+"num": "30번",
+"topic": "논문 기반 박사 과정의 한계와 구조화된 프로그램의 필요성",
+"blocks_kor": [
+{
+"label": "A",
+"text": "논문 기반 박사 과정에서 학생들은 일반적으로 특정 주제를 연구하는 데 상당한 시간과 노력을 쏟는다. 특정 분야에 대한 이러한 깊은 탐구는 철저한 탐구와 이해를 가능하게 하지만, 초점을 좁히는 결과를 낳을 수도 있다.",
+"role": "도입: 논문 기반 박사 과정은 깊은 탐구를 가능하게 하지만 초점을 좁히는 부작용이 있음"
+},
+{
+"label": "B",
+"text": "학생들이 연구에 깊이 몰두함에 따라, 그들은 관련 분야를 탐구하거나 즉각적인 연구 분야 외의 기술을 습득하는 데 더 적은 시간을 보낼 수 있다. 결과적으로, 이러한 단일한 집중은 과정 동안 개발되는 지식과 기술의 폭을 제한하여, 잠재적으로 다양한 진로에 적응하거나 학제 간 과제를 해결하는 학생들의 능력을 방해할 수 있다.",
+"role": "문제: 단일한 집중은 다양한 진로 적응과 학제 간 과제 해결 능력을 제한할 수 있음"
+},
+{
+"label": "C",
+"text": "유럽의 일부 대학들은 전통적인 논문 기반 박사 과정의 한계를 인식하고 더 구조화된 접근 방식을 시행하기 시작했다. 이러한 구조화된 프로그램은 흔히 연구를 이수 과목 및 전이 가능한 기술 훈련과 결합한다.",
+"role": "대안 제시: 유럽 일부 대학들은 구조화된 프로그램으로 연구와 이수 과목·기술 훈련을 결합함"
+},
+{
+"label": "D",
+"text": "교과 과정에 이수 과목, 세미나, 워크숍 및 인턴십을 포함함으로써, 그들은 학생들에게 더 광범위한 기술 세트를 제공하고 학계를 넘어선 다양한 진로에 더 잘 준비시키고자 한다.",
+"role": "결론: 이수 과목·인턴십 등을 통해 학생들에게 더 넓은 기술과 다양한 진로를 준비시킴"
+}
+],
+"blocks_eng": [
+{
+"label": "A",
+"text": "In a thesis-based doctoral programme, students typically spend a significant amount of time and effort researching a specific topic. While this deep dive into a particular area allows for thorough exploration and understanding, it can also result in narrowing the focus.",
+"role": "도입: 논문 기반 박사 과정은 깊은 탐구를 가능하게 하지만 초점을 좁히는 부작용이 있음"
+},
+{
+"label": "B",
+"text": "As students become deeply absorbed in their research, they may spend less time exploring related fields or acquiring skills outside their immediate area of study. Consequently, this singular focus may limit the breadth of knowledge and skills developed during the programme, potentially hindering students' ability to adapt to diverse career paths or address interdisciplinary challenges.",
+"role": "문제: 단일한 집중은 다양한 진로 적응과 학제 간 과제 해결 능력을 제한할 수 있음"
+},
+{
+"label": "C",
+"text": "Some universities in Europe have recognised the limitations of traditional thesis-based doctoral programmes and have started to implement more structured approaches. These structured programmes often combine research with coursework and training in transferable skills.",
+"role": "대안 제시: 유럽 일부 대학들은 구조화된 프로그램으로 연구와 이수 과목·기술 훈련을 결합함"
+},
+{
+"label": "D",
+"text": "By incorporating coursework, seminars, workshops and internships into the curriculum, they aim to provide students with a broader skill set and better prepare them for a variety of career paths beyond academia.",
+"role": "결론: 이수 과목·인턴십 등을 통해 학생들에게 더 넓은 기술과 다양한 진로를 준비시킴"
+}
+],
+"korean": [
+"논문 기반 박사 과정에서 학생들은 일반적으로 특정 주제를 연구하는 데 상당한 시간과 노력을 쏟는다.",
+"특정 분야에 대한 이러한 깊은 탐구는 철저한 탐구와 이해를 가능하게 하지만, 초점을 좁히는 결과를 낳을 수도 있다.",
+"학생들이 연구에 깊이 몰두함에 따라, 그들은 관련 분야를 탐구하거나 즉각적인 연구 분야 외의 기술을 습득하는 데 더 적은 시간을 보낼 수 있다.",
+"결과적으로, 이러한 단일한 집중은 과정 동안 개발되는 지식과 기술의 폭을 제한하여, 잠재적으로 다양한 진로에 적응하거나 학제 간 과제를 해결하는 학생들의 능력을 방해할 수 있다.",
+"유럽의 일부 대학들은 전통적인 논문 기반 박사 과정의 한계를 인식하고 더 구조화된 접근 방식을 시행하기 시작했다.",
+"이러한 구조화된 프로그램은 흔히 연구를 이수 과목 및 전이 가능한 기술 훈련과 결합한다.",
+"교과 과정에 이수 과목, 세미나, 워크숍 및 인턴십을 포함함으로써, 그들은 학생들에게 더 광범위한 기술 세트를 제공하고 학계를 넘어선 다양한 진로에 더 잘 준비시키고자 한다."
+],
+"sentences": [
+"In a thesis-based doctoral programme, students typically spend a significant amount of time and effort researching a specific topic.",
+"While this deep dive into a particular area allows for thorough exploration and understanding, it can also result in narrowing the focus.",
+"As students become deeply absorbed in their research, they may spend less time exploring related fields or acquiring skills outside their immediate area of study.",
+"Consequently, this singular focus may limit the breadth of knowledge and skills developed during the programme, potentially hindering students' ability to adapt to diverse career paths or address interdisciplinary challenges.",
+"Some universities in Europe have recognised the limitations of traditional thesis-based doctoral programmes and have started to implement more structured approaches.",
+"These structured programmes often combine research with coursework and training in transferable skills.",
+"By incorporating coursework, seminars, workshops and internships into the curriculum, they aim to provide students with a broader skill set and better prepare them for a variety of career paths beyond academia."
+]
+},
+{
+"num": "33번",
+"topic": "인간이 도덕적으로 우월하다는 주장의 부당성",
+"blocks_kor": [
+{
+"label": "A",
+"text": "누구도 다른 존재들은 결여하고 있는 도덕적 행위자의 능력을 인간이 소유하고 있다는 근거로 인간이 도덕적으로 우월한 존재라고 타당하게 주장할 수 없다. 그 이유는 도덕적 기준에 관한 한, 도덕적 행위자의 능력을 가진 존재들만이 도덕적으로 선하거나 나쁘다고 의미 있게 말할 수 있기 때문이다.",
+"role": "주장 제시: 도덕적 행위자만이 도덕적 평가 대상이 될 수 있어 인간의 도덕적 우월성 주장은 부당함"
+},
+{
+"label": "B",
+"text": "도덕적 행위자만이 다른 존재들보다 도덕적으로 더 낫거나 나쁘다고 판단될 수 있으며, 문제의 다른 존재들도 스스로 도덕적 행위자여야 한다. 도덕적 우월성에 대한 판단은 판단되는 개체들의 상대적 장점이나 결점에 기반하며, 이러한 장점과 결점은 모두 도덕적인 것, 즉 도덕적 기준에 의해 결정되는 것들이다.",
+"role": "근거1: 도덕적 우월성 판단은 도덕적 행위자끼리만 가능하며, 기준은 도덕적 장단점임"
+},
+{
+"label": "C",
+"text": "유효한 도덕적 기준이 두 개체에 적용될 때 첫 번째 개체가 두 번째 개체보다 더 높은 정도로 그것들을 충족한다면, 하나의 개체가 다른 개체보다 도덕적으로 우월하다고 올바르게 판단된다. 따라서 두 개체는 도덕적 기준의 적용 범위 안에 있어야 한다.",
+"role": "근거2: 도덕적 우월 판단은 두 개체 모두 도덕적 기준의 적용 범위 안에 있을 때만 성립함"
+},
+{
+"label": "D",
+"text": "그러나 후자는 도덕적 행위자가 아니기 때문에, 인간이 동물과 식물보다 우월하다고 판단된다면 이는 해당되지 않을 것이다.",
+"role": "결론: 동물·식물은 도덕적 행위자가 아니므로 인간과의 도덕적 우월 비교 자체가 성립하지 않음"
+}
+],
+"blocks_eng": [
+{
+"label": "A",
+"text": "One cannot validly argue that humans are morally superior beings on the ground that they possess, while others lack, the capacities of a moral agent. The reason is that, as far as moral standards are concerned, only beings that have the capacities of a moral agent can meaningfully be said to be either morally good or morally bad.",
+"role": "주장 제시: 도덕적 행위자만이 도덕적 평가 대상이 될 수 있어 인간의 도덕적 우월성 주장은 부당함"
+},
+{
+"label": "B",
+"text": "Only moral agents can be judged to be morally better or worse than others, and the others in question must be moral agents themselves. Judgments of moral superiority are based on the comparative merits or deficiencies of the entities being judged, and these merits and deficiencies are all moral ones, that is, ones determined by moral standards.",
+"role": "근거1: 도덕적 우월성 판단은 도덕적 행위자끼리만 가능하며, 기준은 도덕적 장단점임"
+},
+{
+"label": "C",
+"text": "One entity is correctly judged morally superior to another if it is the case that, when valid moral standards are applied to both entities, the first fulfills them to a greater degree than the second. Both entities, therefore, must fall within the range of application of moral standards.",
+"role": "근거2: 도덕적 우월 판단은 두 개체 모두 도덕적 기준의 적용 범위 안에 있을 때만 성립함"
+},
+{
+"label": "D",
+"text": "This would not be the case, however, if humans were being judged superior to animals and plants, since the latter are not moral agents.",
+"role": "결론: 동물·식물은 도덕적 행위자가 아니므로 인간과의 도덕적 우월 비교 자체가 성립하지 않음"
+}
+],
+"korean": [
+"누구도 다른 존재들은 결여하고 있는 도덕적 행위자의 능력을 인간이 소유하고 있다는 근거로 인간이 도덕적으로 우월한 존재라고 타당하게 주장할 수 없다.",
+"그 이유는 도덕적 기준에 관한 한, 도덕적 행위자의 능력을 가진 존재들만이 도덕적으로 선하거나 나쁘다고 의미 있게 말할 수 있기 때문이다.",
+"도덕적 행위자만이 다른 존재들보다 도덕적으로 더 낫거나 나쁘다고 판단될 수 있으며, 문제의 다른 존재들도 스스로 도덕적 행위자여야 한다.",
+"도덕적 우월성에 대한 판단은 판단되는 개체들의 상대적 장점이나 결점에 기반하며, 이러한 장점과 결점은 모두 도덕적인 것, 즉 도덕적 기준에 의해 결정되는 것들이다.",
+"유효한 도덕적 기준이 두 개체에 적용될 때 첫 번째 개체가 두 번째 개체보다 더 높은 정도로 그것들을 충족한다면, 하나의 개체가 다른 개체보다 도덕적으로 우월하다고 올바르게 판단된다.",
+"따라서 두 개체는 도덕적 기준의 적용 범위 안에 있어야 한다.",
+"그러나 후자는 도덕적 행위자가 아니기 때문에, 인간이 동물과 식물보다 우월하다고 판단된다면 이는 해당되지 않을 것이다."
+],
+"sentences": [
+"One cannot validly argue that humans are morally superior beings on the ground that they possess, while others lack, the capacities of a moral agent.",
+"The reason is that, as far as moral standards are concerned, only beings that have the capacities of a moral agent can meaningfully be said to be either morally good or morally bad.",
+"Only moral agents can be judged to be morally better or worse than others, and the others in question must be moral agents themselves.",
+"Judgments of moral superiority are based on the comparative merits or deficiencies of the entities being judged, and these merits and deficiencies are all moral ones, that is, ones determined by moral standards.",
+"One entity is correctly judged morally superior to another if it is the case that, when valid moral standards are applied to both entities, the first fulfills them to a greater degree than the second.",
+"Both entities, therefore, must fall within the range of application of moral standards.",
+"This would not be the case, however, if humans were being judged superior to animals and plants, since the latter are not moral agents."
+]
+}
+];
+
+let curP = 0;
+const state = {};
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function getP(){ return PASSAGES[curP]; }
+
+function buildPnav(){
+  const nav = document.getElementById('pnav');
+  nav.innerHTML = '';
+  PASSAGES.forEach((p,i)=>{
+    const b = document.createElement('button');
+    b.className = 'pnav-btn'+(i===curP?' active':'');
+    b.textContent = p.num;
+    b.onclick = ()=>{ curP=i; initAllSteps(); buildPnav(); switchTab(1); };
+    nav.appendChild(b);
+  });
+}
+
+function switchTab(n){
+  for(let i=1;i<=4;i++){
+    document.getElementById('sec'+i).classList.toggle('show', i===n);
+    document.querySelectorAll('.tab-btn')[i-1].classList.toggle(['a1','a2','a3','a4'][i-1], i===n);
+    if(i!==n) document.querySelectorAll('.tab-btn')[i-1].classList.remove('a1','a2','a3','a4');
+  }
+}
+
+function getItems(step){
+  const p = getP();
+  if(step===1) return p.blocks_kor.map(b=>(({text:b.text, cls:'kor', label:b.label})));
+  if(step===2) return p.blocks_eng.map(b=>(({text:b.text, cls:'eng', label:b.label})));
+  if(step===3) return p.korean.map(t=>(({text:t, cls:'kor'})));
+  if(step===4) return p.sentences.map(t=>(({text:t, cls:'eng'})));
+}
+
+function initStep(step){
+  const items = getItems(step);
+  const order = shuffle(items.map((_,i)=>i));
+  state[step] = {
+    items, order, filled: [], wrong: 0
+  };
+  render(step);
+}
+
+function initAllSteps(){
+  for(let s=1;s<=4;s++) initStep(s);
+  document.getElementById('pl1').textContent = '한국어 4덩어리 순서 맞추기';
+  document.getElementById('pl2').textContent = '영어 4덩어리 순서 맞추기';
+  document.getElementById('pl3').textContent = '한국어 전체문장 순서 맞추기';
+  document.getElementById('pl4').textContent = '영어 전체문장 순서 맞추기';
+}
+
+function render(step){
+  const st = state[step];
+  const slotsEl = document.getElementById('as'+step);
+  const choicesEl = document.getElementById('ch'+step);
+  const total = st.items.length;
+
+  slotsEl.innerHTML = '';
+  for(let i=0;i<total;i++){
+    const slot = document.createElement('div');
+    const filledIdx = st.filled[i];
+    if(filledIdx !== undefined){
+      const correct = filledIdx === i;
+      slot.className = 'slot filled' + (correct && st.done ? ' correct':'');
+      slot.innerHTML = `<div class="slot-num">${i+1}</div><div>${st.items[filledIdx].text}</div>`;
+    } else {
+      slot.className = 'slot';
+      slot.innerHTML = `<div class="slot-num">${i+1}</div><div>이곳에 ${i+1}번째 내용이 채워집니다</div>`;
+    }
+    slotsEl.appendChild(slot);
+  }
+
+  choicesEl.innerHTML = '';
+  st.order.forEach(idx=>{
+    const item = st.items[idx];
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn ' + item.cls + (st.filled.includes(idx) ? ' used':'');
+    btn.textContent = item.text;
+    btn.onclick = ()=>handleChoice(step, idx);
+    choicesEl.appendChild(btn);
+  });
+
+  document.getElementById('o'+step).textContent = st.filled.filter((v,i)=>v===i).length;
+  document.getElementById('n'+step).textContent = st.wrong;
+
+  const hb = document.getElementById('hb'+step);
+  hb.classList.remove('show');
+
+  const nx = document.getElementById('nx'+step);
+  nx.style.display = 'none';
+
+  const rp = document.getElementById('rp'+step);
+  rp.classList.remove('show');
+
+  if(step<=2){
+    document.getElementById('sp'+step).classList.remove('show');
+  }
+}
+
+function handleChoice(step, idx){
+  const st = state[step];
+  const nextSlot = st.filled.length;
+  if(nextSlot >= st.items.length) return;
+
+  if(idx === nextSlot){
+    st.filled.push(idx);
+    st.attemptsForSlot = 0;
+    render(step);
+    if(st.filled.length === st.items.length){
+      finishStep(step);
+    }
+  } else {
+    st.wrong++;
+    st.attemptsForSlot = (st.attemptsForSlot||0) + 1;
+    document.getElementById('o'+step).textContent = st.filled.filter((v,i)=>v===i).length;
+    document.getElementById('n'+step).textContent = st.wrong;
+    const choicesEl = document.getElementById('ch'+step);
+    const btns = choicesEl.querySelectorAll('.choice-btn');
+    const orderIdx = st.order.indexOf(idx);
+    btns[orderIdx].classList.add('wf');
+    setTimeout(()=>btns[orderIdx].classList.remove('wf'), 450);
+
+    if(st.attemptsForSlot >= 2){
+      const correctItem = st.items[nextSlot];
+      const hb = document.getElementById('hb'+step);
+      const ht = document.getElementById('ht'+step);
+      const preview = correctItem.text.split(' ').slice(0,6).join(' ') + ' ...';
+      ht.textContent = preview;
+      hb.classList.add('show');
+      const correctOrderIdx = st.order.indexOf(nextSlot);
+      btns[correctOrderIdx].classList.add('hint-show');
+    }
+  }
+}
+
+function finishStep(step){
+  const st = state[step];
+  st.done = true;
+  render(step);
+  document.getElementById('rp'+step).classList.add('show');
+  document.getElementById('rs'+step).textContent = `정답 ${st.items.length} / 오답 ${st.wrong}`;
+
+  if(step===1 || step===2){
+    if(state[1] && state[1].done && state[2] && state[2].done){
+      showStructPanels();
+    }
+  }
+}
+
+function showStructPanels(){
+  const p = getP();
+  [1,2].forEach(step=>{
+    const blocks = step===1 ? p.blocks_kor : p.blocks_eng;
+    const sp = document.getElementById('sp'+step);
+    sp.innerHTML = '<div class="order-lbl" style="margin-bottom:8px;">📝 글의 구조 해설</div>' +
+      blocks.map(b=>`<div class="struct-item"><div class="struct-label">${b.label}</div><div><div class="struct-role">${b.role}</div><div class="struct-text">${b.text}</div></div></div>`).join('');
+    sp.classList.add('show');
+  });
+}
+
+function nextStep(step){
+  switchTab(step+1);
+}
+
+function resetStep(step){
+  initStep(step);
+  if(step<=2) document.getElementById('sp'+step).classList.remove('show');
+}
+
+function goNextPassage(){
+  if(curP < PASSAGES.length-1){
+    curP++;
+    initAllSteps();
+    buildPnav();
+    switchTab(1);
+  } else {
+    alert('모든 지문을 완료했습니다! 🎉');
+  }
+}
+
+buildPnav();
+initAllSteps();
+</script>
+</body>
+</html>
